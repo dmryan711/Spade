@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "SpadeViewController.h"
 
 @interface SpadeAppDelegate : UIResponder <UIApplicationDelegate>
 

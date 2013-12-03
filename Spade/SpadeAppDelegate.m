@@ -7,14 +7,34 @@
 //
 
 #import "SpadeAppDelegate.h"
+#import "SpadeLoginViewController.h"
+#import <Parse/Parse.h>
+
+
 
 @implementation SpadeAppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     // Override point for customization after application launch.
+    \
+    /*****   PARSE APPLICATION *******/
+    [Parse setApplicationId:@"XQODiEaHhQUZWP8WdgcD6FAtQLP0XV33hrDtwgJD"
+                  clientKey:@"MQI08xDJxyrt0ajlOW3pLaF3SHitkCQGusCsnLTt"];
+    
+    /***** PARSE ANALYTICS *****/
+    [PFAnalytics trackAppOpenedWithLaunchOptions:launchOptions];
+    
+    [PFFacebookUtils initializeFacebook];
+    
+    NSLog(@"Bundle ID: %@",[[NSBundle mainBundle] bundleIdentifier]);
+    
+    
+    
     return YES;
 }
+
+
 							
 - (void)applicationWillResignActive:(UIApplication *)application
 {
@@ -36,6 +56,19 @@
 - (void)applicationDidBecomeActive:(UIApplication *)application
 {
     // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
+    [FBSession.activeSession handleDidBecomeActive];
+}
+
+
+
+// Facebook oauth callback
+- (BOOL)application:(UIApplication *)application handleOpenURL:(NSURL *)url {
+    return [PFFacebookUtils handleOpenURL:url];
+}
+
+- (BOOL)application:(UIApplication *)application openURL:(NSURL *)url
+  sourceApplication:(NSString *)sourceApplication annotation:(id)annotation {
+    return [PFFacebookUtils handleOpenURL:url];
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application

@@ -7,7 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "SpadeLoginViewController.h"
 
-@interface SpadeViewController : UIViewController
+
+@interface SpadeViewController : UIViewController <PFLogInViewControllerDelegate, UIActionSheetDelegate>
 
 @end
