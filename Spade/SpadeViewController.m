@@ -10,6 +10,7 @@
 #import "SpadeViewController.h"
 #import "SpadeBirthday.h"
 #import "SpadeAppDelegate.h"
+#import "SpadeTableViewController.h"
 
 @interface SpadeViewController ()
 
@@ -19,30 +20,23 @@
 
 
 #pragma mark Life View Life Cycle
-
--(void)viewWillAppear:(BOOL)animated
-{
-
-    
-
-    
-}
 - (void)viewDidLoad
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view, typically from a nib.
-    
-    
-   
 }
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
-    
     if (![PFUser currentUser] ) { // No user logged in
         // Create the log in view controller
         [self presentLoginView];
+    }else{
+        [self.navigationItem setHidesBackButton:YES animated:NO];
+        [self.navigationItem.backBarButtonItem setTitle:@""];
+        [self performSegueWithIdentifier:@"moveToMain" sender:self];
     }
+    
 }
 
 - (void)didReceiveMemoryWarning
@@ -51,11 +45,25 @@
     // Dispose of any resources that can be recreated.
 }
 
+#pragma mark Segue Prepping
+-(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+{
+    //Moving to Main Segue
+    if ([[segue identifier]isEqualToString:@"moveToMain"]) {
+        //Destination VC
+        SpadeTableViewController *spadeTVC = [segue destinationViewController];
+        
+        //hide the back button
+        [spadeTVC.navigationItem setHidesBackButton:YES animated:NO];
+    }
+
+}
+
 #pragma mark PFLoginViewController Delegate Methods
 
 // Sent to the delegate when a PFUser is logged in.
 - (void)logInViewController:(PFLogInViewController *)logInController didLogInUser:(PFUser *)user {
-    [self dismissViewControllerAnimated:YES completion:NULL];
+    [self dismissViewControllerAnimated:YES completion:nil];
     
     FBRequest *request = [FBRequest requestForMe];
     
@@ -75,11 +83,10 @@
             NSString *gender = [userData objectForKey:@"gender"];
             NSString  *locale = [userData objectForKey:@"locale"];
             NSString *birthday = [userData objectForKey:@"birthday"];
-            NSString *firstName = [userData objectForKey:@"first_name"];
-            NSString *lastName = [userData objectForKey:@"last_name"];
-            NSDateFormatter *dateFormat = [[NSDateFormatter alloc]init];
+            NSString *fullName = [userData objectForKey:@"name"];
             
             //Derive Age from Birthday
+            NSDateFormatter *dateFormat = [[NSDateFormatter alloc]init];
             [dateFormat setDateFormat:@"MM/dd/yyyy"];
             [dateFormat dateFromString:birthday];
             NSNumber *age = [NSNumber numberWithInteger:[SpadeBirthday age:[dateFormat dateFromString:birthday]]];
@@ -89,14 +96,14 @@
             [user setObject:gender forKey:@"Gender"];
             [user setObject:locale forKey:@"Locale"];
             [user setObject:birthday forKey:@"Birthday"];
-            [user setObject:firstName forKey:@"First_Name"];
-            [user setObject:lastName forKey:@"Last_Name"];
+            [user setObject:fullName forKey:@"DisplayName"];
             [user setObject:age forKey:@"age"];
-            
-            
 
             //Save to Parse
             [user saveInBackground];
+            
+            //Push User to Main Path
+            [self performSegueWithIdentifier:@"moveToMain" sender:self];
             
         } else if ([error.userInfo[FBErrorParsedJSONResponseKey][@"body"][@"error"][@"type"] isEqualToString:@"OAuthException"]) {//Request Failed , Checking Why
             NSLog(@"The facebook session was invalidated");
@@ -104,6 +111,7 @@
             
         } else {
             NSLog(@"Some other error: %@", error);
+            [self logOutUser];
         }
     
     
@@ -119,14 +127,6 @@
 - (void)logInViewControllerDidCancelLogIn:(PFLogInViewController *)logInController {
     NSLog(@"User dimissed the loginviewcontroller");
     [self.navigationController popViewControllerAnimated:YES];
-}
-
-#pragma mark UI Methods
-- (IBAction)logOutPressed:(id)sender {
-    
-    UIActionSheet *confirmLogOut = [[UIActionSheet alloc]initWithTitle:@"Confrim Log Out?" delegate:self cancelButtonTitle:@"No" destructiveButtonTitle:@"Yes" otherButtonTitles:nil];
-    [confirmLogOut showInView:self.view];
-
 }
 
 -(void)logOutUser{
@@ -148,6 +148,8 @@
     // Present the log in view controller
     [self presentViewController:logInViewController animated:YES completion:NULL];
 }
+
+
 
 
 #pragma mark ActionSheet Delegate Methods

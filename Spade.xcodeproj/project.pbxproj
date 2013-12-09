@@ -22,6 +22,7 @@
 		9141E88618407A5000A5DE15 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9141E86818407A5000A5DE15 /* UIKit.framework */; };
 		9141E88E18407A5000A5DE15 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 9141E88C18407A5000A5DE15 /* InfoPlist.strings */; };
 		9141E89018407A5000A5DE15 /* SpadeTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 9141E88F18407A5000A5DE15 /* SpadeTests.m */; };
+		9188E52F184EE7FD00C72151 /* SpadeTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9188E52E184EE7FD00C72151 /* SpadeTableViewController.m */; };
 		91D9D6351842F643005BD0BC /* Parse.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 91D9D6341842F643005BD0BC /* Parse.framework */; };
 		91D9D6371842F72A005BD0BC /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 91D9D6361842F72A005BD0BC /* AudioToolbox.framework */; };
 		91D9D6391842F735005BD0BC /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 91D9D6381842F735005BD0BC /* CFNetwork.framework */; };
@@ -69,6 +70,8 @@
 		9141E88B18407A5000A5DE15 /* SpadeTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "SpadeTests-Info.plist"; sourceTree = "<group>"; };
 		9141E88D18407A5000A5DE15 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		9141E88F18407A5000A5DE15 /* SpadeTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SpadeTests.m; sourceTree = "<group>"; };
+		9188E52D184EE7FD00C72151 /* SpadeTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SpadeTableViewController.h; sourceTree = "<group>"; };
+		9188E52E184EE7FD00C72151 /* SpadeTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SpadeTableViewController.m; sourceTree = "<group>"; };
 		91D9D6341842F643005BD0BC /* Parse.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Parse.framework; path = ../../../Downloads/Parse.framework; sourceTree = "<group>"; };
 		91D9D6361842F72A005BD0BC /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		91D9D6381842F735005BD0BC /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
@@ -167,6 +170,8 @@
 				9141E87618407A5000A5DE15 /* Main.storyboard */,
 				9141E87918407A5000A5DE15 /* SpadeViewController.h */,
 				9141E87A18407A5000A5DE15 /* SpadeViewController.m */,
+				9188E52D184EE7FD00C72151 /* SpadeTableViewController.h */,
+				9188E52E184EE7FD00C72151 /* SpadeTableViewController.m */,
 				91206109184A62E700E3DA0C /* SpadeBirthday.h */,
 				9120610A184A62E700E3DA0C /* SpadeBirthday.m */,
 				91D9D6481843021D005BD0BC /* SpadeLoginViewController.h */,
@@ -327,6 +332,7 @@
 				9120610B184A62E700E3DA0C /* SpadeBirthday.m in Sources */,
 				9141E87B18407A5000A5DE15 /* SpadeViewController.m in Sources */,
 				9141E87518407A5000A5DE15 /* SpadeAppDelegate.m in Sources */,
+				9188E52F184EE7FD00C72151 /* SpadeTableViewController.m in Sources */,
 				91D9D64A1843021D005BD0BC /* SpadeLoginViewController.m in Sources */,
 				9141E87118407A5000A5DE15 /* main.m in Sources */,
 			);
