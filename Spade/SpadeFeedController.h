@@ -1,5 +1,5 @@
 //
-//  SpadeTableViewController.h
+//  SpadeFeedController.h
 //  Spade
 //
 //  Created by Devon Ryan on 12/3/13.
@@ -10,6 +10,6 @@
 #import <Parse/Parse.h>
 
 
-@interface SpadeTableViewController : UITableViewController <UIActionSheetDelegate>
+@interface SpadeFeedController : UITableViewController <UIActionSheetDelegate,PFLogInViewControllerDelegate>
 
 @end

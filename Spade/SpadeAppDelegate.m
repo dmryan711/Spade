@@ -9,10 +9,12 @@
 #import "SpadeAppDelegate.h"
 #import "SpadeLoginViewController.h"
 #import <Parse/Parse.h>
-
+#import "SpadeEventController.h"
 
 
 @implementation SpadeAppDelegate
+
+#pragma mark Application Delegate Methods
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
@@ -29,11 +31,11 @@
     
     NSLog(@"Bundle ID: %@",[[NSBundle mainBundle] bundleIdentifier]);
     
-    
+    UITabBarController *tabBar = (UITabBarController *)self.window.rootViewController;
+    tabBar.delegate = self;
     
     return YES;
 }
-
 
 							
 - (void)applicationWillResignActive:(UIApplication *)application
@@ -59,8 +61,12 @@
     [FBSession.activeSession handleDidBecomeActive];
 }
 
+- (void)applicationWillTerminate:(UIApplication *)application
+{
+    // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+}
 
-
+#pragma mark FaceBook Handlers
 // Facebook oauth callback
 - (BOOL)application:(UIApplication *)application handleOpenURL:(NSURL *)url {
     return [PFFacebookUtils handleOpenURL:url];
@@ -71,9 +77,19 @@
     return [PFFacebookUtils handleOpenURL:url];
 }
 
-- (void)applicationWillTerminate:(UIApplication *)application
+#pragma mark Tab Bar Controller Delegate Methods
+
+-(void)tabBarController:(UITabBarController *)tabBarController didSelectViewController:(UIViewController *)viewController
 {
-    // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+    NSLog(@"Called");
+
+    
+
+
 }
+
+
+
+
 
 @end

@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		9112354218569F170092253B /* SpadeEventController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9112354118569F170092253B /* SpadeEventController.m */; };
 		9120610B184A62E700E3DA0C /* SpadeBirthday.m in Sources */ = {isa = PBXBuildFile; fileRef = 9120610A184A62E700E3DA0C /* SpadeBirthday.m */; };
 		9141E86518407A5000A5DE15 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9141E86418407A5000A5DE15 /* Foundation.framework */; };
 		9141E86718407A5000A5DE15 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9141E86618407A5000A5DE15 /* CoreGraphics.framework */; };
@@ -15,14 +16,13 @@
 		9141E87118407A5000A5DE15 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 9141E87018407A5000A5DE15 /* main.m */; };
 		9141E87518407A5000A5DE15 /* SpadeAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 9141E87418407A5000A5DE15 /* SpadeAppDelegate.m */; };
 		9141E87818407A5000A5DE15 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9141E87618407A5000A5DE15 /* Main.storyboard */; };
-		9141E87B18407A5000A5DE15 /* SpadeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9141E87A18407A5000A5DE15 /* SpadeViewController.m */; };
 		9141E87D18407A5000A5DE15 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9141E87C18407A5000A5DE15 /* Images.xcassets */; };
 		9141E88418407A5000A5DE15 /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9141E88318407A5000A5DE15 /* XCTest.framework */; };
 		9141E88518407A5000A5DE15 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9141E86418407A5000A5DE15 /* Foundation.framework */; };
 		9141E88618407A5000A5DE15 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9141E86818407A5000A5DE15 /* UIKit.framework */; };
 		9141E88E18407A5000A5DE15 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 9141E88C18407A5000A5DE15 /* InfoPlist.strings */; };
 		9141E89018407A5000A5DE15 /* SpadeTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 9141E88F18407A5000A5DE15 /* SpadeTests.m */; };
-		9188E52F184EE7FD00C72151 /* SpadeTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9188E52E184EE7FD00C72151 /* SpadeTableViewController.m */; };
+		9188E52F184EE7FD00C72151 /* SpadeFeedController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9188E52E184EE7FD00C72151 /* SpadeFeedController.m */; };
 		91D9D6351842F643005BD0BC /* Parse.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 91D9D6341842F643005BD0BC /* Parse.framework */; };
 		91D9D6371842F72A005BD0BC /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 91D9D6361842F72A005BD0BC /* AudioToolbox.framework */; };
 		91D9D6391842F735005BD0BC /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 91D9D6381842F735005BD0BC /* CFNetwork.framework */; };
@@ -49,6 +49,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		9112354018569F170092253B /* SpadeEventController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SpadeEventController.h; sourceTree = "<group>"; };
+		9112354118569F170092253B /* SpadeEventController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SpadeEventController.m; sourceTree = "<group>"; };
 		91206109184A62E700E3DA0C /* SpadeBirthday.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SpadeBirthday.h; sourceTree = "<group>"; };
 		9120610A184A62E700E3DA0C /* SpadeBirthday.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SpadeBirthday.m; sourceTree = "<group>"; };
 		9141E86118407A5000A5DE15 /* Spade.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Spade.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -62,16 +64,14 @@
 		9141E87318407A5000A5DE15 /* SpadeAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SpadeAppDelegate.h; sourceTree = "<group>"; };
 		9141E87418407A5000A5DE15 /* SpadeAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SpadeAppDelegate.m; sourceTree = "<group>"; };
 		9141E87718407A5000A5DE15 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
-		9141E87918407A5000A5DE15 /* SpadeViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SpadeViewController.h; sourceTree = "<group>"; };
-		9141E87A18407A5000A5DE15 /* SpadeViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SpadeViewController.m; sourceTree = "<group>"; };
 		9141E87C18407A5000A5DE15 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		9141E88218407A5000A5DE15 /* SpadeTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SpadeTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		9141E88318407A5000A5DE15 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
 		9141E88B18407A5000A5DE15 /* SpadeTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "SpadeTests-Info.plist"; sourceTree = "<group>"; };
 		9141E88D18407A5000A5DE15 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		9141E88F18407A5000A5DE15 /* SpadeTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SpadeTests.m; sourceTree = "<group>"; };
-		9188E52D184EE7FD00C72151 /* SpadeTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SpadeTableViewController.h; sourceTree = "<group>"; };
-		9188E52E184EE7FD00C72151 /* SpadeTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SpadeTableViewController.m; sourceTree = "<group>"; };
+		9188E52D184EE7FD00C72151 /* SpadeFeedController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SpadeFeedController.h; sourceTree = "<group>"; };
+		9188E52E184EE7FD00C72151 /* SpadeFeedController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SpadeFeedController.m; sourceTree = "<group>"; };
 		91D9D6341842F643005BD0BC /* Parse.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Parse.framework; path = ../../../Downloads/Parse.framework; sourceTree = "<group>"; };
 		91D9D6361842F72A005BD0BC /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		91D9D6381842F735005BD0BC /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
@@ -122,6 +122,36 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		9112353C18569C830092253B /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				91206109184A62E700E3DA0C /* SpadeBirthday.h */,
+				9120610A184A62E700E3DA0C /* SpadeBirthday.m */,
+			);
+			name = Model;
+			sourceTree = "<group>";
+		};
+		9112353E18569CD30092253B /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				9112354018569F170092253B /* SpadeEventController.h */,
+				9112354118569F170092253B /* SpadeEventController.m */,
+				91D9D6481843021D005BD0BC /* SpadeLoginViewController.h */,
+				91D9D6491843021D005BD0BC /* SpadeLoginViewController.m */,
+				9188E52D184EE7FD00C72151 /* SpadeFeedController.h */,
+				9188E52E184EE7FD00C72151 /* SpadeFeedController.m */,
+			);
+			name = Controllers;
+			sourceTree = "<group>";
+		};
+		9112353F18569D700092253B /* View */ = {
+			isa = PBXGroup;
+			children = (
+				9141E87618407A5000A5DE15 /* Main.storyboard */,
+			);
+			name = View;
+			sourceTree = "<group>";
+		};
 		9141E85818407A5000A5DE15 = {
 			isa = PBXGroup;
 			children = (
@@ -167,15 +197,9 @@
 			children = (
 				9141E87318407A5000A5DE15 /* SpadeAppDelegate.h */,
 				9141E87418407A5000A5DE15 /* SpadeAppDelegate.m */,
-				9141E87618407A5000A5DE15 /* Main.storyboard */,
-				9141E87918407A5000A5DE15 /* SpadeViewController.h */,
-				9141E87A18407A5000A5DE15 /* SpadeViewController.m */,
-				9188E52D184EE7FD00C72151 /* SpadeTableViewController.h */,
-				9188E52E184EE7FD00C72151 /* SpadeTableViewController.m */,
-				91206109184A62E700E3DA0C /* SpadeBirthday.h */,
-				9120610A184A62E700E3DA0C /* SpadeBirthday.m */,
-				91D9D6481843021D005BD0BC /* SpadeLoginViewController.h */,
-				91D9D6491843021D005BD0BC /* SpadeLoginViewController.m */,
+				9112353F18569D700092253B /* View */,
+				9112353E18569CD30092253B /* Controllers */,
+				9112353C18569C830092253B /* Model */,
 				9141E87C18407A5000A5DE15 /* Images.xcassets */,
 				91D9D64B184317CE005BD0BC /* Assets */,
 				9141E86B18407A5000A5DE15 /* Supporting Files */,
@@ -329,10 +353,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9112354218569F170092253B /* SpadeEventController.m in Sources */,
 				9120610B184A62E700E3DA0C /* SpadeBirthday.m in Sources */,
-				9141E87B18407A5000A5DE15 /* SpadeViewController.m in Sources */,
 				9141E87518407A5000A5DE15 /* SpadeAppDelegate.m in Sources */,
-				9188E52F184EE7FD00C72151 /* SpadeTableViewController.m in Sources */,
+				9188E52F184EE7FD00C72151 /* SpadeFeedController.m in Sources */,
 				91D9D64A1843021D005BD0BC /* SpadeLoginViewController.m in Sources */,
 				9141E87118407A5000A5DE15 /* main.m in Sources */,
 			);

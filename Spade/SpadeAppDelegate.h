@@ -7,9 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "SpadeViewController.h"
 
-@interface SpadeAppDelegate : UIResponder <UIApplicationDelegate>
+@interface SpadeAppDelegate : UIResponder <UIApplicationDelegate, UITabBarControllerDelegate>
 
 @property (strong, nonatomic) UIWindow *window;
 
