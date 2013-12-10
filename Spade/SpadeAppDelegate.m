@@ -11,6 +11,15 @@
 #import <Parse/Parse.h>
 #import "SpadeEventController.h"
 
+@interface SpadeAppDelegate ()
+
+//@property(strong,nonatomic) UITabBarController *tabBarController;
+//@property (strong,nonatomic) UINavigationController *navigationController;
+
+
+
+@end
+
 
 @implementation SpadeAppDelegate
 

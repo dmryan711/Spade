@@ -122,18 +122,54 @@
 #pragma mark Spade Login Delegate Methods
 // Sent to the delegate when a PFUser is logged in.
 - (void)logInViewController:(PFLogInViewController *)logInController didLogInUser:(PFUser *)user {
+    
+    //Get Rid of the Login View
     [self dismissViewControllerAnimated:YES completion:nil];
     
+    
+    //Set Requests
+    FBRequest *requestForFriends = [FBRequest requestForMyFriends];
     FBRequest *request = [FBRequest requestForMe];
     
-    //FB Request Troubleshooting
-    [FBSettings setLoggingBehavior:[NSSet setWithObjects:
-                                    FBLoggingBehaviorFBRequests, nil]];
-    //Send Request
+    //Request Friends
+    [requestForFriends startWithCompletionHandler:^(FBRequestConnection *connection, id result, NSError *error){
+        if (!error) {
+            NSArray *data = [result objectForKey:@"data"];
+            NSLog(@"YOOOOO:   %@", [[result objectForKey:@"data"] description]);
+            
+            //Create List of Friend Ids
+            if (data) {
+                NSMutableArray *friendIdList = [[NSMutableArray alloc]initWithCapacity:[data count]];
+                for (NSDictionary *friend in data){
+                    [friendIdList addObject:friend[@"id"]];
+                }
+                
+                [user setObject:friendIdList forKey:@"Friends"];
+                
+                [user saveInBackground];
+                
+            
+            }
+        
+          
+           
+            
+            
+        } else if ([error.userInfo[FBErrorParsedJSONResponseKey][@"body"][@"error"][@"type"] isEqualToString:@"OAuthException"]) {//Request Failed , Checking Why
+            NSLog(@"The facebook session was invalidated");
+            [self logOutUser];
+            
+        } else {
+            NSLog(@"Some other error: %@", error);
+            [self logOutUser];
+        }
+        
+    
+    }];
+    
+    //Request User Information
     [request startWithCompletionHandler:^(FBRequestConnection *connection, id result, NSError *error){
         if (!error) {
-            
-            
             
             //Store Facebook Results to local objects
             NSDictionary *userData = (NSDictionary *)result;
@@ -160,9 +196,6 @@
             
             //Save to Parse
             [user saveInBackground];
-            
-            //Push User to Main Path
-            [self performSegueWithIdentifier:@"moveToMain" sender:self];
             
         } else if ([error.userInfo[FBErrorParsedJSONResponseKey][@"body"][@"error"][@"type"] isEqualToString:@"OAuthException"]) {//Request Failed , Checking Why
             NSLog(@"The facebook session was invalidated");
