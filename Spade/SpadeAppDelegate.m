@@ -7,16 +7,15 @@
 //
 
 #import "SpadeAppDelegate.h"
+#import "SpadeUtility.h"
 #import "SpadeLoginViewController.h"
 #import <Parse/Parse.h>
-#import "SpadeEventController.h"
+#import "SpadeFeedController.h"
 
 @interface SpadeAppDelegate ()
 
-//@property(strong,nonatomic) UITabBarController *tabBarController;
-//@property (strong,nonatomic) UINavigationController *navigationController;
-
-
+@property (strong,nonatomic) UITabBarController *tabBarController;
+@property (strong,nonatomic) NSMutableData *data;
 
 @end
 
@@ -40,13 +39,26 @@
     
     NSLog(@"Bundle ID: %@",[[NSBundle mainBundle] bundleIdentifier]);
     
-    UITabBarController *tabBar = (UITabBarController *)self.window.rootViewController;
-    tabBar.delegate = self;
+    UIStoryboard *mainStoryboard = [UIStoryboard storyboardWithName:@"Main"
+                                                             bundle: nil];
+    
+    
+    //Getting a Reference to the UITabBarController & setting the delegate
+    self.tabBarController = [mainStoryboard instantiateInitialViewController];
+    self.tabBarController.delegate = self;
+
+    self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+    [self.window setRootViewController:self.tabBarController];
+    [self.window makeKeyAndVisible];
     
     return YES;
 }
 
-							
+
+
+
+
+
 - (void)applicationWillResignActive:(UIApplication *)application
 {
     // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
@@ -92,9 +104,157 @@
 {
     NSLog(@"Called");
 
+
+}
+
+#pragma mark Spade Login Delegate Methods
+#define LEFT_VIEWCONTROLLER 0
+// Sent to the delegate when a PFUser is logged in.
+- (void)logInViewController:(PFLogInViewController *)logInController didLogInUser:(PFUser *)user {
     
+    //Get Rid of the Login View
+    [[self.tabBarController.viewControllers objectAtIndex:LEFT_VIEWCONTROLLER] dismissViewControllerAnimated:YES completion:nil];
+    
+    //Set Requests
+    FBRequest *requestForFriends = [FBRequest requestForMyFriends];
+    FBRequest *request = [FBRequest requestForMe];
+    
+    //Request Friends
+    [requestForFriends startWithCompletionHandler:^(FBRequestConnection *connection, id result, NSError *error){
+        if (!error) {
+            
+            NSArray *data = [result objectForKey:@"data"];
+            NSLog(@"YOOOOO:   %@", [[result objectForKey:@"data"] description]);
+            
+            //Create List of Friend Ids
+            if (data) {
+                NSMutableArray *friendIdList = [[NSMutableArray alloc]initWithCapacity:[data count]];
+                for (NSDictionary *friend in data){
+                    [friendIdList addObject:friend[@"id"]];
+                }
+                
+                [user setObject:friendIdList forKey:@"Friends"];
+                
+                [user saveInBackground];
+                
+                
+            }
+            
+        } else if ([error.userInfo[FBErrorParsedJSONResponseKey][@"body"][@"error"][@"type"] isEqualToString:@"OAuthException"]) {//Request Failed , Checking Why
+            NSLog(@"The facebook session was invalidated");
+            [self logOutUser];
+            
+        } else {
+            NSLog(@"Some other error: %@", error);
+            [self logOutUser];
+        }
+        
+        
+    }];
+    
+    //Request User Information
+    [request startWithCompletionHandler:^(FBRequestConnection *connection, id result, NSError *error){
+        if (!error) {
+            
+            //Store Facebook Results to local objects
+            NSDictionary *userData = (NSDictionary *)result;
+            
+            NSString *email = [userData objectForKey:@"email"];
+            NSString *gender = [userData objectForKey:@"gender"];
+            NSString  *locale = [userData objectForKey:@"locale"];
+            NSString *birthday = [userData objectForKey:@"birthday"];
+            NSString *fullName = [userData objectForKey:@"name"];
+            NSString *faceBookID = [userData objectForKey:@"id"];
+            
+            //Derive Age from Birthday
+            NSDateFormatter *dateFormat = [[NSDateFormatter alloc]init];
+            [dateFormat setDateFormat:@"MM/dd/yyyy"];
+            [dateFormat dateFromString:birthday];
+            NSNumber *age = [NSNumber numberWithInteger:[SpadeUtility age:[dateFormat dateFromString:birthday]]];
+            
+            //Save local facebook result to Parse
+            [user setObject:email forKey:@"email"];
+            [user setObject:gender forKey:@"Gender"];
+            [user setObject:locale forKey:@"Locale"];
+            [user setObject:birthday forKey:@"Birthday"];
+            [user setObject:fullName forKey:@"DisplayName"];
+            [user setObject:age forKey:@"age"];;
+            [user setObject:faceBookID forKey:@"FacebookID"];
+            
+            // Download user's profile picture
+           NSURL *profilePictureURL = [NSURL URLWithString:[NSString stringWithFormat:@"https://graph.facebook.com/%@/picture?type=large", faceBookID]];
+            NSURLRequest *profilePictureURLRequest = [NSURLRequest requestWithURL:profilePictureURL cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:10.0f]; // Facebook profile picture cache policy: Expires in 2 weeks
+            [NSURLConnection connectionWithRequest:profilePictureURLRequest delegate:self];
+
+            
+            
+            //Save to Parse
+            [user saveInBackground];
+            
+        } else if ([error.userInfo[FBErrorParsedJSONResponseKey][@"body"][@"error"][@"type"] isEqualToString:@"OAuthException"]) {//Request Failed , Checking Why
+            NSLog(@"The facebook session was invalidated");
+            [self logOutUser];
+            
+        } else {
+            NSLog(@"Some other error: %@", error);
+            [self logOutUser];
+        }
+        
+        
+    }];
+}
 
 
+// Sent to the delegate when the log in attempt fails.
+- (void)logInViewController:(PFLogInViewController *)logInController didFailToLogInWithError:(NSError *)error {
+    NSLog(@"Failed to log in...");
+}
+
+// Sent to the delegate when the log in screen is dismissed.
+- (void)logInViewControllerDidCancelLogIn:(PFLogInViewController *)logInController {
+    NSLog(@"User dimissed the loginviewcontroller");
+    [[self.tabBarController.viewControllers objectAtIndex:LEFT_VIEWCONTROLLER] dismissViewControllerAnimated:YES completion:nil];
+    
+}
+
+
+#pragma mark NSConnectionDataDelegate
+
+- (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response {
+    self.data = [[NSMutableData alloc] init];
+}
+
+- (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data {
+    [self.data appendData:data];
+}
+- (void)connectionDidFinishLoading:(NSURLConnection *)connection
+{
+    [SpadeUtility processFacebookProfilePictureData:self.data];
+
+}
+
+
+#pragma mark {   }
+
+-(void)presentLoginView
+{
+    SpadeLoginViewController *logInViewController = [[SpadeLoginViewController alloc] init];
+    [logInViewController setDelegate:self]; // Set ourselves as the delegate
+    [logInViewController setFacebookPermissions:[NSArray arrayWithObjects:@"email",@"user_location",@"user_birthday", nil]];
+    [logInViewController setFields:PFLogInFieldsFacebook];
+    
+    
+    // Present the log in view controller
+    [[self.tabBarController.viewControllers objectAtIndex:LEFT_VIEWCONTROLLER ] presentViewController:logInViewController animated:YES completion:NULL];
+}
+
+-(void)logOutUser{
+    
+    NSLog(@"Boom");
+    [PFUser logOut];
+    
+    [self presentLoginView];
+    
 }
 
 

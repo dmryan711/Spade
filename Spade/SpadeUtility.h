@@ -1,5 +1,5 @@
 //
-//  SpadeBirthday.h
+//  SpadeUtility.h
 //  Spade
 //
 //  Created by Devon Ryan on 11/30/13.
@@ -8,8 +8,9 @@
 
 #import <Foundation/Foundation.h>
 
-@interface SpadeBirthday : NSObject
+@interface SpadeUtility : NSObject
 
 +(NSInteger)age:(NSDate *)dateOfBirth;
++(void)processFacebookProfilePictureData:(NSData *)newProfilePictureData;
 
 @end
