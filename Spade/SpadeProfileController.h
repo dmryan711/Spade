@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface SpadeProfileController : UIViewController
+@interface SpadeProfileController : UIViewController <UIActionSheetDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate >
+
 
 @end

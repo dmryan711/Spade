@@ -17,6 +17,7 @@
 @property (strong,nonatomic) UITabBarController *tabBarController;
 @property (strong,nonatomic) NSMutableData *data;
 
+
 @end
 
 
@@ -27,7 +28,10 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     // Override point for customization after application launch.
-    \
+    
+    //Initially Set Flag to NO
+    [[NSUserDefaults standardUserDefaults] registerDefaults:@{@"picChangedFlag":@"No"}];
+                                                                 
     /*****   PARSE APPLICATION *******/
     [Parse setApplicationId:@"XQODiEaHhQUZWP8WdgcD6FAtQLP0XV33hrDtwgJD"
                   clientKey:@"MQI08xDJxyrt0ajlOW3pLaF3SHitkCQGusCsnLTt"];
@@ -112,6 +116,8 @@
 // Sent to the delegate when a PFUser is logged in.
 - (void)logInViewController:(PFLogInViewController *)logInController didLogInUser:(PFUser *)user {
     
+    //self.user = user;
+    
     //Get Rid of the Login View
     [[self.tabBarController.viewControllers objectAtIndex:LEFT_VIEWCONTROLLER] dismissViewControllerAnimated:YES completion:nil];
     
@@ -124,7 +130,6 @@
         if (!error) {
             
             NSArray *data = [result objectForKey:@"data"];
-            NSLog(@"YOOOOO:   %@", [[result objectForKey:@"data"] description]);
             
             //Create List of Friend Ids
             if (data) {
@@ -180,12 +185,17 @@
             [user setObject:fullName forKey:@"DisplayName"];
             [user setObject:age forKey:@"age"];;
             [user setObject:faceBookID forKey:@"FacebookID"];
-            
-            // Download user's profile picture
-           NSURL *profilePictureURL = [NSURL URLWithString:[NSString stringWithFormat:@"https://graph.facebook.com/%@/picture?type=large", faceBookID]];
-            NSURLRequest *profilePictureURLRequest = [NSURLRequest requestWithURL:profilePictureURL cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:10.0f]; // Facebook profile picture cache policy: Expires in 2 weeks
-            [NSURLConnection connectionWithRequest:profilePictureURLRequest delegate:self];
+           
+            if ([[[NSUserDefaults standardUserDefaults]objectForKey:@"picChangedFlag"] isEqualToString:@"NO"]) { //User Did not Change Picture
+                NSLog(@"Pic Flag No");
+                // Download user's profile picture
+                NSURL *profilePictureURL = [NSURL URLWithString:[NSString stringWithFormat:@"https://graph.facebook.com/%@/picture?type=large", faceBookID]];
+                NSURLRequest *profilePictureURLRequest = [NSURLRequest requestWithURL:profilePictureURL cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:10.0f]; // Facebook profile picture cache policy: Expires in 2 weeks
+                [NSURLConnection connectionWithRequest:profilePictureURLRequest delegate:self];
 
+                
+            }
+            
             
             
             //Save to Parse
@@ -229,7 +239,7 @@
 }
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection
 {
-    [SpadeUtility processFacebookProfilePictureData:self.data];
+    [SpadeUtility processProfilePictureData:self.data];
 
 }
 

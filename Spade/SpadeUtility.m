@@ -33,7 +33,7 @@
     }
 }
 
-+ (void)processFacebookProfilePictureData:(NSData *)newProfilePictureData {
++ (void)processProfilePictureData:(NSData *)newProfilePictureData {
     if (newProfilePictureData.length == 0) {
         return;
     }
@@ -81,7 +81,10 @@
             }
         }];
     }
+
 }
+
+
 
     
 

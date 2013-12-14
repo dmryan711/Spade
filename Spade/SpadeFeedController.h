@@ -10,6 +10,6 @@
 #import <Parse/Parse.h>
 
 
-@interface SpadeFeedController : UITableViewController <UIActionSheetDelegate>
+@interface SpadeFeedController : PFQueryTableViewController <UIActionSheetDelegate>
 
 @end

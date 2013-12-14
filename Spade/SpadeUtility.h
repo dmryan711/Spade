@@ -11,6 +11,6 @@
 @interface SpadeUtility : NSObject
 
 +(NSInteger)age:(NSDate *)dateOfBirth;
-+(void)processFacebookProfilePictureData:(NSData *)newProfilePictureData;
++(void)processProfilePictureData:(NSData *)newProfilePictureData ;
 
 @end

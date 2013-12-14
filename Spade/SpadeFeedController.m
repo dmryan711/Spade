@@ -9,7 +9,7 @@
 #import "SpadeFeedController.h"
 #import "SpadeAppDelegate.h"
 #import "SpadeLoginViewController.h"
-
+#import "SpadeProfileController.h"
 #import <Parse/Parse.h>
 
 @interface SpadeFeedController ()
@@ -31,12 +31,23 @@
     return self;
 }
 
+-(void)awakeFromNib
+{
+    NSLog(@"called");
+    self.parseClassName = @"Activity";
+    self.textKey = @"objectId";
+    self.pullToRefreshEnabled = YES;
+    self.paginationEnabled = NO;
+    //self.objectsPerPage = 3;
+}
+
 - (void)viewDidLoad
 {
     NSLog(@"View Did Load");
     [super viewDidLoad];
+   
     [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:@"Cell"];
-    self.title = @"What's Good";
+    self.title = @"Night Feed";
     if (![PFUser currentUser] ) { // No user logged in
         // Create the log in view controller
         [APPLICATION_DELEGATE presentLoginView];
@@ -59,41 +70,56 @@
     // Dispose of any resources that can be recreated.
 }
 
--(NSArray *)dataSet{
-    if (!_dataSet) _dataSet = @[@"Hudson",@"Griffen",@"Rosewood"];
-    return _dataSet;
+#pragma mark - Parse
 
-}
-
-
-
-#pragma mark - Table view data source
-
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
-{
-    // Return the number of sections.
-    return 1;
-}
-
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
-{
-    // Return the number of rows in the section.
-    return [self.dataSet count];
-}
-
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    static NSString *CellIdentifier = @"Cell";
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
+- (void)objectsDidLoad:(NSError *)error {
+    [super objectsDidLoad:error];
     
+    // This method is called every time objects are loaded from Parse via the PFQuery
+}
+
+- (void)objectsWillLoad {
+    [super objectsWillLoad];
     
-    // Configure the cell...
-    if (cell == nil) {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
+    // This method is called before a PFQuery is fired to get more objects
+}
+
+
+// Override to customize what kind of query to perform on the class. The default is to query for
+// all objects ordered by createdAt descending.
+- (PFQuery *)queryForTable {
+    PFQuery *query = [PFQuery queryWithClassName:self.parseClassName];
+    
+    // If no objects are loaded in memory, we look to the cache first to fill the table
+    // and then subsequently do a query against the network.
+    if ([self.objects count] == 0) {
+        query.cachePolicy = kPFCachePolicyCacheThenNetwork;
     }
-    cell.textLabel.text = [self.dataSet objectAtIndex:indexPath.row];
+    
+   // [query orderByAscending:@"SpendLevel"];
+    
+    return query;
+}
+
+
+
+// Override to customize the look of a cell representing an object. The default is to display
+// a UITableViewCellStyleDefault style cell with the label being the first key in the object.
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath object:(PFObject *)object {
+    static NSString *CellIdentifier = @"Cell";
+    
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+    if (cell == nil) {
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier];
+    }
+    
+    // Configure the cell
+    cell.textLabel.text = [object objectForKey:@"action"];
+    cell.detailTextLabel.text = [NSString stringWithFormat:@"User: %@", [object objectForKey:@"fromUser"]];
+    
     return cell;
 }
+
 
 #pragma mark Actionsheet Delegate Methods
 #define LOGOUT_BUTTON 0
@@ -130,11 +156,11 @@
     //UIImageView *image =[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"skyline_7.png"]];
     
     UIActionSheet *settingsPressed = [[UIActionSheet alloc]initWithTitle:@"Settings" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:@"Log Out" otherButtonTitles:@"Profile",@"Find Friends", nil];
-    
-   // [settingsPressed addSubview:image];
-    
+
     [settingsPressed showFromBarButtonItem:self.navigationItem.rightBarButtonItem animated:YES];
 }
+
+
 
 
 
