@@ -44,17 +44,8 @@
     self.progressBar.hidden = YES;
     PFFile *imageFile = [[PFUser currentUser] objectForKey:@"MediumProfilePic"];
     if (imageFile) {
-        NSLog(@"Image File FOund");
-        [self.profileImage setFile:imageFile];
-        [self.profileImage loadInBackground:^(UIImage *image, NSError *error) {
-            if (!error) {
-                [UIView animateWithDuration:0.200f animations:^{
-                   // profilePictureBackgroundView.alpha = 1.0f;
-                    //profilePictureStrokeImageView.alpha = 1.0f;
-                    //profilePictureImageView.alpha = 1.0f;
-                }];
-            }
-        }];
+        
+        [SpadeUtility loadFile:imageFile forImageView:self.profileImage];
     }
 
 }

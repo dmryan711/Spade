@@ -12,5 +12,8 @@
 
 +(NSInteger)age:(NSDate *)dateOfBirth;
 +(void)processProfilePictureData:(NSData *)newProfilePictureData ;
++(NSString *)processCurrencyLevel:(NSNumber *)level;
++(NSString *)processBottleService:(BOOL)bottleServiceSupport;
++(void)loadFile:(PFFile *)file forImageView:(PFImageView *)imageView;
 
 @end

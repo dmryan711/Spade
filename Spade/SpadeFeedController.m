@@ -46,7 +46,7 @@
     NSLog(@"View Did Load");
     [super viewDidLoad];
    
-    [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:@"Cell"];
+    //[self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:@"Cell"];
     self.title = @"Night Feed";
     if (![PFUser currentUser] ) { // No user logged in
         // Create the log in view controller
@@ -89,6 +89,8 @@
 // all objects ordered by createdAt descending.
 - (PFQuery *)queryForTable {
     PFQuery *query = [PFQuery queryWithClassName:self.parseClassName];
+    [query includeKey:@"fromUser"];
+    [query includeKey:@"toVenue"];
     
     // If no objects are loaded in memory, we look to the cache first to fill the table
     // and then subsequently do a query against the network.
@@ -96,7 +98,7 @@
         query.cachePolicy = kPFCachePolicyCacheThenNetwork;
     }
     
-   // [query orderByAscending:@"SpendLevel"];
+    [query orderByAscending:@"createdAt"];
     
     return query;
 }
@@ -115,7 +117,14 @@
     
     // Configure the cell
     cell.textLabel.text = [object objectForKey:@"action"];
-    cell.detailTextLabel.text = [NSString stringWithFormat:@"User: %@", [object objectForKey:@"fromUser"]];
+    PFUser *user = [object objectForKey:@"fromUser"];
+    PFObject *venue =[object objectForKey:@"toVenue"];
+    
+    NSString *venueName = [venue objectForKey:@"Name"];
+    NSString *userName = [user objectForKey:@"DisplayName"];
+   
+    
+    cell.detailTextLabel.text = [NSString stringWithFormat:@"%@ is following %@ ", userName , venueName];
     
     return cell;
 }

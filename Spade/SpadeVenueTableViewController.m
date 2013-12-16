@@ -7,6 +7,8 @@
 //
 
 #import "SpadeVenueTableViewController.h"
+#import "SpadeVenueDetailViewController.h"
+#import "SpadeUtility.h"
 
 @interface SpadeVenueTableViewController ()
 
@@ -37,6 +39,7 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
+
 }
 
 - (void)didReceiveMemoryWarning
@@ -164,12 +167,39 @@
  }
  */
 
+
 #pragma mark - Table view delegate
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [super tableView:tableView didSelectRowAtIndexPath:indexPath];
+    if (indexPath.row < [self.objects count]) {
+        
+        //Set Object
+        PFObject *venueSelection = [self.objects objectAtIndex:indexPath.row];
+        
+        UIStoryboard *mainStoryboard = [UIStoryboard storyboardWithName:@"Main"
+                                                                 bundle: nil];
+        //Create Detail View
+        SpadeVenueDetailViewController *venueDetail = [mainStoryboard   instantiateViewControllerWithIdentifier:@"venueDetailController"];
+        
+        [venueDetail setVenueName:[venueSelection objectForKey:@"Name"]];
+        [venueDetail setAddressOfVenue:[venueSelection objectForKey:@"Address"]];
+        [venueDetail setCategory:[NSString stringWithFormat:@"%@",[venueSelection objectForKey:@"Category"]]];
+        [venueDetail setSpendLevel:[NSString stringWithFormat:@"%@",[SpadeUtility  processCurrencyLevel:[venueSelection objectForKey:@"SpendLevel"]]]];
+        [venueDetail setMusic:[NSString stringWithFormat:@"%@",[venueSelection objectForKey:@"MusicGenre"]]];
+        [venueDetail setCover:[NSString stringWithFormat:@"$%@",[venueSelection objectForKey:@"Cover"]]];
+        [venueDetail setBottleService:[NSString stringWithFormat:@"%@",[SpadeUtility processBottleService:(BOOL)[venueSelection objectForKey:@"TableService"]]]];
+        [venueDetail setPictureFile:[venueSelection objectForKey:@"Picture"]];
+        [venueDetail setVenue:venueSelection];
+        
+       //FIRE
+        [self.navigationController pushViewController:venueDetail animated:YES];
+        
+        
+    }
 }
+
 
 
 

@@ -10,6 +10,8 @@
 		9112354218569F170092253B /* SpadeEventController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9112354118569F170092253B /* SpadeEventController.m */; };
 		9120610B184A62E700E3DA0C /* SpadeUtility.m in Sources */ = {isa = PBXBuildFile; fileRef = 9120610A184A62E700E3DA0C /* SpadeUtility.m */; };
 		91221336185C407300BA29E8 /* SpadeVenueTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 91221335185C407300BA29E8 /* SpadeVenueTableViewController.m */; };
+		91221339185CCED500BA29E8 /* SpadeVenueDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 91221338185CCED500BA29E8 /* SpadeVenueDetailViewController.m */; };
+		9122133B185E7D2400BA29E8 /* default_venue_Image.jpeg in Resources */ = {isa = PBXBuildFile; fileRef = 9122133A185E7D2400BA29E8 /* default_venue_Image.jpeg */; };
 		9141E86518407A5000A5DE15 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9141E86418407A5000A5DE15 /* Foundation.framework */; };
 		9141E86718407A5000A5DE15 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9141E86618407A5000A5DE15 /* CoreGraphics.framework */; };
 		9141E86918407A5000A5DE15 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9141E86818407A5000A5DE15 /* UIKit.framework */; };
@@ -61,6 +63,9 @@
 		9120610A184A62E700E3DA0C /* SpadeUtility.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SpadeUtility.m; sourceTree = "<group>"; };
 		91221334185C407300BA29E8 /* SpadeVenueTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SpadeVenueTableViewController.h; sourceTree = "<group>"; };
 		91221335185C407300BA29E8 /* SpadeVenueTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SpadeVenueTableViewController.m; sourceTree = "<group>"; };
+		91221337185CCED500BA29E8 /* SpadeVenueDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SpadeVenueDetailViewController.h; sourceTree = "<group>"; };
+		91221338185CCED500BA29E8 /* SpadeVenueDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SpadeVenueDetailViewController.m; sourceTree = "<group>"; };
+		9122133A185E7D2400BA29E8 /* default_venue_Image.jpeg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = default_venue_Image.jpeg; path = ../../../../Desktop/default_venue_Image.jpeg; sourceTree = "<group>"; };
 		9141E86118407A5000A5DE15 /* Spade.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Spade.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9141E86418407A5000A5DE15 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		9141E86618407A5000A5DE15 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -162,6 +167,8 @@
 				91632CEF1857CFE000FB276E /* SpadeProfileController.m */,
 				91221334185C407300BA29E8 /* SpadeVenueTableViewController.h */,
 				91221335185C407300BA29E8 /* SpadeVenueTableViewController.m */,
+				91221337185CCED500BA29E8 /* SpadeVenueDetailViewController.h */,
+				91221338185CCED500BA29E8 /* SpadeVenueDetailViewController.m */,
 			);
 			name = Controllers;
 			sourceTree = "<group>";
@@ -276,6 +283,7 @@
 		91D9D64B184317CE005BD0BC /* Assets */ = {
 			isa = PBXGroup;
 			children = (
+				9122133A185E7D2400BA29E8 /* default_venue_Image.jpeg */,
 				91D9D65218431BBE005BD0BC /* skyline_7@2x.png */,
 				91D9D64E18431870005BD0BC /* skyline@2x.png */,
 			);
@@ -372,6 +380,7 @@
 				9141E87D18407A5000A5DE15 /* Images.xcassets in Resources */,
 				9141E86F18407A5000A5DE15 /* InfoPlist.strings in Resources */,
 				9141E87818407A5000A5DE15 /* Main.storyboard in Resources */,
+				9122133B185E7D2400BA29E8 /* default_venue_Image.jpeg in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -400,6 +409,7 @@
 				915BEDAF1857DB5A00FCA17A /* UIImage+AlphaAdditions.m in Sources */,
 				91D9D64A1843021D005BD0BC /* SpadeLoginViewController.m in Sources */,
 				9141E87118407A5000A5DE15 /* main.m in Sources */,
+				91221339185CCED500BA29E8 /* SpadeVenueDetailViewController.m in Sources */,
 				91221336185C407300BA29E8 /* SpadeVenueTableViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -84,8 +84,61 @@
 
 }
 
+#define LEVEL_1 1
+#define LEVEL_2 2
+#define LEVEL_3 3
+#define LEVEL_4 4
++(NSString *)processCurrencyLevel:(NSNumber *)level
+{
+    switch ([level integerValue]) {
+        case LEVEL_1:
+            return @"$";
+            break;
+            
+        case LEVEL_2:
+            return @"$$";
+            break;
+            
+        case LEVEL_3:
+            return @"$$$";
+            break;
+            
+        case LEVEL_4:
+            return @"$$$";
+            break;
+            
+        default:
+            return @"N/A";
+            break;
+    }
+
+}
+
++(NSString *)processBottleService:(BOOL)bottleServiceSupport
+{
+    if (bottleServiceSupport) {
+        return @"Yes";
+    }else{
+        return @"No";
+    }
+
+}
 
 
-    
++(void)loadFile:(PFFile *)file forImageView:(PFImageView *)imageView
+{
+    [imageView setFile:file];
+    [imageView loadInBackground:^(UIImage *image, NSError *error) {
+        if (!error) {
+            [UIView animateWithDuration:0.200f animations:^{
+                // profilePictureBackgroundView.alpha = 1.0f;
+                //profilePictureStrokeImageView.alpha = 1.0f;
+                //profilePictureImageView.alpha = 1.0f;
+            }];
+        }
+    }];
+
+
+}
 
 @end
