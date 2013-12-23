@@ -140,7 +140,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hiy-xX-6Uv">
-                                <rect key="frame" x="138" y="476" width="45" height="30"/>
+                                <rect key="frame" x="56" y="492" width="45" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" title="Follow">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
@@ -155,6 +155,16 @@
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lDw-4j-Wc7">
+                                <rect key="frame" x="204" y="492" width="89" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Create Event">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="createEventPressed:" destination="q0n-Mh-uvs" eventType="touchUpInside" id="MTh-kP-0yn"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
@@ -165,6 +175,7 @@
                         <outlet property="bottleServiceLabel" destination="Agl-mC-FGG" id="1Pl-nm-ha3"/>
                         <outlet property="categoryLabel" destination="WXD-B0-gye" id="Fd2-HF-rrZ"/>
                         <outlet property="coverLabel" destination="EN9-vN-n02" id="1E6-FS-xW2"/>
+                        <outlet property="followButton" destination="hiy-xX-6Uv" id="GfZ-R1-PQX"/>
                         <outlet property="musicLabel" destination="7fn-ym-ICQ" id="Cxc-PM-7Sb"/>
                         <outlet property="spendLabel" destination="uQs-bA-VIj" id="rDe-0h-0zu"/>
                         <outlet property="venueProfilePic" destination="g9D-WA-Twd" id="oQl-CW-roS"/>
@@ -248,7 +259,6 @@
                     </tableView>
                     <navigationItem key="navigationItem" title="Root View Controller" id="hhe-bJ-eP2"/>
                     <connections>
-                        <segue destination="oTF-80-Klk" kind="push" identifier="moveToProfile" id="bq8-Bp-DOn"/>
                         <segue destination="pZi-8L-n3c" kind="push" identifier="moveToFindFriends" id="ofr-vr-dUA"/>
                     </connections>
                 </tableViewController>
@@ -287,7 +297,7 @@
         <!--Spade Profile Controller-->
         <scene sceneID="l54-pZ-2aZ">
             <objects>
-                <viewController id="oTF-80-Klk" customClass="SpadeProfileController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="profileDetailView" id="oTF-80-Klk" customClass="SpadeProfileController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="Lna-we-9ua"/>
                         <viewControllerLayoutGuide type="bottom" id="TCP-4X-QkT"/>
@@ -296,8 +306,8 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Profile View" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zKj-Z6-Rft">
-                                <rect key="frame" x="120" y="321" width="90" height="21"/>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Profile Name" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zKj-Z6-Rft">
+                                <rect key="frame" x="20" y="321" width="280" height="21"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="highlightedColor"/>
@@ -327,6 +337,7 @@
                     <navigationItem key="navigationItem" id="9bt-gd-FpZ"/>
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
+                        <outlet property="nameLabel" destination="zKj-Z6-Rft" id="Bu9-Ac-8op"/>
                         <outlet property="profileImage" destination="lzu-f9-12G" id="KNf-49-Vit"/>
                         <outlet property="progressBar" destination="2Gr-uH-ZgZ" id="aEF-vx-6n8"/>
                     </connections>

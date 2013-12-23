@@ -11,6 +11,7 @@
 #import "SpadeLoginViewController.h"
 #import <Parse/Parse.h>
 #import "SpadeFeedController.h"
+#import "SpadeCache.h"
 
 @interface SpadeAppDelegate ()
 
@@ -161,6 +162,9 @@
     [request startWithCompletionHandler:^(FBRequestConnection *connection, id result, NSError *error){
         if (!error) {
             
+            
+            NSLog(@"%@",[result description]);
+            
             //Store Facebook Results to local objects
             NSDictionary *userData = (NSDictionary *)result;
             
@@ -192,10 +196,13 @@
                 NSURL *profilePictureURL = [NSURL URLWithString:[NSString stringWithFormat:@"https://graph.facebook.com/%@/picture?type=large", faceBookID]];
                 NSURLRequest *profilePictureURLRequest = [NSURLRequest requestWithURL:profilePictureURL cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:10.0f]; // Facebook profile picture cache policy: Expires in 2 weeks
                 [NSURLConnection connectionWithRequest:profilePictureURLRequest delegate:self];
-
+                
+                
+               
                 
             }
             
+             [self setCacheForUser];
             
             
             //Save to Parse
@@ -264,6 +271,80 @@
     [PFUser logOut];
     
     [self presentLoginView];
+    
+}
+
+
+-(void)setCacheForUser{
+    
+    NSLog(@"Venue Cache %@",[[SpadeCache sharedCache]followingVenues]);
+    //Query for Followed Venues
+    PFQuery *queryFollowedVenues = [PFQuery queryWithClassName:@"Activity"];
+    [queryFollowedVenues whereKey:@"fromUser" equalTo:[PFUser currentUser]];
+    [queryFollowedVenues whereKeyExists:@"toVenue"];
+    
+    //Run Query
+    [queryFollowedVenues findObjectsInBackgroundWithBlock:^(NSArray *followedVenuesForUserFromParse, NSError *error){
+        if (!error) {
+            for(PFObject *object in followedVenuesForUserFromParse){
+                
+                [[[SpadeCache sharedCache]followingVenues]addObject:[[object objectForKey:@"toVenue"]objectId]];
+            }
+            
+        }else{
+            NSLog(@"App Delegate Set Query Error:%@",error);
+        
+        }
+        
+        NSLog(@"Venue Cache %@",[[SpadeCache sharedCache]followingVenues]);
+    }];
+    
+    
+    //Query for Followed Users
+    PFQuery *queryFollowedUsers = [PFQuery queryWithClassName:@"Activity"];
+    [queryFollowedUsers whereKey:@"fromUser" equalTo:[PFUser currentUser]];
+    [queryFollowedVenues whereKeyExists:@"toUser"];
+    //Run Query
+    [queryFollowedUsers findObjectsInBackgroundWithBlock:^(NSArray *followedUsersForUserFromParse, NSError *error){
+        if (!error) {
+            for(PFObject *object in followedUsersForUserFromParse){
+                [[[SpadeCache sharedCache]followingUsers]addObject:[[object objectForKey:@"toUser"]objectId]];
+            }
+        }else{
+            NSLog(@"App Delegate Set Query Error:%@",error);
+            
+        }
+        
+        NSLog(@"User Cache %@",[[SpadeCache sharedCache]followingUsers]);
+
+    }];
+
+
+    //Query for Followed Users
+    PFQuery *queryFollowedEvents = [PFQuery queryWithClassName:@"Activity"];
+    [queryFollowedEvents whereKey:@"fromUser" equalTo:[PFUser currentUser]];
+    [queryFollowedVenues whereKeyExists:@"toEvent"];
+    //Run Query
+    [queryFollowedEvents  findObjectsInBackgroundWithBlock:^(NSArray *followedEventsForUserFromParse, NSError *error){
+        if (!error) {
+            for(PFObject *object in followedEventsForUserFromParse){
+                [[[SpadeCache sharedCache]followingEvents]addObject:[[object objectForKey:@"toEvent"]objectId]];
+            }
+        }else{
+            NSLog(@"App Delegate Set Query Error:%@",error);
+            
+        }
+        
+        NSLog(@"Event Cache %@",[[SpadeCache sharedCache]followingEvents]);
+
+    }];
+
+    
+    
+    
+    
+    
+    
     
 }
 

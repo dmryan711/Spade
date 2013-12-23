@@ -10,5 +10,7 @@
 
 @interface SpadeProfileController : UIViewController <UIActionSheetDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate >
 
+@property (strong,nonatomic) NSString *userName;
+
 
 @end

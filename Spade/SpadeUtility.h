@@ -15,5 +15,6 @@
 +(NSString *)processCurrencyLevel:(NSNumber *)level;
 +(NSString *)processBottleService:(BOOL)bottleServiceSupport;
 +(void)loadFile:(PFFile *)file forImageView:(PFImageView *)imageView;
++(void)user:(PFUser *)user followingVenue:(PFObject *)venue;
 
 @end

@@ -12,6 +12,7 @@
 @interface SpadeVenueDetailViewController : UIViewController <UIActionSheetDelegate>
 
 @property (strong,nonatomic) PFFile *pictureFile;
+@property (strong,nonatomic) NSString *parseObjectId;
 @property (strong,nonatomic) NSString *venueName;
 @property (nonatomic,strong) NSString *category;
 @property (nonatomic,strong) NSString *cover;
@@ -20,6 +21,7 @@
 @property (nonatomic,strong) NSString *bottleService;
 @property (nonatomic,strong) NSString *addressOfVenue;
 @property (nonatomic, weak) PFObject *venue;
+@property BOOL isFollowing;
 
 
 @end

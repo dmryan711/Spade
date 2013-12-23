@@ -91,6 +91,7 @@
     PFQuery *query = [PFQuery queryWithClassName:self.parseClassName];
     [query includeKey:@"fromUser"];
     [query includeKey:@"toVenue"];
+    [query includeKey:@"toUser"];
     
     // If no objects are loaded in memory, we look to the cache first to fill the table
     // and then subsequently do a query against the network.
@@ -98,7 +99,7 @@
         query.cachePolicy = kPFCachePolicyCacheThenNetwork;
     }
     
-    [query orderByAscending:@"createdAt"];
+    [query orderByDescending:@"createdAt"];
     
     return query;
 }
@@ -116,15 +117,22 @@
     }
     
     // Configure the cell
-    cell.textLabel.text = [object objectForKey:@"action"];
+    
+    
     PFUser *user = [object objectForKey:@"fromUser"];
-    PFObject *venue =[object objectForKey:@"toVenue"];
-    
-    NSString *venueName = [venue objectForKey:@"Name"];
+    NSString *action = [object objectForKey:@"action"];
     NSString *userName = [user objectForKey:@"DisplayName"];
+    cell.textLabel.text = action;
    
+    if ([action isEqualToString:@"Following Venue"]) {
+        
+        PFObject *venue = [object objectForKey:@"toVenue"];
+        NSString *venueName = [venue objectForKey:@"Name"];
+        cell.detailTextLabel.text = [NSString stringWithFormat:@"%@ is following %@ ", userName , venueName];
+        
+
+    }
     
-    cell.detailTextLabel.text = [NSString stringWithFormat:@"%@ is following %@ ", userName , venueName];
     
     return cell;
 }
@@ -140,7 +148,7 @@
         [self logOutPressed];
         
     }else if (buttonIndex == PROFILE_BUTTON){
-        [self performSegueWithIdentifier:@"moveToProfile" sender:self];
+        [self segueToProfileView];
     
     
     }else if (buttonIndex == FIND_FRIEND){
@@ -150,6 +158,19 @@
 
 }
 
+-(void)segueToProfileView
+{
+    UIStoryboard *mainStoryboard = [UIStoryboard storyboardWithName:@"Main"
+                                                             bundle: nil];
+    //Create Detail View
+    SpadeProfileController *profileDetail = [mainStoryboard   instantiateViewControllerWithIdentifier:@"profileDetailView"];
+    PFUser *user = [PFUser currentUser];
+    
+    [profileDetail setUserName:[user objectForKey:@"DisplayName"]];
+    
+    [self.navigationController pushViewController:profileDetail animated:YES];
+
+}
 
 
 #pragma mark { }

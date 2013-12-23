@@ -16,6 +16,7 @@
 @property (strong,nonatomic)  UIImagePickerController *imagePicker;
 @property (weak, nonatomic) IBOutlet PFImageView *profileImage;
 @property (weak, nonatomic) IBOutlet UIProgressView *progressBar;
+@property (weak, nonatomic) IBOutlet UILabel *nameLabel;
 
 
 @end
@@ -47,6 +48,8 @@
         
         [SpadeUtility loadFile:imageFile forImageView:self.profileImage];
     }
+    
+    self.nameLabel.text = self.userName;
 
 }
 

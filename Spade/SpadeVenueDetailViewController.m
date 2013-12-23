@@ -8,6 +8,7 @@
 
 #import "SpadeVenueDetailViewController.h"
 #import "SpadeUtility.h"
+#import "SpadeCache.h"
 
 @interface SpadeVenueDetailViewController ()
 
@@ -23,6 +24,9 @@
 
 @property (weak, nonatomic) IBOutlet UILabel *addressLabel;
 
+@property (weak, nonatomic) IBOutlet UIButton *followButton;
+
+
 @end
 
 @implementation SpadeVenueDetailViewController
@@ -32,10 +36,11 @@
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         // Custom initialization
+        
+        
     }
     return self;
 }
-
 
 
 
@@ -66,6 +71,11 @@
         self.venueProfilePic.image = [UIImage imageNamed:@"default_venue_Image.jpeg"];
     }
     
+    //setFollowButton
+    if (self.isFollowing) {
+        self.followButton.enabled = NO;
+    }
+    
 }
 
 -(void)viewWillDisappear:(BOOL)animated
@@ -84,9 +94,21 @@
 - (IBAction)followButtonPressed:(id)sender {
     
     NSLog(@"Venue Detail: Pew, Pew. Follow Button Was Selected");
-    [self user:[PFUser currentUser] followingVenue:self.venue];
-    UIAlertView *followingVenue = [[UIAlertView alloc]initWithTitle:[NSString stringWithFormat:@"Following %@",self.title] message:nil delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil];
-    [followingVenue show];
+    self.followButton.enabled = NO;
+    //Set Local Cache
+    [[[SpadeCache sharedCache]followingVenues] addObject:self.parseObjectId];
+    NSLog(@"%@",[[SpadeCache sharedCache]followingVenues].description);
+    
+    [SpadeUtility user:[PFUser currentUser] followingVenue:self.venue];
+    
+    
+    [self createAndDisplayFollowAlert];
+    
+    
+    
+}
+- (IBAction)createEventPressed:(id)sender {
+    NSLog(@"Venue Detail/: Pew, Pew. Create Event Pressed");
 }
 
 
@@ -129,18 +151,13 @@
     
 }
 
--(void)user:(PFUser *)user followingVenue:(PFObject *)venue
-{
-    PFObject *activity =[[PFObject alloc]initWithClassName:@"Activity"];
-    
-
-    
-    [activity setObject:[PFUser currentUser] forKey:@"fromUser"];
-    [activity setObject:venue forKey:@"toVenue"];
-    [activity setObject:@"FOLLOW" forKey:@"action"];
-    [activity saveInBackground];
+-(void)createAndDisplayFollowAlert{
+    UIAlertView *followingVenue = [[UIAlertView alloc]initWithTitle:[NSString stringWithFormat:@"Following %@",self.title] message:nil delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil];
+    [followingVenue show];
 
 }
+
+
 
 
 @end

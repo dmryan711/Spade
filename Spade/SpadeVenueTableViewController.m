@@ -9,6 +9,7 @@
 #import "SpadeVenueTableViewController.h"
 #import "SpadeVenueDetailViewController.h"
 #import "SpadeUtility.h"
+#import "SpadeCache.h"
 
 @interface SpadeVenueTableViewController ()
 
@@ -68,6 +69,7 @@
 // all objects ordered by createdAt descending.
 - (PFQuery *)queryForTable {
     PFQuery *query = [PFQuery queryWithClassName:self.parseClassName];
+    [query includeKey:@"objectId"];
     
     // If no objects are loaded in memory, we look to the cache first to fill the table
     // and then subsequently do a query against the network.
@@ -177,11 +179,17 @@
         
         //Set Object
         PFObject *venueSelection = [self.objects objectAtIndex:indexPath.row];
+   
+        
+        
+       
         
         UIStoryboard *mainStoryboard = [UIStoryboard storyboardWithName:@"Main"
                                                                  bundle: nil];
         //Create Detail View
         SpadeVenueDetailViewController *venueDetail = [mainStoryboard   instantiateViewControllerWithIdentifier:@"venueDetailController"];
+        
+      
         
         [venueDetail setVenueName:[venueSelection objectForKey:@"Name"]];
         [venueDetail setAddressOfVenue:[venueSelection objectForKey:@"Address"]];
@@ -191,7 +199,13 @@
         [venueDetail setCover:[NSString stringWithFormat:@"$%@",[venueSelection objectForKey:@"Cover"]]];
         [venueDetail setBottleService:[NSString stringWithFormat:@"%@",[SpadeUtility processBottleService:(BOOL)[venueSelection objectForKey:@"TableService"]]]];
         [venueDetail setPictureFile:[venueSelection objectForKey:@"Picture"]];
+        [venueDetail setParseObjectId:[venueSelection  objectId]];
         [venueDetail setVenue:venueSelection];
+        
+        //Check Cache to see if user is following the venue already
+        if ([[[SpadeCache sharedCache] followingVenues] containsObject:[venueSelection objectId]]) {
+            venueDetail.isFollowing = YES;
+        }
         
        //FIRE
         [self.navigationController pushViewController:venueDetail animated:YES];

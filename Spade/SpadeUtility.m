@@ -141,4 +141,17 @@
 
 }
 
++(void)user:(PFUser *)user followingVenue:(PFObject *)venue
+{
+    PFObject *activity =[[PFObject alloc]initWithClassName:@"Activity"];
+    
+    
+    
+    [activity setObject:[PFUser currentUser] forKey:@"fromUser"];
+    [activity setObject:venue forKey:@"toVenue"];
+    [activity setObject:@"Following Venue" forKey:@"action"];
+    [activity saveInBackground];
+    
+}
+
 @end
