@@ -150,8 +150,17 @@
     [activity setObject:[PFUser currentUser] forKey:@"fromUser"];
     [activity setObject:venue forKey:@"toVenue"];
     [activity setObject:@"Following Venue" forKey:@"action"];
-    [activity saveInBackground];
+    [activity saveEventually];
     
 }
+
+
++(void)processUserName:(NSString *)name forUser:(PFUser *)user
+{
+    [user setObject:name forKey:@"DisplayName"];
+    [user saveEventually];
+
+}
+
 
 @end

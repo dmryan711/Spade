@@ -12,6 +12,7 @@
 #import <Parse/Parse.h>
 #import "SpadeFeedController.h"
 #import "SpadeCache.h"
+#import "SpadeEditProfileViewController.h"
 
 @interface SpadeAppDelegate ()
 
@@ -31,7 +32,7 @@
     // Override point for customization after application launch.
     
     //Initially Set Flag to NO
-    [[NSUserDefaults standardUserDefaults] registerDefaults:@{@"picChangedFlag":@"No"}];
+    [[NSUserDefaults standardUserDefaults] registerDefaults:@{@"picChangedFlag":@"No", @"nameChangedFlag":@"No"}];
                                                                  
     /*****   PARSE APPLICATION *******/
     [Parse setApplicationId:@"XQODiEaHhQUZWP8WdgcD6FAtQLP0XV33hrDtwgJD"
@@ -109,8 +110,10 @@
 {
     NSLog(@"Called");
 
-
 }
+
+
+
 
 #pragma mark Spade Login Delegate Methods
 #define LEFT_VIEWCONTROLLER 0
@@ -141,7 +144,7 @@
                 
                 [user setObject:friendIdList forKey:@"Friends"];
                 
-                [user saveInBackground];
+                [user saveEventually];
                 
                 
             }
@@ -186,7 +189,6 @@
             [user setObject:gender forKey:@"Gender"];
             [user setObject:locale forKey:@"Locale"];
             [user setObject:birthday forKey:@"Birthday"];
-            [user setObject:fullName forKey:@"DisplayName"];
             [user setObject:age forKey:@"age"];;
             [user setObject:faceBookID forKey:@"FacebookID"];
            
@@ -197,16 +199,16 @@
                 NSURLRequest *profilePictureURLRequest = [NSURLRequest requestWithURL:profilePictureURL cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:10.0f]; // Facebook profile picture cache policy: Expires in 2 weeks
                 [NSURLConnection connectionWithRequest:profilePictureURLRequest delegate:self];
                 
-                
-               
-                
+            }
+            if ([[[NSUserDefaults standardUserDefaults]objectForKey:@"nameChangedFlag"] isEqualToString:@"NO"]) { //User Did not Change Name
+                [user setObject:fullName forKey:@"DisplayName"];
             }
             
              [self setCacheForUser];
             
             
             //Save to Parse
-            [user saveInBackground];
+            [user saveEventually];
             
         } else if ([error.userInfo[FBErrorParsedJSONResponseKey][@"body"][@"error"][@"type"] isEqualToString:@"OAuthException"]) {//Request Failed , Checking Why
             NSLog(@"The facebook session was invalidated");

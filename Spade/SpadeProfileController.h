@@ -8,9 +8,9 @@
 
 #import <UIKit/UIKit.h>
 
-@interface SpadeProfileController : UIViewController <UIActionSheetDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate >
+@interface SpadeProfileController : UIViewController <UIActionSheetDelegate,UINavigationControllerDelegate >
 
 @property (strong,nonatomic) NSString *userName;
-
+@property (strong, nonatomic)   PFFile *profileImageFile;
 
 @end

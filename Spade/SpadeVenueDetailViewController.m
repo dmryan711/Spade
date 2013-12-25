@@ -50,7 +50,7 @@
     
     self.navigationController.navigationBarHidden = NO;
 	// Do any additional setup after loading the view.
-    [self creatBackButton];
+    //[self creatBackButton];
     self.title  = self.venueName;
     self.categoryLabel.text = self.category;
     self.coverLabel.text =self.cover;
@@ -137,7 +137,7 @@
 
 
 #pragma mark helper methods { }
--(void)creatBackButton
+/*-(void)creatBackButton
 {
     UIBarButtonItem *backButton = [[UIBarButtonItem alloc]initWithTitle:@" Back" style:UIBarButtonItemStyleBordered target:self action:@selector(backButtonPressed)];
     self.navigationItem.leftBarButtonItem = backButton;
@@ -149,7 +149,8 @@
     self.navigationController.navigationBarHidden = YES;
     [self.navigationController popToRootViewControllerAnimated:YES];
     
-}
+}*/
+
 
 -(void)createAndDisplayFollowAlert{
     UIAlertView *followingVenue = [[UIAlertView alloc]initWithTitle:[NSString stringWithFormat:@"Following %@",self.title] message:nil delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil];
