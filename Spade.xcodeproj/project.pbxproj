@@ -34,6 +34,8 @@
 		9196A8D31868D61B00513082 /* skyline@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9196A8D21868D61B00513082 /* skyline@2x.png */; };
 		9196A8D61868D90900513082 /* SpadeCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 9196A8D51868D90900513082 /* SpadeCache.m */; };
 		9196A8D9186A919F00513082 /* SpadeEditProfileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9196A8D8186A919F00513082 /* SpadeEditProfileViewController.m */; };
+		9196A8DC186B574700513082 /* SpadeFriendTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9196A8DB186B574700513082 /* SpadeFriendTableViewController.m */; };
+		9196A8DF186C903200513082 /* SpadeConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = 9196A8DE186C903200513082 /* SpadeConstants.m */; };
 		91D9D6351842F643005BD0BC /* Parse.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 91D9D6341842F643005BD0BC /* Parse.framework */; };
 		91D9D6371842F72A005BD0BC /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 91D9D6361842F72A005BD0BC /* AudioToolbox.framework */; };
 		91D9D6391842F735005BD0BC /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 91D9D6381842F735005BD0BC /* CFNetwork.framework */; };
@@ -101,6 +103,10 @@
 		9196A8D51868D90900513082 /* SpadeCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SpadeCache.m; sourceTree = "<group>"; };
 		9196A8D7186A919F00513082 /* SpadeEditProfileViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SpadeEditProfileViewController.h; sourceTree = "<group>"; };
 		9196A8D8186A919F00513082 /* SpadeEditProfileViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SpadeEditProfileViewController.m; sourceTree = "<group>"; };
+		9196A8DA186B574700513082 /* SpadeFriendTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SpadeFriendTableViewController.h; sourceTree = "<group>"; };
+		9196A8DB186B574700513082 /* SpadeFriendTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SpadeFriendTableViewController.m; sourceTree = "<group>"; };
+		9196A8DD186C903200513082 /* SpadeConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SpadeConstants.h; sourceTree = "<group>"; };
+		9196A8DE186C903200513082 /* SpadeConstants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SpadeConstants.m; sourceTree = "<group>"; };
 		91D9D6341842F643005BD0BC /* Parse.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Parse.framework; path = ../../../Downloads/Parse.framework; sourceTree = "<group>"; };
 		91D9D6361842F72A005BD0BC /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		91D9D6381842F735005BD0BC /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
@@ -154,6 +160,8 @@
 		9112353C18569C830092253B /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				9196A8DD186C903200513082 /* SpadeConstants.h */,
+				9196A8DE186C903200513082 /* SpadeConstants.m */,
 				9196A8D41868D90900513082 /* SpadeCache.h */,
 				9196A8D51868D90900513082 /* SpadeCache.m */,
 				91206109184A62E700E3DA0C /* SpadeUtility.h */,
@@ -179,6 +187,8 @@
 				91221338185CCED500BA29E8 /* SpadeVenueDetailViewController.m */,
 				9196A8D7186A919F00513082 /* SpadeEditProfileViewController.h */,
 				9196A8D8186A919F00513082 /* SpadeEditProfileViewController.m */,
+				9196A8DA186B574700513082 /* SpadeFriendTableViewController.h */,
+				9196A8DB186B574700513082 /* SpadeFriendTableViewController.m */,
 			);
 			name = Controllers;
 			sourceTree = "<group>";
@@ -414,10 +424,12 @@
 				9196A8D9186A919F00513082 /* SpadeEditProfileViewController.m in Sources */,
 				915BEDAE1857DB5A00FCA17A /* UIImage+ResizeAdditions.m in Sources */,
 				91632CF01857CFE000FB276E /* SpadeProfileController.m in Sources */,
+				9196A8DF186C903200513082 /* SpadeConstants.m in Sources */,
 				9120610B184A62E700E3DA0C /* SpadeUtility.m in Sources */,
 				9141E87518407A5000A5DE15 /* SpadeAppDelegate.m in Sources */,
 				9188E52F184EE7FD00C72151 /* SpadeFeedController.m in Sources */,
 				9196A8D61868D90900513082 /* SpadeCache.m in Sources */,
+				9196A8DC186B574700513082 /* SpadeFriendTableViewController.m in Sources */,
 				915BEDAF1857DB5A00FCA17A /* UIImage+AlphaAdditions.m in Sources */,
 				91D9D64A1843021D005BD0BC /* SpadeLoginViewController.m in Sources */,
 				9141E87118407A5000A5DE15 /* main.m in Sources */,

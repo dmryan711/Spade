@@ -17,5 +17,7 @@
 +(NSString *)processBottleService:(BOOL)bottleServiceSupport;
 +(void)loadFile:(PFFile *)file forImageView:(PFImageView *)imageView;
 +(void)user:(PFUser *)user followingVenue:(PFObject *)venue;
++(void)user:(PFUser *)user followingUser:(PFUser *)user;
++(void)user:(PFUser *)user followingUsers:(NSArray *)users;
 
 @end

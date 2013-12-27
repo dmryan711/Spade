@@ -10,6 +10,7 @@
 #import <MobileCoreServices/MobileCoreServices.h>
 #import "SpadeUtility.h"
 #import "SpadeProfileController.h"
+#import "SpadeConstants.h"
 
 
 @interface SpadeEditProfileViewController ()
@@ -153,7 +154,9 @@
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info
 {
     //Set User Changed Picture Flag so we don't overwrite with Facebook Image on each Log out
-    [[NSUserDefaults standardUserDefaults]setObject:@"Yes" forKey:@"picChangedFlag"];
+    if (![[NSUserDefaults standardUserDefaults]boolForKey:spadePicFLag] ){
+        [[NSUserDefaults standardUserDefaults]setBool:YES forKey:spadePicFLag];
+    }
     
     //UnHide the Image Load Process Bar
     self.imageLoad.hidden = NO;
@@ -224,7 +227,9 @@
 
 #pragma mark TextField Delegation
 - (void)textFieldDidBeginEditing:(UITextField *)textField{ // became first responder
-    [[NSUserDefaults standardUserDefaults]setObject:@"Yes" forKey:@"nameChangedFlag"];
+    if (![[NSUserDefaults standardUserDefaults]boolForKey:spadeNameFlag] ){
+        [[NSUserDefaults standardUserDefaults]setBool:YES forKey:spadeNameFlag];
+    }
     
 }
 

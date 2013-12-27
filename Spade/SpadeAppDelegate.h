@@ -12,10 +12,10 @@
 @interface SpadeAppDelegate : UIResponder <UIApplicationDelegate, UITabBarControllerDelegate, PFLogInViewControllerDelegate,NSURLConnectionDataDelegate>
 
 @property (strong, nonatomic) UIWindow *window;
-//@property (strong,nonatomic)   PFUser *user;
 
 
 -(void)presentLoginView;
+-(void)presentFriendsViewController;
 -(void)logOutUser;
 
 @end

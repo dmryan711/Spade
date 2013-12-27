@@ -7,7 +7,7 @@
 //
 #import "SpadeAppDelegate.h"
 #import <Parse/Parse.h>
-
+#import "SpadeConstants.h"
 #import "SpadeUtility.h"
 #import "SpadeProfileController.h"
 #import "SpadeEditProfileViewController.h"
@@ -44,7 +44,7 @@
      //Bypassing Linker issue When the storyboarding class is loaded at runtime, the PF[.*]Class is referenced using a string. The linker doesn't analyze code functionality, so it doesn't know that the class is used. Since no other source files references that class, the linker optimizes it out of existence when making the executable
     [PFImageView class];
       self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]initWithTitle:@"Edit" style:UIBarButtonItemStyleBordered target:self action:@selector(editPressed)];
-    self.profileImageFile = [[PFUser currentUser] objectForKey:@"MediumProfilePic"];
+    self.profileImageFile = [[PFUser currentUser] objectForKey:spadeUserMediumProfilePic];
     
 
 }

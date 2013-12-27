@@ -13,6 +13,8 @@
 #import "SpadeFeedController.h"
 #import "SpadeCache.h"
 #import "SpadeEditProfileViewController.h"
+#import "SpadeConstants.h"
+#import "SpadeFriendTableViewController.h"
 
 @interface SpadeAppDelegate ()
 
@@ -32,7 +34,8 @@
     // Override point for customization after application launch.
     
     //Initially Set Flag to NO
-    [[NSUserDefaults standardUserDefaults] registerDefaults:@{@"picChangedFlag":@"No", @"nameChangedFlag":@"No"}];
+    [[NSUserDefaults standardUserDefaults] registerDefaults:@{spadePicFLag:@NO, spadeNameFlag:@NO, spadeFirstLoginFlag:@YES}];
+
                                                                  
     /*****   PARSE APPLICATION *******/
     [Parse setApplicationId:@"XQODiEaHhQUZWP8WdgcD6FAtQLP0XV33hrDtwgJD"
@@ -108,7 +111,7 @@
 
 -(void)tabBarController:(UITabBarController *)tabBarController didSelectViewController:(UIViewController *)viewController
 {
-    NSLog(@"Called");
+   
 
 }
 
@@ -120,7 +123,7 @@
 // Sent to the delegate when a PFUser is logged in.
 - (void)logInViewController:(PFLogInViewController *)logInController didLogInUser:(PFUser *)user {
     
-    //self.user = user;
+   
     
     //Get Rid of the Login View
     [[self.tabBarController.viewControllers objectAtIndex:LEFT_VIEWCONTROLLER] dismissViewControllerAnimated:YES completion:nil];
@@ -142,7 +145,7 @@
                     [friendIdList addObject:friend[@"id"]];
                 }
                 
-                [user setObject:friendIdList forKey:@"Friends"];
+                [user setObject:friendIdList forKey:spadeUserFriends];
                 
                 [user saveEventually];
                 
@@ -166,7 +169,7 @@
         if (!error) {
             
             
-            NSLog(@"%@",[result description]);
+            //NSLog(@"%@",[result description]);
             
             //Store Facebook Results to local objects
             NSDictionary *userData = (NSDictionary *)result;
@@ -185,14 +188,15 @@
             NSNumber *age = [NSNumber numberWithInteger:[SpadeUtility age:[dateFormat dateFromString:birthday]]];
             
             //Save local facebook result to Parse
-            [user setObject:email forKey:@"email"];
-            [user setObject:gender forKey:@"Gender"];
-            [user setObject:locale forKey:@"Locale"];
-            [user setObject:birthday forKey:@"Birthday"];
-            [user setObject:age forKey:@"age"];;
-            [user setObject:faceBookID forKey:@"FacebookID"];
+            [user setObject:email forKey:spadeUserEmail];
+            [user setObject:gender forKey:spadeUserGender];
+            [user setObject:locale forKey:spadeUserLocale];
+            [user setObject:birthday forKey:spadeUserBirthday];
+            [user setObject:age forKey:spadeUserAge];;
+            [user setObject:faceBookID forKey:spadeUserFacebookId];
            
-            if ([[[NSUserDefaults standardUserDefaults]objectForKey:@"picChangedFlag"] isEqualToString:@"NO"]) { //User Did not Change Picture
+            
+            if (![[NSUserDefaults standardUserDefaults]boolForKey:spadePicFLag]) { //User Did not Change Picture
                 NSLog(@"Pic Flag No");
                 // Download user's profile picture
                 NSURL *profilePictureURL = [NSURL URLWithString:[NSString stringWithFormat:@"https://graph.facebook.com/%@/picture?type=large", faceBookID]];
@@ -200,15 +204,30 @@
                 [NSURLConnection connectionWithRequest:profilePictureURLRequest delegate:self];
                 
             }
-            if ([[[NSUserDefaults standardUserDefaults]objectForKey:@"nameChangedFlag"] isEqualToString:@"NO"]) { //User Did not Change Name
-                [user setObject:fullName forKey:@"DisplayName"];
+            if (![[NSUserDefaults standardUserDefaults]boolForKey:spadeNameFlag] ) { //User Did not Change Name
+                [user setObject:fullName forKey:spadeUserDisplayName];
             }
             
-             [self setCacheForUser];
             
+            [self setCacheForUser];
             
             //Save to Parse
-            [user saveEventually];
+            [user saveInBackgroundWithBlock:^(BOOL succeeded , NSError *error){
+                if (succeeded) {
+                    
+                    //Follow the Spade Team
+                    PFQuery *querySpadeTeam = [PFQuery queryWithClassName:spadeClassUser];
+                    [querySpadeTeam whereKey:spadeUserFacebookId containedIn:@[spadeDevonFacebookId]];
+                    
+                    [querySpadeTeam findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error){
+                        if (!error) {
+                            NSLog(@"HIT");
+                            [SpadeUtility user:[PFUser currentUser] followingUsers:objects];
+                        }
+                    }];
+                }
+            }];
+                
             
         } else if ([error.userInfo[FBErrorParsedJSONResponseKey][@"body"][@"error"][@"type"] isEqualToString:@"OAuthException"]) {//Request Failed , Checking Why
             NSLog(@"The facebook session was invalidated");
@@ -267,9 +286,21 @@
     [[self.tabBarController.viewControllers objectAtIndex:LEFT_VIEWCONTROLLER ] presentViewController:logInViewController animated:YES completion:NULL];
 }
 
+-(void)presentFriendsViewController
+{
+
+    // Present Friend List
+    UIStoryboard *mainStoryboard = [UIStoryboard storyboardWithName:@"Main"
+                                                             bundle: nil];
+    //Create Detail View
+    SpadeFriendTableViewController *friendListViewController = [mainStoryboard   instantiateViewControllerWithIdentifier:@"findFriendView"];
+    
+    [[self.tabBarController.viewControllers objectAtIndex:LEFT_VIEWCONTROLLER] presentViewController:friendListViewController animated:YES completion:NULL];
+
+}
+
 -(void)logOutUser{
     
-    NSLog(@"Boom");
     [PFUser logOut];
     
     [self presentLoginView];
@@ -281,16 +312,16 @@
     
     NSLog(@"Venue Cache %@",[[SpadeCache sharedCache]followingVenues]);
     //Query for Followed Venues
-    PFQuery *queryFollowedVenues = [PFQuery queryWithClassName:@"Activity"];
-    [queryFollowedVenues whereKey:@"fromUser" equalTo:[PFUser currentUser]];
-    [queryFollowedVenues whereKeyExists:@"toVenue"];
+    PFQuery *queryFollowedVenues = [PFQuery queryWithClassName:spadeClassActivity];
+    [queryFollowedVenues whereKey:spadeActivityFromUser equalTo:[PFUser currentUser]];
+    [queryFollowedVenues whereKeyExists:spadeActivityToVenue];
     
     //Run Query
     [queryFollowedVenues findObjectsInBackgroundWithBlock:^(NSArray *followedVenuesForUserFromParse, NSError *error){
         if (!error) {
             for(PFObject *object in followedVenuesForUserFromParse){
                 
-                [[[SpadeCache sharedCache]followingVenues]addObject:[[object objectForKey:@"toVenue"]objectId]];
+                [[[SpadeCache sharedCache]followingVenues]addObject:[[object objectForKey:spadeActivityToVenue]objectId]];
             }
             
         }else{
@@ -301,36 +332,37 @@
         NSLog(@"Venue Cache %@",[[SpadeCache sharedCache]followingVenues]);
     }];
     
-    
     //Query for Followed Users
-    PFQuery *queryFollowedUsers = [PFQuery queryWithClassName:@"Activity"];
-    [queryFollowedUsers whereKey:@"fromUser" equalTo:[PFUser currentUser]];
-    [queryFollowedVenues whereKeyExists:@"toUser"];
+    PFQuery *queryFollowedUsers = [PFQuery queryWithClassName:spadeClassActivity];
+    [queryFollowedUsers whereKey:spadeActivityFromUser equalTo:[PFUser currentUser]];
+    [queryFollowedUsers whereKeyExists:spadeActivityToUser];
     //Run Query
     [queryFollowedUsers findObjectsInBackgroundWithBlock:^(NSArray *followedUsersForUserFromParse, NSError *error){
         if (!error) {
             for(PFObject *object in followedUsersForUserFromParse){
-                [[[SpadeCache sharedCache]followingUsers]addObject:[[object objectForKey:@"toUser"]objectId]];
+                [[[SpadeCache sharedCache]followingUsers]addObject:[[object objectForKey:spadeActivityToUser]objectId]];
             }
         }else{
             NSLog(@"App Delegate Set Query Error:%@",error);
             
         }
         
+        NSLog(@"HITTT user cache");
         NSLog(@"User Cache %@",[[SpadeCache sharedCache]followingUsers]);
-
+        
     }];
 
+    
 
     //Query for Followed Users
-    PFQuery *queryFollowedEvents = [PFQuery queryWithClassName:@"Activity"];
-    [queryFollowedEvents whereKey:@"fromUser" equalTo:[PFUser currentUser]];
-    [queryFollowedVenues whereKeyExists:@"toEvent"];
+    PFQuery *queryFollowedEvents = [PFQuery queryWithClassName:spadeClassActivity];
+    [queryFollowedEvents whereKey:spadeActivityFromUser equalTo:[PFUser currentUser]];
+    [queryFollowedEvents whereKeyExists:spadeActivityToEvent];
     //Run Query
     [queryFollowedEvents  findObjectsInBackgroundWithBlock:^(NSArray *followedEventsForUserFromParse, NSError *error){
         if (!error) {
             for(PFObject *object in followedEventsForUserFromParse){
-                [[[SpadeCache sharedCache]followingEvents]addObject:[[object objectForKey:@"toEvent"]objectId]];
+                [[[SpadeCache sharedCache]followingEvents]addObject:[[object objectForKey:spadeActivityToEvent]objectId]];
             }
         }else{
             NSLog(@"App Delegate Set Query Error:%@",error);

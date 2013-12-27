@@ -183,7 +183,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="chp-UQ-c9J" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1631" y="1431"/>
+            <point key="canvasLocation" x="1445" y="1447"/>
         </scene>
         <!--View Controller-->
         <scene sceneID="LaC-6u-tUw">
@@ -209,7 +209,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="1g3-Le-Qwc" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2221" y="1441"/>
+            <point key="canvasLocation" x="1923" y="1447"/>
         </scene>
         <!--View Controller - Event-->
         <scene sceneID="gwA-b1-A3r">
@@ -258,41 +258,38 @@
                         </prototypes>
                     </tableView>
                     <navigationItem key="navigationItem" title="Root View Controller" id="hhe-bJ-eP2"/>
-                    <connections>
-                        <segue destination="pZi-8L-n3c" kind="push" identifier="moveToFindFriends" id="ofr-vr-dUA"/>
-                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ZHN-CC-j5E" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1437" y="-563"/>
         </scene>
-        <!--View Controller-->
-        <scene sceneID="nlB-9F-FS0">
+        <!--Spade Friend Table View Controller-->
+        <scene sceneID="gUT-of-DYm">
             <objects>
-                <viewController id="pZi-8L-n3c" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="8vJ-6l-i6m"/>
-                        <viewControllerLayoutGuide type="bottom" id="eU1-5k-mHV"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="mVY-CL-H8w">
+                <tableViewController storyboardIdentifier="findFriendView" id="LMc-rT-BIS" customClass="SpadeFriendTableViewController" sceneMemberID="viewController">
+                    <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="j5U-Br-qNT">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <subviews>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Find Friends View" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Wmk-ah-skP">
-                                <rect key="frame" x="92" y="273" width="136" height="21"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                        </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
-                    </view>
-                    <navigationItem key="navigationItem" id="51W-90-Cl8"/>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="Ymg-ep-zeB" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <prototypes>
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" id="FUY-JA-9Sc">
+                                <rect key="frame" x="0.0" y="22" width="320" height="44"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="FUY-JA-9Sc" id="720-h6-dqG">
+                                    <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                </tableViewCellContentView>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="LMc-rT-BIS" id="Va3-mv-aFw"/>
+                            <outlet property="delegate" destination="LMc-rT-BIS" id="FhR-Gz-qjx"/>
+                        </connections>
+                    </tableView>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="t8W-e9-IUk" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1967" y="-156"/>
+            <point key="canvasLocation" x="1437" y="113"/>
         </scene>
         <!--Spade Profile Controller-->
         <scene sceneID="l54-pZ-2aZ">

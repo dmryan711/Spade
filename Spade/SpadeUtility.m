@@ -7,6 +7,7 @@
 //
 
 #import <Parse/Parse.h>
+#import "SpadeConstants.h"
 #import "SpadeUtility.h"
 #import "UIImage+ResizeAdditions.h"
 
@@ -66,7 +67,7 @@
         PFFile *fileMediumImage = [PFFile fileWithData:mediumImageData];
         [fileMediumImage saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
             if (!error) {
-                [[PFUser currentUser] setObject:fileMediumImage forKey:@"MediumProfilePic"];
+                [[PFUser currentUser] setObject:fileMediumImage forKey:spadeUserMediumProfilePic];
                 [[PFUser currentUser] saveEventually];
             }
         }];
@@ -76,7 +77,7 @@
         PFFile *fileSmallRoundedImage = [PFFile fileWithData:smallRoundedImageData];
         [fileSmallRoundedImage saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
             if (!error) {
-                [[PFUser currentUser] setObject:fileSmallRoundedImage forKey:@"SmallProfilePic"];
+                [[PFUser currentUser] setObject:fileSmallRoundedImage forKey:spadeUserSmallProfilePic];
                 [[PFUser currentUser] saveEventually];
             }
         }];
@@ -143,13 +144,13 @@
 
 +(void)user:(PFUser *)user followingVenue:(PFObject *)venue
 {
-    PFObject *activity =[[PFObject alloc]initWithClassName:@"Activity"];
+    PFObject *activity =[[PFObject alloc]initWithClassName:spadeClassActivity];
     
     
     
-    [activity setObject:[PFUser currentUser] forKey:@"fromUser"];
-    [activity setObject:venue forKey:@"toVenue"];
-    [activity setObject:@"Following Venue" forKey:@"action"];
+    [activity setObject:[PFUser currentUser] forKey:spadeActivityFromUser];
+    [activity setObject:venue forKey:spadeActivityToVenue];
+    [activity setObject:spadeActivityActionFollowingVenue forKey:spadeActivityAction];
     [activity saveEventually];
     
 }
@@ -157,9 +158,31 @@
 
 +(void)processUserName:(NSString *)name forUser:(PFUser *)user
 {
-    [user setObject:name forKey:@"DisplayName"];
+    [user setObject:name forKey:spadeUserDisplayName];
     [user saveEventually];
 
+}
+
+
++(void)user:(PFUser *)user followingUser:(PFUser *)friendUser
+{
+ 
+    PFObject *activity =[[PFObject alloc]initWithClassName:spadeClassActivity];
+    [activity setObject:[PFUser currentUser] forKey:spadeActivityFromUser];
+    [activity setObject:friendUser forKey:spadeActivityToUser];
+    [activity setObject:spadeActivityActionFollowingUser forKey:spadeActivityAction];
+    
+    [activity saveEventually];
+    
+}
+
+
++(void)user:(PFUser *)user followingUsers:(NSArray *)friendUsers
+{
+    for (PFUser *friend in friendUsers){
+        
+        [self user:[PFUser currentUser] followingUser:friend];
+    }
 }
 
 

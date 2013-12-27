@@ -11,6 +11,8 @@
 #import "SpadeLoginViewController.h"
 #import "SpadeProfileController.h"
 #import <Parse/Parse.h>
+#import "SpadeConstants.h"
+#import "SpadeFriendTableViewController.h"
 
 @interface SpadeFeedController ()
 @property (strong,nonatomic) NSArray *dataSet;
@@ -34,7 +36,7 @@
 -(void)awakeFromNib
 {
     NSLog(@"called");
-    self.parseClassName = @"Activity";
+    self.parseClassName = spadeClassActivity;
     self.textKey = @"objectId";
     self.pullToRefreshEnabled = YES;
     self.paginationEnabled = NO;
@@ -51,8 +53,17 @@
     if (![PFUser currentUser] ) { // No user logged in
         // Create the log in view controller
         [APPLICATION_DELEGATE presentLoginView];
+    }else if ([[NSUserDefaults standardUserDefaults]boolForKey:spadeFirstLoginFlag]) {
+        
+        NSLog(@"First TIME");
+        //[[NSUserDefaults standardUserDefaults]setBool:NO forKey:spadeFirstLoginFlag];
+        // Present Friend List
+        
+        
+        [self performSelector:@selector(loadFriendsView) withObject:nil afterDelay:.5];
+        
+    
     }
-
 
     self.navigationItem.rightBarButtonItem =[[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemAction target:self action:@selector(settingsPressed)];
     // Uncomment the following line to preserve selection between presentations.
@@ -89,9 +100,9 @@
 // all objects ordered by createdAt descending.
 - (PFQuery *)queryForTable {
     PFQuery *query = [PFQuery queryWithClassName:self.parseClassName];
-    [query includeKey:@"fromUser"];
-    [query includeKey:@"toVenue"];
-    [query includeKey:@"toUser"];
+    [query includeKey:spadeActivityFromUser];
+    [query includeKey:spadeActivityToVenue];
+    [query includeKey:spadeActivityToUser];
     
     // If no objects are loaded in memory, we look to the cache first to fill the table
     // and then subsequently do a query against the network.
@@ -119,18 +130,21 @@
     // Configure the cell
     
     
-    PFUser *user = [object objectForKey:@"fromUser"];
-    NSString *action = [object objectForKey:@"action"];
-    NSString *userName = [user objectForKey:@"DisplayName"];
+    PFUser *user = [object objectForKey:spadeActivityFromUser];
+    NSString *action = [object objectForKey:spadeActivityAction];
+    NSString *userName = [user objectForKey:spadeUserDisplayName];
     cell.textLabel.text = action;
    
-    if ([action isEqualToString:@"Following Venue"]) {
+    if ([action isEqualToString:spadeActivityActionFollowingVenue]) {
         
-        PFObject *venue = [object objectForKey:@"toVenue"];
-        NSString *venueName = [venue objectForKey:@"Name"];
+        PFObject *venue = [object objectForKey:spadeActivityToVenue];
+        NSString *venueName = [venue objectForKey:spadeVenueName];
         cell.detailTextLabel.text = [NSString stringWithFormat:@"%@ is following %@ ", userName , venueName];
-        
-
+    }else if ([action isEqualToString:spadeActivityActionFollowingUser]){
+        PFUser *toUser = [object objectForKey:spadeActivityToUser];
+        NSString *toUserName = [toUser objectForKey:spadeUserDisplayName];
+        cell.detailTextLabel.text = [NSString stringWithFormat:@"%@ is now following %@ ", userName , toUserName];
+    
     }
     
     
@@ -166,7 +180,7 @@
     SpadeProfileController *profileDetail = [mainStoryboard   instantiateViewControllerWithIdentifier:@"profileDetailView"];
     PFUser *user = [PFUser currentUser];
     
-    [profileDetail setUserName:[user objectForKey:@"DisplayName"]];
+    [profileDetail setUserName:[user objectForKey:spadeUserDisplayName]];
     
     [self.navigationController pushViewController:profileDetail animated:YES];
 
@@ -190,7 +204,17 @@
     [settingsPressed showFromBarButtonItem:self.navigationItem.rightBarButtonItem animated:YES];
 }
 
-
+-(void)loadFriendsView
+{
+    UIStoryboard *mainStoryboard = [UIStoryboard storyboardWithName:@"Main"
+                                                             bundle: nil];
+    //Create Detail View
+    SpadeFriendTableViewController *friendListViewController = [mainStoryboard   instantiateViewControllerWithIdentifier:@"findFriendView"];
+    
+    UINavigationController *tempNav = [[UINavigationController alloc]initWithRootViewController:friendListViewController];
+    [self presentViewController:tempNav animated:YES completion:nil];
+    
+}
 
 
 

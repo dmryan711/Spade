@@ -1,23 +1,23 @@
 //
-//  SpadeVenueTableViewController.m
+//  SpadeFriendTableViewController.m
 //  Spade
 //
-//  Created by Devon Ryan on 12/14/13.
+//  Created by Devon Ryan on 12/25/13.
 //  Copyright (c) 2013 Devon Ryan. All rights reserved.
 //
 
-#import "SpadeVenueTableViewController.h"
-#import "SpadeVenueDetailViewController.h"
+#import "SpadeFriendTableViewController.h"
 #import "SpadeUtility.h"
-#import "SpadeCache.h"
 #import "SpadeConstants.h"
+#import "SpadeCache.h"
 
-@interface SpadeVenueTableViewController ()
-
+@interface SpadeFriendTableViewController ()
+@property int followerCount;
 @end
 
-@implementation SpadeVenueTableViewController
+@implementation SpadeFriendTableViewController
 
+#define MIN_FOLLOWER 2
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
@@ -29,20 +29,32 @@
 
 -(void)awakeFromNib
 {
-    self.parseClassName = spadeClassVenue;
+    self.parseClassName = spadeClassUser;
     self.textKey = @"Name";
     self.pullToRefreshEnabled = YES;
     self.paginationEnabled = NO;
-    self.objectsPerPage = 3;
+    //self.objectsPerPage = 3;
     
-
+    
+    
+    
+    
 }
 - (void)viewDidLoad
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
-    self.title =  @"Venues";
-
+    self.title =  @"Friends";
+    
+    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc]initWithTitle:@"Follow All" style:UIBarButtonItemStylePlain target:self action:@selector(followAllSelected)];
+    
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]initWithTitle:@"Done" style:UIBarButtonItemStylePlain target:self action:@selector(doneSelected)];
+    
+    if ([[[SpadeCache sharedCache]followingUsers]count] < MIN_FOLLOWER) {
+        [self createAndDisplayFollowerAlert];
+    
+    }
+    
 }
 
 - (void)didReceiveMemoryWarning
@@ -58,6 +70,7 @@
     [super objectsDidLoad:error];
     
     // This method is called every time objects are loaded from Parse via the PFQuery
+    
 }
 
 - (void)objectsWillLoad {
@@ -71,15 +84,18 @@
 // all objects ordered by createdAt descending.
 - (PFQuery *)queryForTable {
     PFQuery *query = [PFQuery queryWithClassName:self.parseClassName];
-    [query includeKey:@"objectId"];
+    [query whereKey:spadeUserFacebookId containedIn:[[PFUser currentUser]objectForKey:spadeUserFriends]]; //Facebook ID is in friends array
+    [query whereKey:spadeUserFacebookId notEqualTo:[[PFUser currentUser]objectForKey:spadeUserFacebookId]]; //Facebook ID is not user
     
+
     // If no objects are loaded in memory, we look to the cache first to fill the table
     // and then subsequently do a query against the network.
-    if ([self.objects count] == 0) {
+    //if ([self.objects count] == 0) {
         query.cachePolicy = kPFCachePolicyCacheThenNetwork;
-    }
+    //}
     
-    [query orderByAscending:spadeVenueSpendLevel];
+    [query orderByAscending:spadeUserDisplayName];
+
     
     return query;
 }
@@ -91,14 +107,17 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath object:(PFObject *)object {
     static NSString *CellIdentifier = @"Cell";
     
+    
+    NSLog(@"Parse Object:%@",[object description]);
+    
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell == nil) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier];
     }
     
     // Configure the cell
-    cell.textLabel.text = [object objectForKey:spadeVenueName];
-    cell.detailTextLabel.text = [NSString stringWithFormat:@"Category: %@", [object objectForKey:spadeVenueCategory]];
+    cell.textLabel.text = [object objectForKey:spadeUserDisplayName];
+    cell.detailTextLabel.text = [object objectForKey:spadeUserFacebookId];
     
     return cell;
 }
@@ -179,45 +198,97 @@
     [super tableView:tableView didSelectRowAtIndexPath:indexPath];
     if (indexPath.row < [self.objects count]) {
         
-        //Set Object
-        PFObject *venueSelection = [self.objects objectAtIndex:indexPath.row];
-   
+        //Set Selection Object
+        PFUser *userSelection = [self.objects objectAtIndex:indexPath.row];
         
-        
-       
-        
-        UIStoryboard *mainStoryboard = [UIStoryboard storyboardWithName:@"Main"
-                                                                 bundle: nil];
         //Create Detail View
-        SpadeVenueDetailViewController *venueDetail = [mainStoryboard   instantiateViewControllerWithIdentifier:@"venueDetailController"];
         
-      
-        
-        [venueDetail setVenueName:[venueSelection objectForKey:spadeVenueName]];
-        [venueDetail setAddressOfVenue:[venueSelection objectForKey:spadeVenueAddress]];
-        [venueDetail setCategory:[NSString stringWithFormat:@"%@",[venueSelection objectForKey:spadeVenueCategory]]];
-        [venueDetail setSpendLevel:[NSString stringWithFormat:@"%@",[SpadeUtility  processCurrencyLevel:[venueSelection objectForKey:spadeVenueSpendLevel]]]];
-        [venueDetail setMusic:[NSString stringWithFormat:@"%@",[venueSelection objectForKey:spadeVenueGenre]]];
-        [venueDetail setCover:[NSString stringWithFormat:@"$%@",[venueSelection objectForKey:spadeVenueCover]]];
-        [venueDetail setBottleService:[NSString stringWithFormat:@"%@",[SpadeUtility processBottleService:(BOOL)[venueSelection objectForKey:spadeVenueTableService]]]];
-        [venueDetail setPictureFile:[venueSelection objectForKey:spadeVenuePicture]];
-        [venueDetail setParseObjectId:[venueSelection  objectId]];
-        [venueDetail setVenue:venueSelection];
-        
-        //Check Cache to see if user is following the venue already
-        if ([[[SpadeCache sharedCache] followingVenues] containsObject:[venueSelection objectId]]) {
-            venueDetail.isFollowing = YES;
-        }
-        
-       //FIRE
-        [self.navigationController pushViewController:venueDetail animated:YES];
         
         
     }
 }
 
 
+#pragma mark Navigation Button Methods
 
+-(void)doneSelected
+{
+    
+    if ([[[SpadeCache sharedCache]followingUsers]count]  >= MIN_FOLLOWER) {
+        NSLog(@"Enough Folllowers");
+        //Unset Login Flag
+        /*if ([[NSUserDefaults standardUserDefaults]boolForKey:spadeFirstLoginFlag]) {
+            [[NSUserDefaults standardUserDefaults]setBool:NO forKey:spadeFirstLoginFlag];
+        }*/
+        
+        [self dismissViewControllerAnimated:YES completion:nil];
+        
+    }else{
+        [self createAndDisplayNotEnoughFollowerAlert];
+    }
+    
+    
+
+}
+
+
+
+-(void)followAllSelected
+{
+    
+    [self createAndDisplayConfirmFollowAllAlert];
+
+
+}
+
+#pragma mark { }
+-(void)followUser:(PFUser *)userSelected
+{
+    
+
+
+}
+#pragma mark Create Alert Methods
+-(void)createAndDisplayFollowerAlert
+{
+    UIAlertView *followerAlert = [[UIAlertView alloc]initWithTitle:@"Start Following!" message:[NSString stringWithFormat:@"Welcome to Spade! \n Start your Spade Experience by following at least %i friends.",MIN_FOLLOWER] delegate:self cancelButtonTitle:@"Sounds Good" otherButtonTitles:nil];
+    
+    [followerAlert show];
+
+}
+
+-(void)createAndDisplayConfirmFollowAllAlert
+{
+    UIAlertView *followerAllAlert = [[UIAlertView alloc]initWithTitle:spadeAlertViewTitleConfirmFollower message:[NSString stringWithFormat:@"Are you sure you would like to follow these %i friends",(int)self.objects.count] delegate:self cancelButtonTitle:@"Sounds Good" otherButtonTitles:@"No Way",nil];
+    
+    [followerAllAlert show];
+
+}
+
+-(void)createAndDisplayNotEnoughFollowerAlert
+{
+    int remainingLeftToFollow =  MIN_FOLLOWER - (int)[[[SpadeCache sharedCache]followingUsers]count] ;
+    UIAlertView *followerAlert = [[UIAlertView alloc]initWithTitle:@"Almost There!" message:[NSString stringWithFormat:@"Please select %i more friends to follow",remainingLeftToFollow] delegate:self cancelButtonTitle:@"Sounds Good" otherButtonTitles:nil];
+    
+    [followerAlert show];
+
+}
+
+#pragma mark AlertView Delegate Method
+#define ALERT_CANCEL_BUTTON 0
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if ([alertView.title isEqualToString:spadeAlertViewTitleConfirmFollower]) {
+        if (buttonIndex == ALERT_CANCEL_BUTTON) {
+            //Update Cache
+            [[[SpadeCache sharedCache]followingUsers] addObjectsFromArray:self.objects];
+            
+            //Push to Parse
+            [SpadeUtility user:[PFUser currentUser] followingUsers:self.objects];
+        }
+    }
+
+}
 
 
 @end
