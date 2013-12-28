@@ -10,14 +10,17 @@
 #import "SpadeUtility.h"
 #import "SpadeConstants.h"
 #import "SpadeCache.h"
+#import "SpadeFeedController.h"
 
 @interface SpadeFriendTableViewController ()
-@property int followerCount;
+
+
+@property (strong, nonatomic)NSMutableArray *usersFollowed;
 @end
 
 @implementation SpadeFriendTableViewController
 
-#define MIN_FOLLOWER 2
+#define MIN_FOLLOWER 4
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
@@ -39,6 +42,7 @@
     
     
     
+    
 }
 - (void)viewDidLoad
 {
@@ -46,9 +50,10 @@
 	// Do any additional setup after loading the view.
     self.title =  @"Friends";
     
-    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc]initWithTitle:@"Follow All" style:UIBarButtonItemStylePlain target:self action:@selector(followAllSelected)];
+    /*self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc]initWithTitle:@"Follow All" style:UIBarButtonItemStylePlain target:self action:@selector(followAllSelected)];*/
     
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]initWithTitle:@"Done" style:UIBarButtonItemStylePlain target:self action:@selector(doneSelected)];
+    
     
     if ([[[SpadeCache sharedCache]followingUsers]count] < MIN_FOLLOWER) {
         [self createAndDisplayFollowerAlert];
@@ -105,19 +110,32 @@
 // Override to customize the look of a cell representing an object. The default is to display
 // a UITableViewCellStyleDefault style cell with the label being the first key in the object.
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath object:(PFObject *)object {
-    static NSString *CellIdentifier = @"Cell";
+    static NSString *CellIdentifier = @"FriendCell";
     
-    
-    NSLog(@"Parse Object:%@",[object description]);
-    
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+   SpadeFollowCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell == nil) {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier];
+        cell = [[SpadeFollowCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier];
     }
     
+    cell.delegate = self;
+    cell.object = object;
+    
+    
+    if ([[[SpadeCache sharedCache]followingUsers] containsObject:object.objectId]) {
+        [cell.followButton setTitle:spadeFollowButtonTitleUnfollow forState:UIControlStateNormal];
+    }else{
+        [cell.followButton setTitle:spadeFollowButtonTitleFollow forState:UIControlStateNormal];
+    }
     // Configure the cell
-    cell.textLabel.text = [object objectForKey:spadeUserDisplayName];
-    cell.detailTextLabel.text = [object objectForKey:spadeUserFacebookId];
+    cell.nameLabel.text = [object objectForKey:spadeUserDisplayName];
+    
+    if ([object objectForKey:spadeUserSmallProfilePic]) {
+        [cell.profileImageView setFile:[object objectForKey:spadeUserSmallProfilePic]];
+        [cell.profileImageView loadInBackground];
+    }else{
+        cell.profileImageView.image = [UIImage imageNamed:@"AvatarPlaceHolder.png"];
+    }
+    
     
     return cell;
 }
@@ -199,7 +217,7 @@
     if (indexPath.row < [self.objects count]) {
         
         //Set Selection Object
-        PFUser *userSelection = [self.objects objectAtIndex:indexPath.row];
+       // PFUser *userSelection = [self.objects objectAtIndex:indexPath.row];
         
         //Create Detail View
         
@@ -217,11 +235,22 @@
     if ([[[SpadeCache sharedCache]followingUsers]count]  >= MIN_FOLLOWER) {
         NSLog(@"Enough Folllowers");
         //Unset Login Flag
-        /*if ([[NSUserDefaults standardUserDefaults]boolForKey:spadeFirstLoginFlag]) {
-            [[NSUserDefaults standardUserDefaults]setBool:NO forKey:spadeFirstLoginFlag];
-        }*/
+        if ([[NSUserDefaults standardUserDefaults]boolForKey:spadeFirstLoginFlag]) {
+            //[[NSUserDefaults standardUserDefaults]setBool:NO forKey:spadeFirstLoginFlag];
+        }
         
-        [self dismissViewControllerAnimated:YES completion:nil];
+        if ([self.navigationController.viewControllers objectAtIndex:0] == self){
+            
+            NSLog(@"No Nav");
+            [self dismissViewControllerAnimated:YES completion:nil];
+            
+        }else{
+            
+            NSLog(@"Nav");
+            [self.navigationController popViewControllerAnimated:YES];
+        
+        }
+        
         
     }else{
         [self createAndDisplayNotEnoughFollowerAlert];
@@ -233,21 +262,16 @@
 
 
 
--(void)followAllSelected
+/*-(void)followAllSelected
 {
     
     [self createAndDisplayConfirmFollowAllAlert];
 
 
-}
-
-#pragma mark { }
--(void)followUser:(PFUser *)userSelected
-{
-    
+}*/
 
 
-}
+
 #pragma mark Create Alert Methods
 -(void)createAndDisplayFollowerAlert
 {
@@ -257,13 +281,13 @@
 
 }
 
--(void)createAndDisplayConfirmFollowAllAlert
+/*-(void)createAndDisplayConfirmFollowAllAlert
 {
     UIAlertView *followerAllAlert = [[UIAlertView alloc]initWithTitle:spadeAlertViewTitleConfirmFollower message:[NSString stringWithFormat:@"Are you sure you would like to follow these %i friends",(int)self.objects.count] delegate:self cancelButtonTitle:@"Sounds Good" otherButtonTitles:@"No Way",nil];
     
     [followerAllAlert show];
 
-}
+}*/
 
 -(void)createAndDisplayNotEnoughFollowerAlert
 {
@@ -276,18 +300,68 @@
 
 #pragma mark AlertView Delegate Method
 #define ALERT_CANCEL_BUTTON 0
-- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+/*- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
     if ([alertView.title isEqualToString:spadeAlertViewTitleConfirmFollower]) {
         if (buttonIndex == ALERT_CANCEL_BUTTON) {
             //Update Cache
-            [[[SpadeCache sharedCache]followingUsers] addObjectsFromArray:self.objects];
+            for (PFObject *object in self.objects)
+            {
             
+                [[[SpadeCache sharedCache]followingUsers] addObject:object.objectId];
+            }
+            
+            
+             NSLog(@"User Cache: %@",[[SpadeCache sharedCache]followingUsers]);
             //Push to Parse
             [SpadeUtility user:[PFUser currentUser] followingUsers:self.objects];
         }
     }
 
+}*/
+
+
+#pragma mark SpadeFollowCell Delegate Methods
+-(void)followWasPressedWithTitle:(NSString *)title forObject:(PFObject *)object
+{
+    if ([title isEqualToString:spadeFollowButtonTitleFollow]) {
+        //set cache to follow user
+        NSLog(@"Beginning to Follow");
+        NSLog(@"User Cache: %@",[[SpadeCache sharedCache]followingUsers]);
+        [[[SpadeCache sharedCache]followingUsers] addObject:object.objectId];
+        
+        //Follow User in Parse
+        [SpadeUtility user:[PFUser currentUser] followingUser:(PFUser *)object];
+        
+    }else if ([title isEqualToString:spadeFollowButtonTitleUnfollow]){
+        
+        NSLog(@"Beginning to UnFollow");
+        NSLog(@"User Cache: %@",[[SpadeCache sharedCache]followingUsers]);
+        //set cache to remove user from follow list
+        [[[SpadeCache sharedCache]followingUsers] removeObject:object.objectId];
+        
+        //unfollow from Parse
+        [SpadeUtility user:[PFUser currentUser] unfollowingUser:(PFUser *)object];
+    
+    }else{
+        NSError *error = [NSError errorWithDomain:@"Cell Title Not Matching Follow/UNfollow" code:1 userInfo:@{@"Title": [NSString stringWithFormat:@"Button Title: %@", title]}];
+        
+        NSLog(@"Error: %@",error.description);
+    }
+
+}
+
+
+-(void)shouldToggleFollowButtonTitleforCell:(SpadeFollowCell *)cell
+{
+    
+    if ([cell.followButton.titleLabel.text isEqualToString:spadeFollowButtonTitleFollow]) {
+        [cell.followButton setTitle:spadeFollowButtonTitleUnfollow forState:UIControlStateNormal];
+    }else if([cell.followButton.titleLabel.text isEqualToString:spadeFollowButtonTitleUnfollow]){
+        
+        [cell.followButton setTitle:spadeFollowButtonTitleFollow forState:UIControlStateNormal];
+    }
+    
 }
 
 

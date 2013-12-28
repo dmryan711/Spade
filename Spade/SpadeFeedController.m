@@ -13,6 +13,7 @@
 #import <Parse/Parse.h>
 #import "SpadeConstants.h"
 #import "SpadeFriendTableViewController.h"
+#import "SpadeCache.h"
 
 @interface SpadeFeedController ()
 @property (strong,nonatomic) NSArray *dataSet;
@@ -35,7 +36,6 @@
 
 -(void)awakeFromNib
 {
-    NSLog(@"called");
     self.parseClassName = spadeClassActivity;
     self.textKey = @"objectId";
     self.pullToRefreshEnabled = YES;
@@ -45,7 +45,8 @@
 
 - (void)viewDidLoad
 {
-    NSLog(@"View Did Load");
+    
+
     [super viewDidLoad];
    
     //[self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:@"Cell"];
@@ -166,7 +167,7 @@
     
     
     }else if (buttonIndex == FIND_FRIEND){
-        [self performSegueWithIdentifier:@"moveToFindFriends" sender:self];
+        [self segueToFriendView];
     
     }
 
@@ -186,6 +187,17 @@
 
 }
 
+-(void)segueToFriendView
+{
+    UIStoryboard *mainStoryboard = [UIStoryboard storyboardWithName:@"Main"
+                                                             bundle: nil];
+    //Create Detail View
+    SpadeFriendTableViewController *friendTableViewController = [mainStoryboard   instantiateViewControllerWithIdentifier:@"findFriendView"];
+    
+    [self.navigationController pushViewController:friendTableViewController animated:YES];
+    
+}
+
 
 #pragma mark { }
 -(void)logOutPressed
@@ -197,7 +209,6 @@
 
 -(void)settingsPressed{
     
-    //UIImageView *image =[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"skyline_7.png"]];
     
     UIActionSheet *settingsPressed = [[UIActionSheet alloc]initWithTitle:@"Settings" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:@"Log Out" otherButtonTitles:@"Profile",@"Find Friends", nil];
 

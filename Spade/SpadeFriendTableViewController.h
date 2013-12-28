@@ -7,7 +7,8 @@
 //
 
 #import <Parse/Parse.h>
+#import "SpadeFollowCell.h"
 
-@interface SpadeFriendTableViewController : PFQueryTableViewController <UIAlertViewDelegate>
+@interface SpadeFriendTableViewController : PFQueryTableViewController <UIAlertViewDelegate,SpadeFollowCellDelegate>
 
 @end

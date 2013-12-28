@@ -156,6 +156,22 @@
 }
 
 
++(void)user:(PFUser *)user unfollowingVenue:(PFObject *)venue
+{
+    PFQuery *activityFollowingQuery = [PFQuery queryWithClassName:spadeClassActivity];
+    [activityFollowingQuery whereKeyExists:spadeActivityToVenue];
+    [activityFollowingQuery whereKey:spadeActivityFromUser equalTo:user];
+    [activityFollowingQuery whereKey:spadeActivityToVenue equalTo:venue];
+    [activityFollowingQuery findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error){
+        if (!error) {
+            for(PFObject *followingActivity in objects){
+                [followingActivity deleteEventually];
+            }
+        }
+    }];
+
+}
+
 +(void)processUserName:(NSString *)name forUser:(PFUser *)user
 {
     [user setObject:name forKey:spadeUserDisplayName];
@@ -171,7 +187,7 @@
     [activity setObject:[PFUser currentUser] forKey:spadeActivityFromUser];
     [activity setObject:friendUser forKey:spadeActivityToUser];
     [activity setObject:spadeActivityActionFollowingUser forKey:spadeActivityAction];
-    
+    NSLog(@"follow user");
     [activity saveEventually];
     
 }
@@ -185,5 +201,35 @@
     }
 }
 
+
++(void)user:(PFUser *)user unfollowingUser:(PFUser *)friendUser
+{
+    PFQuery *activityFollowingQuery = [PFQuery queryWithClassName:spadeClassActivity];
+    [activityFollowingQuery whereKeyExists:spadeActivityToUser];
+    [activityFollowingQuery whereKey:spadeActivityFromUser equalTo:user];
+    [activityFollowingQuery whereKey:spadeActivityToUser equalTo:friendUser];
+    [activityFollowingQuery findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error){
+        if (!error) {
+            for(PFObject *followingActivity in objects){
+                [followingActivity deleteEventually];
+            }
+        }
+    }];
+}
++(void)user:(PFUser *)user unfollowingUsers:(NSArray *)friendUsers
+{
+    PFQuery *activityFollowingQuery = [PFQuery queryWithClassName:spadeClassActivity];
+    [activityFollowingQuery whereKeyExists:spadeActivityToUser];
+    [activityFollowingQuery whereKey:spadeActivityFromUser equalTo:user];
+    [activityFollowingQuery whereKey:spadeActivityToUser containedIn:friendUsers];
+    [activityFollowingQuery findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error){
+        if (!error) {
+            for(PFObject *followingActivity in objects){
+                [followingActivity deleteEventually];
+            }
+        }
+    }];
+
+}
 
 @end

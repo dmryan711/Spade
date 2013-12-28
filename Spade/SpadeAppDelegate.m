@@ -215,16 +215,16 @@
             [user saveInBackgroundWithBlock:^(BOOL succeeded , NSError *error){
                 if (succeeded) {
                     
-                    //Follow the Spade Team
+                   /* //Follow the Spade Team
                     PFQuery *querySpadeTeam = [PFQuery queryWithClassName:spadeClassUser];
                     [querySpadeTeam whereKey:spadeUserFacebookId containedIn:@[spadeDevonFacebookId]];
                     
                     [querySpadeTeam findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error){
                         if (!error) {
-                            NSLog(@"HIT");
+                           
                             [SpadeUtility user:[PFUser currentUser] followingUsers:objects];
                         }
-                    }];
+                    }];*/
                 }
             }];
                 
@@ -310,7 +310,6 @@
 
 -(void)setCacheForUser{
     
-    NSLog(@"Venue Cache %@",[[SpadeCache sharedCache]followingVenues]);
     //Query for Followed Venues
     PFQuery *queryFollowedVenues = [PFQuery queryWithClassName:spadeClassActivity];
     [queryFollowedVenues whereKey:spadeActivityFromUser equalTo:[PFUser currentUser]];
@@ -323,7 +322,7 @@
                 
                 [[[SpadeCache sharedCache]followingVenues]addObject:[[object objectForKey:spadeActivityToVenue]objectId]];
             }
-            
+           NSLog(@"In App Del User Cache: %@",[[SpadeCache sharedCache]followingUsers]);
         }else{
             NSLog(@"App Delegate Set Query Error:%@",error);
         
@@ -342,13 +341,14 @@
             for(PFObject *object in followedUsersForUserFromParse){
                 [[[SpadeCache sharedCache]followingUsers]addObject:[[object objectForKey:spadeActivityToUser]objectId]];
             }
+            
         }else{
             NSLog(@"App Delegate Set Query Error:%@",error);
             
         }
         
-        NSLog(@"HITTT user cache");
-        NSLog(@"User Cache %@",[[SpadeCache sharedCache]followingUsers]);
+        
+        
         
     }];
 

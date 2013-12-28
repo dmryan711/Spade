@@ -57,6 +57,10 @@ extern NSString * const spadeVenueCover;
 //AlertView Titles Used for Comparison
 extern NSString * const spadeAlertViewTitleConfirmFollower;
 
+//Follow Button Title
+extern NSString * const spadeFollowButtonTitleFollow ;
+extern NSString * const spadeFollowButtonTitleUnfollow;
+
 //Spade Team Facebook Ids
 extern NSString * const spadeDevonFacebookId;
 

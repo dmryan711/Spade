@@ -9,9 +9,15 @@
 #import "SpadeLoginViewController.h"
 #import <UIKit/UIKit.h>
 
+
+
 @interface SpadeAppDelegate : UIResponder <UIApplicationDelegate, UITabBarControllerDelegate, PFLogInViewControllerDelegate,NSURLConnectionDataDelegate>
 
+
+
+
 @property (strong, nonatomic) UIWindow *window;
+
 
 
 -(void)presentLoginView;

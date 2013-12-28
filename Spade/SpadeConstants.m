@@ -59,8 +59,14 @@ NSString * const spadeVenueCover  = @"Cover";
 //Alert View Titles for Comparison
 NSString * const spadeAlertViewTitleConfirmFollower = @"Just Asking!";
 
+//Follow Button Title
+NSString * const spadeFollowButtonTitleFollow = @"Follow";
+NSString * const spadeFollowButtonTitleUnfollow = @"Unfollow";
+
 
 //Spade Team Facebook Ids
 NSString * const spadeDevonFacebookId = @"15723417";
+
+
 
 @end
