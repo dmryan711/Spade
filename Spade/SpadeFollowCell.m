@@ -41,9 +41,7 @@
     // Configure the view for the selected state
 }
 - (IBAction)followPressed:(UIButton *)button {
-    [self.delegate  shouldToggleFollowButtonTitleforCell:self];
-    
-    [self.delegate followWasPressedWithTitle:button.titleLabel.text forObject:self.object];
+    [self.delegate followButtonWasPressedForCell:self];
 }
 
 #pragma mark { }

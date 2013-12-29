@@ -109,7 +109,7 @@
 
 // Override to customize the look of a cell representing an object. The default is to display
 // a UITableViewCellStyleDefault style cell with the label being the first key in the object.
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath object:(PFObject *)object {
+- (SpadeFollowCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath object:(PFObject *)object {
     static NSString *CellIdentifier = @"FriendCell";
     
    SpadeFollowCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
@@ -322,29 +322,31 @@
 
 
 #pragma mark SpadeFollowCell Delegate Methods
--(void)followWasPressedWithTitle:(NSString *)title forObject:(PFObject *)object
+-(void)followButtonWasPressedForCell:(SpadeFollowCell *)cell
 {
-    if ([title isEqualToString:spadeFollowButtonTitleFollow]) {
+    if ([cell.followButton.titleLabel.text isEqualToString:spadeFollowButtonTitleFollow]) {
+        [cell.followButton setTitle:spadeFollowButtonTitleUnfollow forState:UIControlStateNormal];
         //set cache to follow user
         NSLog(@"Beginning to Follow");
         NSLog(@"User Cache: %@",[[SpadeCache sharedCache]followingUsers]);
-        [[[SpadeCache sharedCache]followingUsers] addObject:object.objectId];
+        [[[SpadeCache sharedCache]followingUsers] addObject:cell.object.objectId];
         
         //Follow User in Parse
-        [SpadeUtility user:[PFUser currentUser] followingUser:(PFUser *)object];
+        [SpadeUtility user:[PFUser currentUser] followingUser:(PFUser *)cell.object];
         
-    }else if ([title isEqualToString:spadeFollowButtonTitleUnfollow]){
+    }else if ([cell.followButton.titleLabel.text isEqualToString:spadeFollowButtonTitleUnfollow]){
+        [cell.followButton setTitle:spadeFollowButtonTitleFollow forState:UIControlStateNormal];
         
         NSLog(@"Beginning to UnFollow");
         NSLog(@"User Cache: %@",[[SpadeCache sharedCache]followingUsers]);
         //set cache to remove user from follow list
-        [[[SpadeCache sharedCache]followingUsers] removeObject:object.objectId];
+        [[[SpadeCache sharedCache]followingUsers] removeObject:cell.object.objectId];
         
         //unfollow from Parse
-        [SpadeUtility user:[PFUser currentUser] unfollowingUser:(PFUser *)object];
+        [SpadeUtility user:[PFUser currentUser] unfollowingUser:(PFUser *)cell.object];
     
     }else{
-        NSError *error = [NSError errorWithDomain:@"Cell Title Not Matching Follow/UNfollow" code:1 userInfo:@{@"Title": [NSString stringWithFormat:@"Button Title: %@", title]}];
+        NSError *error = [NSError errorWithDomain:@"Cell Title Not Matching Follow/UNfollow" code:1 userInfo:@{@"Title": [NSString stringWithFormat:@"Button Title: %@", cell.nameLabel.text ]}];
         
         NSLog(@"Error: %@",error.description);
     }
@@ -352,17 +354,7 @@
 }
 
 
--(void)shouldToggleFollowButtonTitleforCell:(SpadeFollowCell *)cell
-{
-    
-    if ([cell.followButton.titleLabel.text isEqualToString:spadeFollowButtonTitleFollow]) {
-        [cell.followButton setTitle:spadeFollowButtonTitleUnfollow forState:UIControlStateNormal];
-    }else if([cell.followButton.titleLabel.text isEqualToString:spadeFollowButtonTitleUnfollow]){
-        
-        [cell.followButton setTitle:spadeFollowButtonTitleFollow forState:UIControlStateNormal];
-    }
-    
-}
+
 
 
 @end

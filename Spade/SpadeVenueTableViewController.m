@@ -88,17 +88,25 @@
 
 // Override to customize the look of a cell representing an object. The default is to display
 // a UITableViewCellStyleDefault style cell with the label being the first key in the object.
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath object:(PFObject *)object {
-    static NSString *CellIdentifier = @"Cell";
+- (SpadeVenueFollowCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath object:(PFObject *)object {
+    static NSString *CellIdentifier = @"VenueCell";
     
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+    SpadeVenueFollowCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell == nil) {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier];
+        cell = [[SpadeVenueFollowCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier];
     }
-    
+    cell.delegate = self;
+    cell.object = object;
     // Configure the cell
-    cell.textLabel.text = [object objectForKey:spadeVenueName];
-    cell.detailTextLabel.text = [NSString stringWithFormat:@"Category: %@", [object objectForKey:spadeVenueCategory]];
+    if ([object objectForKey:spadeVenuePicture]) {
+        [cell.venueImage setFile:[object objectForKey:spadeVenuePicture]];
+        [cell.venueImage   loadInBackground];
+    }else{
+        cell.venueImage.image = [UIImage imageNamed:@"AvatarPlaceHolder.png"];
+    }
+    cell.nameLabel.text = [object objectForKey:spadeVenueName];
+    
+    cell.categoryLabel.text = [NSString stringWithFormat:@"Category: %@", [object objectForKey:spadeVenueCategory]];
     
     return cell;
 }
@@ -217,7 +225,37 @@
 }
 
 
+#pragma mark Cell Delegate Methods
+-(void)followButtonWasPressedForCell:(SpadeFollowCell *)cell
+{
+    if ([cell.followButton.titleLabel.text isEqualToString:spadeFollowButtonTitleFollow]) {
+        [cell.followButton setTitle:spadeFollowButtonTitleUnfollow forState:UIControlStateNormal];
+        //set cache to follow venue
+        NSLog(@"Beginning to Follow");
+        NSLog(@"Venue Cache: %@",[[SpadeCache sharedCache]followingVenues]);
+        [[[SpadeCache sharedCache]followingVenues] addObject:cell.object.objectId];
+        
+        //Follow Venue in Parse
+        [SpadeUtility user:[PFUser currentUser] followingVenue:cell.object];
+        
+    }else if ([cell.followButton.titleLabel.text isEqualToString:spadeFollowButtonTitleUnfollow]){
+        [cell.followButton setTitle:spadeFollowButtonTitleFollow forState:UIControlStateNormal];
+        
+        NSLog(@"Beginning to UnFollow");
+        NSLog(@"Venue Cache: %@",[[SpadeCache sharedCache]followingVenues]);
+        //set cache to remove user from follow list
+        [[[SpadeCache sharedCache]followingVenues] removeObject:cell.object.objectId];
+        
+        //unfollow from Parse
+        [SpadeUtility user:[PFUser currentUser] unfollowingVenue:cell.object];
+        
+    }else{
+        NSError *error = [NSError errorWithDomain:@"Cell Title Not Matching Follow/UNfollow" code:1 userInfo:@{@"Title": [NSString stringWithFormat:@"Button Title: %@", cell.nameLabel.text ]}];
+        
+        NSLog(@"Error: %@",error.description);
+    }
 
+}
 
 
 @end

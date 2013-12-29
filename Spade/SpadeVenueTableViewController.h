@@ -6,8 +6,9 @@
 //  Copyright (c) 2013 Devon Ryan. All rights reserved.
 //
 
+#import "SpadeVenueFollowCell.h"
 #import <Parse/Parse.h>
 
-@interface SpadeVenueTableViewController : PFQueryTableViewController
+@interface SpadeVenueTableViewController : PFQueryTableViewController <SpadeFollowCellDelegate>
 
 @end

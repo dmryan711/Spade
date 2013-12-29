@@ -25,8 +25,6 @@
 
 @protocol SpadeFollowCellDelegate <NSObject>
 @required
--(void)followWasPressedWithTitle:(NSString *)title forObject:(PFObject *)
-object;
--(void)shouldToggleFollowButtonTitleforCell:(SpadeFollowCell *)cell;
+-(void)followButtonWasPressedForCell:(SpadeFollowCell *)cell;
 
 @end

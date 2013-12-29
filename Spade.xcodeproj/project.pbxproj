@@ -39,6 +39,7 @@
 		9196A8E2186D29F500513082 /* SpadeFollowCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 9196A8E1186D29F500513082 /* SpadeFollowCell.m */; };
 		9196A8E5186D2E0400513082 /* AvatarPlaceholder.png in Resources */ = {isa = PBXBuildFile; fileRef = 9196A8E3186D2E0400513082 /* AvatarPlaceholder.png */; };
 		9196A8E6186D2E0400513082 /* AvatarPlaceholder@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9196A8E4186D2E0400513082 /* AvatarPlaceholder@2x.png */; };
+		9196A8E9186F8ACF00513082 /* SpadeVenueFollowCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 9196A8E8186F8ACF00513082 /* SpadeVenueFollowCell.m */; };
 		91D9D6351842F643005BD0BC /* Parse.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 91D9D6341842F643005BD0BC /* Parse.framework */; };
 		91D9D6371842F72A005BD0BC /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 91D9D6361842F72A005BD0BC /* AudioToolbox.framework */; };
 		91D9D6391842F735005BD0BC /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 91D9D6381842F735005BD0BC /* CFNetwork.framework */; };
@@ -114,6 +115,8 @@
 		9196A8E1186D29F500513082 /* SpadeFollowCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SpadeFollowCell.m; sourceTree = "<group>"; };
 		9196A8E3186D2E0400513082 /* AvatarPlaceholder.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = AvatarPlaceholder.png; path = "../../../../Downloads/ParsePlatform-Anypic-cd02eb4/Anypic-iOS/Resources/Assets/AvatarPlaceholder.png"; sourceTree = "<group>"; };
 		9196A8E4186D2E0400513082 /* AvatarPlaceholder@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "AvatarPlaceholder@2x.png"; path = "../../../../Downloads/ParsePlatform-Anypic-cd02eb4/Anypic-iOS/Resources/Assets/AvatarPlaceholder@2x.png"; sourceTree = "<group>"; };
+		9196A8E7186F8ACF00513082 /* SpadeVenueFollowCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SpadeVenueFollowCell.h; sourceTree = "<group>"; };
+		9196A8E8186F8ACF00513082 /* SpadeVenueFollowCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SpadeVenueFollowCell.m; sourceTree = "<group>"; };
 		91D9D6341842F643005BD0BC /* Parse.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Parse.framework; path = ../../../Downloads/Parse.framework; sourceTree = "<group>"; };
 		91D9D6361842F72A005BD0BC /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		91D9D6381842F735005BD0BC /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
@@ -206,6 +209,8 @@
 				9141E87618407A5000A5DE15 /* Main.storyboard */,
 				9196A8E0186D29F500513082 /* SpadeFollowCell.h */,
 				9196A8E1186D29F500513082 /* SpadeFollowCell.m */,
+				9196A8E7186F8ACF00513082 /* SpadeVenueFollowCell.h */,
+				9196A8E8186F8ACF00513082 /* SpadeVenueFollowCell.m */,
 			);
 			name = View;
 			sourceTree = "<group>";
@@ -446,6 +451,7 @@
 				9196A8DC186B574700513082 /* SpadeFriendTableViewController.m in Sources */,
 				915BEDAF1857DB5A00FCA17A /* UIImage+AlphaAdditions.m in Sources */,
 				91D9D64A1843021D005BD0BC /* SpadeLoginViewController.m in Sources */,
+				9196A8E9186F8ACF00513082 /* SpadeVenueFollowCell.m in Sources */,
 				9141E87118407A5000A5DE15 /* main.m in Sources */,
 				91221339185CCED500BA29E8 /* SpadeVenueDetailViewController.m in Sources */,
 				91221336185C407300BA29E8 /* SpadeVenueTableViewController.m in Sources */,
