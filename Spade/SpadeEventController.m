@@ -20,7 +20,9 @@
 @property (weak, nonatomic) IBOutlet UIPickerView *venuePickerView;
 @property (weak, nonatomic) IBOutlet UIDatePicker *whenPickerView;
 @property (strong, nonatomic) NSMutableArray *venues;
+@property (strong, nonatomic) NSMutableArray *myEvents;
 @property (strong, nonatomic) PFQuery *venueQuery;
+@property (strong, nonatomic) PFQuery *myEventsQuery;
 @property (weak, nonatomic) IBOutlet UISegmentedControl *eventSegmentController;
 @property (weak, nonatomic) IBOutlet UIView *createEventView;
 @property (weak, nonatomic) IBOutlet PFImageView *eventImageView;
@@ -28,6 +30,10 @@
 @property (strong,nonatomic) PFFile *fileForEventImage;
 @property (weak, nonatomic) IBOutlet UIProgressView *imageLoadBar;
 @property (strong,nonatomic) UIImagePickerController *imagePicker;
+@property (weak, nonatomic) IBOutlet UITableView *manageEventsTableView;
+@property (strong, nonatomic) UIRefreshControl *myEventsTableRefreshControl;
+@property (weak, nonatomic) IBOutlet UILabel *myEventsLabel;
+@property int venueIndex;
 
 @end
 
@@ -56,14 +62,21 @@
     self.venuePickerView.hidden = YES;
     self.whenPickerView.hidden = YES;
     self.imageLoadBar.hidden = YES;
-
+    self.manageEventsTableView.hidden = YES;
+    self.myEventsLabel.hidden = YES;
     
-    
+    //Set Refresh Controls
+    self.myEventsTableRefreshControl = [[UIRefreshControl alloc]init];
+    [self.myEventsTableRefreshControl addTarget:self action:@selector(runMyEventQueryAndReloadData ) forControlEvents:UIControlEventValueChanged];
+    [self.manageEventsTableView addSubview:self.myEventsTableRefreshControl];
     
     self.venueQuery = [PFQuery queryWithClassName:spadeClassVenue];
     NSLog(@"Venue Query %@",[self.venueQuery description]);
-    [self runQueryAndLoadData];
+    [self runVenueQueryAndLoadData];
     [self setDatePicker];
+    
+    self.myEventsQuery = [PFQuery queryWithClassName:spadeClassEvent];
+    [self runMyEventQueryAndReloadData];
     
     
 }
@@ -83,10 +96,15 @@
     if (sender.selectedSegmentIndex == MY_EVENTS_SEGMENT ) {
         //self.navigationItem.rightBarButtonItem = nil;
         self.createEventView.hidden = YES;
+        self.myEventsLabel.hidden = NO;
+        self.manageEventsTableView.hidden = NO;
+        [self runMyEventQueryAndReloadData];
         
     }else if (sender.selectedSegmentIndex == CREATE_EVENT_SEGMENT){
         /*self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]initWithTitle:@"Invite Friends" style:UIBarButtonItemStyleBordered target:self action:nil];*/
         self.createEventView.hidden = NO;
+        self.manageEventsTableView.hidden  = YES;
+        self.myEventsLabel.hidden = YES;
     }
 }
 
@@ -185,6 +203,7 @@
 
 - (void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component
 {
+    self.venueIndex = row;
     self.eventWhereLabel.text = [[self.venues objectAtIndex:row]objectForKey:spadeVenueName];
 
 }
@@ -229,28 +248,12 @@
     }else{
         //Switch Profile Image Locally & Animate Progress Bar
         self.fileForEventImage = [PFFile fileWithData:UIImageJPEGRepresentation([info objectForKey:UIImagePickerControllerOriginalImage], 0.5)];
-        [self.fileForEventImage saveInBackgroundWithBlock:^(BOOL succeeded , NSError *error){
-            if (!error) {
+
                 [self.eventImageView setFile:self.fileForEventImage];
                 [self.eventImageView loadInBackground];
                 
-                //Process & Upload to Parse
-                [SpadeUtility processProfilePictureData:UIImageJPEGRepresentation([info objectForKey:UIImagePickerControllerOriginalImage],0.5)];
-            }
-            if (succeeded) {
-                //self.imageLoadBar.hidden = YES;
-                self.imageLoadBar.progress = 0.0;
-            }
-            
-        }
-                                            progressBlock:^(int percentDone){
-                                                [self.imageLoadBar setProgress:(float)percentDone];
-                                                if (percentDone == 100) {
-                                                    self.imageLoadBar.hidden = YES;
-                                                }
-                                            }];
         
-        //Upload Photo To Parse
+        //Dimiss Photo View
         [self dismissViewControllerAnimated:YES completion:nil];
     }
 }
@@ -303,16 +306,90 @@
 {}
 
 
+#define EDIT_BUTTON 0
+#define SUBMIT_BUTTON 1
+#pragma mark Alert View Delegate Methods
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if ([alertView.title isEqualToString:spadeAlertViewTitleConfirmEvent]) {
+        
+        if (buttonIndex == SUBMIT_BUTTON) {
+            
+            [SpadeUtility user:[PFUser currentUser] creatingEventWithName:self.eventNameTextField.text forVenue:[self.venues objectAtIndex:self.venueIndex] forWhen:self.eventWhenLabel.text withImageFile:self.fileForEventImage];
+        }
+    }
+
+}
+
+#pragma mark MY EVENTS SEGMENT
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    return [self.myEvents count];
+}
+
+// Row display. Implementers should *always* try to reuse cells by setting each cell's reuseIdentifier and querying for available reusable cells with dequeueReusableCellWithIdentifier:
+// Cell gets various attributes set automatically based on table (separators) and data source (accessory views, editing controls)
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    static NSString *CellIdentifier = @"Cell";
+    
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+    if (cell == nil) {
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier];
+    }
+    
+    PFObject *object = [self.myEvents objectAtIndex:indexPath.row];
+    NSLog(@"%@",[object description]);
+    cell.textLabel.text = [object objectForKey:spadeEventName];
+    return cell;
+    
+}
+
+#pragma mark - Table view data source
+
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
+    // Return the number of sections.
+    return 1;
+}
+
+
 
 
 
 #pragma mark { }
--(void)runQueryAndLoadData
+
+-(void)runMyEventQueryAndReloadData
+{
+    if (!_myEvents) _myEvents = [[NSMutableArray alloc]init];
+    
+    [self.myEventsQuery findObjectsInBackgroundWithBlock:^(NSArray *objectsFound, NSError *error){
+        if (!error) {
+            NSLog(@"Ran");
+            [self.myEvents removeAllObjects];
+            [self.myEvents addObjectsFromArray:objectsFound];
+            [self.myEventsTableRefreshControl endRefreshing];
+            [self.manageEventsTableView reloadData];
+            
+            
+        }
+        
+    }];
+    
+    
+}
+
+
+#pragma mark { }
+-(void)runVenueQueryAndLoadData
 {
     [self.venueQuery findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error){
         if (!error) {
             NSLog(@"Ran Query");
+           
             [self.venues addObjectsFromArray:objects];
+             NSLog(@"%@",[self.venues description]);
             [self.venuePickerView reloadAllComponents];
         }
     
@@ -330,7 +407,7 @@
 -(void)createEventCreationConfirmationAlert
 {
     
-    UIAlertView *eventCreationAlert = [[UIAlertView alloc]initWithTitle:@"Create Event" message:[NSString stringWithFormat:@"Please confirm the following event:\n Event Name: %@\n Where: %@\n When: %@",self.eventNameTextField.text,self.eventWhereLabel.text, self.eventWhenLabel.text] delegate:self cancelButtonTitle:@"Edit" otherButtonTitles: @"Create Event",nil];
+    UIAlertView *eventCreationAlert = [[UIAlertView alloc]initWithTitle:spadeAlertViewTitleConfirmEvent message:[NSString stringWithFormat:@"Please confirm the following event:\n Event Name: %@\n Where: %@\n When: %@",self.eventNameTextField.text,self.eventWhereLabel.text, self.eventWhenLabel.text] delegate:self cancelButtonTitle:@"Edit" otherButtonTitles: @"Create Event",nil];
     [eventCreationAlert show];
 }
 
@@ -361,6 +438,11 @@
   
     self.eventWhenLabel.text =  [NSString stringWithFormat:@"%@   at   %@",dateString,timeString];
                                                              
+}
+
+-(void)refresh:(UIRefreshControl *)refreshControl
+{
+    [refreshControl endRefreshing];
 }
 
 

@@ -15,6 +15,7 @@
 @property (weak, nonatomic) IBOutlet UITableView *eventTableView;
 @property (strong, nonatomic) NSMutableArray *objects;
 @property (strong, nonatomic) PFQuery *query;
+@property (strong, nonatomic) UIRefreshControl *tableRefresh;
 @end
 
 @implementation SpadeFriendDetailViewController
@@ -43,14 +44,22 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    // Do any additional setup after loading the view.
     self.title = [self.friend objectForKey:spadeUserDisplayName];
     self.friendProfileImage.file  = [self.friend objectForKey:spadeUserMediumProfilePic];
     [self.friendProfileImage loadInBackground];
+    
     //Set Query and Run
     [self.query whereKey:spadeActivityToUser equalTo:self.friend];
     [self runQueryAndReloadData];
     
-    	// Do any additional setup after loading the view.
+    //Add Refresh Control
+    self.tableRefresh = [[UIRefreshControl alloc]init];
+    [self.tableRefresh addTarget:self action:@selector(runQueryAndReloadData) forControlEvents:UIControlEventValueChanged];
+    [self.eventTableView addSubview:self.tableRefresh];
+    
+    
 }
 
 - (void)didReceiveMemoryWarning
@@ -104,8 +113,10 @@
     [self.query findObjectsInBackgroundWithBlock:^(NSArray *objectsFound, NSError *error){
         if (!error) {
             NSLog(@"Ran");
+            [self.objects removeAllObjects];
             [self.objects addObjectsFromArray:objectsFound];
             [self.eventTableView reloadData];
+            [self.tableRefresh endRefreshing];
         }
         
     }];

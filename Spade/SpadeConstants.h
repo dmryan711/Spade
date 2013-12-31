@@ -55,10 +55,16 @@ extern NSString * const spadeVenueCover;
 
 //Event
 extern NSString * const spadeClassEvent;
+extern NSString * const spadeEventCreatedBy;
+extern NSString * const spadeEventVenue;
+extern NSString * const spadeEventImageFile;
+extern NSString * const spadeEventWhen;
+extern NSString * const spadeEventName;
 
 
 //AlertView Titles Used for Comparison
 extern NSString * const spadeAlertViewTitleConfirmFollower;
+extern NSString * const spadeAlertViewTitleConfirmEvent;
 
 //Follow Button Title
 extern NSString * const spadeFollowButtonTitleFollow ;

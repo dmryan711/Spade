@@ -22,5 +22,6 @@
 +(void)user:(PFUser *)user followingUsers:(NSArray *)friendUsers;
 +(void)user:(PFUser *)user unfollowingUser:(PFUser *)friendUser;
 +(void)user:(PFUser *)user unfollowingUsers:(NSArray *)friendUsers;
++(void)user:(PFUser *)user creatingEventWithName:(NSString *)eventName forVenue:(PFObject *)venue forWhen:(NSString *)when withImageFile:(PFFile *)file;
 
 @end
