@@ -53,6 +53,9 @@ extern NSString * const spadeVenueGenre;
 extern NSString * const spadeVenuePicture;
 extern NSString * const spadeVenueCover;
 
+//Event
+extern NSString * const spadeClassEvent;
+
 
 //AlertView Titles Used for Comparison
 extern NSString * const spadeAlertViewTitleConfirmFollower;
@@ -63,6 +66,11 @@ extern NSString * const spadeFollowButtonTitleUnfollow;
 
 //Spade Team Facebook Ids
 extern NSString * const spadeDevonFacebookId;
+
+//Event Placeholder Text
+extern NSString  * const spadeEventPlaceHolderWhereLabel;
+extern NSString  * const spadeEventPlaceHolderWhenLabel;
+
 
 
 @end

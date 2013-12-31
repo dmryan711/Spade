@@ -7,6 +7,7 @@
 //
 
 #import "SpadeFriendTableViewController.h"
+#import "SpadeFriendDetailViewController.h"
 #import "SpadeUtility.h"
 #import "SpadeConstants.h"
 #import "SpadeCache.h"
@@ -217,10 +218,17 @@
     if (indexPath.row < [self.objects count]) {
         
         //Set Selection Object
-       // PFUser *userSelection = [self.objects objectAtIndex:indexPath.row];
+        PFUser *userSelection = [self.objects objectAtIndex:indexPath.row];
         
         //Create Detail View
+        UIStoryboard *mainStoryboard = [UIStoryboard storyboardWithName:@"Main"
+                                                                 bundle: nil];
+        //Create Detail View
+        SpadeFriendDetailViewController *friendDetail = [mainStoryboard   instantiateViewControllerWithIdentifier:@"friendDetailController"];
         
+        [friendDetail setFriend:userSelection];
+        
+        [self.navigationController pushViewController:friendDetail animated:YES];
         
         
     }

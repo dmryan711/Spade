@@ -56,6 +56,9 @@ NSString * const spadeVenueGenre = @"MusicGenre";
 NSString * const spadeVenuePicture = @"Picture";
 NSString * const spadeVenueCover  = @"Cover";
 
+//Event Class
+NSString * const spadeClassEvent  = @"Event";
+
 //Alert View Titles for Comparison
 NSString * const spadeAlertViewTitleConfirmFollower = @"Just Asking!";
 
@@ -66,6 +69,10 @@ NSString * const spadeFollowButtonTitleUnfollow = @"Unfollow";
 
 //Spade Team Facebook Ids
 NSString * const spadeDevonFacebookId = @"15723417";
+
+//Event Placeholder Text
+NSString  * const spadeEventPlaceHolderWhereLabel = @"Press Here";
+NSString  * const spadeEventPlaceHolderWhenLabel = @"Or Here";
 
 
 

@@ -40,6 +40,8 @@
 		9196A8E5186D2E0400513082 /* AvatarPlaceholder.png in Resources */ = {isa = PBXBuildFile; fileRef = 9196A8E3186D2E0400513082 /* AvatarPlaceholder.png */; };
 		9196A8E6186D2E0400513082 /* AvatarPlaceholder@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9196A8E4186D2E0400513082 /* AvatarPlaceholder@2x.png */; };
 		9196A8E9186F8ACF00513082 /* SpadeVenueFollowCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 9196A8E8186F8ACF00513082 /* SpadeVenueFollowCell.m */; };
+		9196A9241870AB7600513082 /* SpadeFriendDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9196A9231870AB7600513082 /* SpadeFriendDetailViewController.m */; };
+		9196A92D1871F94A00513082 /* SpadeEventInviteController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9196A92C1871F94A00513082 /* SpadeEventInviteController.m */; };
 		91D9D6351842F643005BD0BC /* Parse.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 91D9D6341842F643005BD0BC /* Parse.framework */; };
 		91D9D6371842F72A005BD0BC /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 91D9D6361842F72A005BD0BC /* AudioToolbox.framework */; };
 		91D9D6391842F735005BD0BC /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 91D9D6381842F735005BD0BC /* CFNetwork.framework */; };
@@ -117,6 +119,10 @@
 		9196A8E4186D2E0400513082 /* AvatarPlaceholder@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "AvatarPlaceholder@2x.png"; path = "../../../../Downloads/ParsePlatform-Anypic-cd02eb4/Anypic-iOS/Resources/Assets/AvatarPlaceholder@2x.png"; sourceTree = "<group>"; };
 		9196A8E7186F8ACF00513082 /* SpadeVenueFollowCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SpadeVenueFollowCell.h; sourceTree = "<group>"; };
 		9196A8E8186F8ACF00513082 /* SpadeVenueFollowCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SpadeVenueFollowCell.m; sourceTree = "<group>"; };
+		9196A9221870AB7600513082 /* SpadeFriendDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SpadeFriendDetailViewController.h; sourceTree = "<group>"; };
+		9196A9231870AB7600513082 /* SpadeFriendDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SpadeFriendDetailViewController.m; sourceTree = "<group>"; };
+		9196A92B1871F94A00513082 /* SpadeEventInviteController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SpadeEventInviteController.h; sourceTree = "<group>"; };
+		9196A92C1871F94A00513082 /* SpadeEventInviteController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SpadeEventInviteController.m; sourceTree = "<group>"; };
 		91D9D6341842F643005BD0BC /* Parse.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Parse.framework; path = ../../../Downloads/Parse.framework; sourceTree = "<group>"; };
 		91D9D6361842F72A005BD0BC /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		91D9D6381842F735005BD0BC /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
@@ -185,6 +191,8 @@
 			children = (
 				9112354018569F170092253B /* SpadeEventController.h */,
 				9112354118569F170092253B /* SpadeEventController.m */,
+				9196A92B1871F94A00513082 /* SpadeEventInviteController.h */,
+				9196A92C1871F94A00513082 /* SpadeEventInviteController.m */,
 				91D9D6481843021D005BD0BC /* SpadeLoginViewController.h */,
 				91D9D6491843021D005BD0BC /* SpadeLoginViewController.m */,
 				9188E52D184EE7FD00C72151 /* SpadeFeedController.h */,
@@ -199,6 +207,8 @@
 				9196A8D8186A919F00513082 /* SpadeEditProfileViewController.m */,
 				9196A8DA186B574700513082 /* SpadeFriendTableViewController.h */,
 				9196A8DB186B574700513082 /* SpadeFriendTableViewController.m */,
+				9196A9221870AB7600513082 /* SpadeFriendDetailViewController.h */,
+				9196A9231870AB7600513082 /* SpadeFriendDetailViewController.m */,
 			);
 			name = Controllers;
 			sourceTree = "<group>";
@@ -446,6 +456,7 @@
 				9196A8DF186C903200513082 /* SpadeConstants.m in Sources */,
 				9120610B184A62E700E3DA0C /* SpadeUtility.m in Sources */,
 				9141E87518407A5000A5DE15 /* SpadeAppDelegate.m in Sources */,
+				9196A9241870AB7600513082 /* SpadeFriendDetailViewController.m in Sources */,
 				9188E52F184EE7FD00C72151 /* SpadeFeedController.m in Sources */,
 				9196A8D61868D90900513082 /* SpadeCache.m in Sources */,
 				9196A8DC186B574700513082 /* SpadeFriendTableViewController.m in Sources */,
@@ -453,6 +464,7 @@
 				91D9D64A1843021D005BD0BC /* SpadeLoginViewController.m in Sources */,
 				9196A8E9186F8ACF00513082 /* SpadeVenueFollowCell.m in Sources */,
 				9141E87118407A5000A5DE15 /* main.m in Sources */,
+				9196A92D1871F94A00513082 /* SpadeEventInviteController.m in Sources */,
 				91221339185CCED500BA29E8 /* SpadeVenueDetailViewController.m in Sources */,
 				91221336185C407300BA29E8 /* SpadeVenueTableViewController.m in Sources */,
 			);

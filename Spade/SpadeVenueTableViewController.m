@@ -29,11 +29,13 @@
 
 -(void)awakeFromNib
 {
+    
     self.parseClassName = spadeClassVenue;
     self.textKey = @"Name";
     self.pullToRefreshEnabled = YES;
     self.paginationEnabled = NO;
     self.objectsPerPage = 3;
+    
     
 
 }
@@ -106,7 +108,8 @@
     }
     cell.nameLabel.text = [object objectForKey:spadeVenueName];
     
-    cell.categoryLabel.text = [NSString stringWithFormat:@"Category: %@", [object objectForKey:spadeVenueCategory]];
+    //cell.categoryLabel.text = [object objectForKey:spadeVenueCategory];
+    cell.addressLabel.text  = [object objectForKey:spadeVenueAddress];
     
     return cell;
 }
