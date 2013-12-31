@@ -8,6 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface SpadeEventController : UIViewController <UITextFieldDelegate, UIPickerViewDataSource, UIPickerViewDelegate, UIImagePickerControllerDelegate , UIAlertViewDelegate>
+@interface SpadeEventController : UIViewController <UITextFieldDelegate, UIPickerViewDataSource, UIPickerViewDelegate, UIImagePickerControllerDelegate , UIAlertViewDelegate, UIActionSheetDelegate, UINavigationControllerDelegate>
 
 @end

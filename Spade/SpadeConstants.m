@@ -72,7 +72,7 @@ NSString * const spadeDevonFacebookId = @"15723417";
 
 //Event Placeholder Text
 NSString  * const spadeEventPlaceHolderWhereLabel = @"Press Here";
-NSString  * const spadeEventPlaceHolderWhenLabel = @"Or Here";
+NSString  * const spadeEventPlaceHolderWhenLabel = @"And Here";
 
 
 
