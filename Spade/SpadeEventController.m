@@ -160,9 +160,11 @@
     }
     if (![self.whenPickerView isHidden]){
         self.whenPickerView.hidden = YES;
+        self.saveButton.hidden = NO;
     }
     if (![self.venuePickerView isHidden]){
         self.venuePickerView.hidden = YES;
+        self.saveButton.hidden = NO;
     }
 }
 

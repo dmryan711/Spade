@@ -34,7 +34,7 @@
     // Override point for customization after application launch.
     
     //Initially Set Flag to NO
-    [[NSUserDefaults standardUserDefaults] registerDefaults:@{spadePicFLag:@NO, spadeNameFlag:@NO, spadeFirstLoginFlag:@NO}];
+    [[NSUserDefaults standardUserDefaults] registerDefaults:@{spadePicFLag:@NO, spadeNameFlag:@NO, spadeFirstLoginFlag:@YES}];
 
                                                                  
     /*****   PARSE APPLICATION *******/
