@@ -21,8 +21,10 @@
 @property (weak, nonatomic) IBOutlet UIDatePicker *whenPickerView;
 @property (strong, nonatomic) NSMutableArray *venues;
 @property (strong, nonatomic) NSMutableArray *myEvents;
+@property (strong, nonatomic) NSMutableArray *followedEvents;
 @property (strong, nonatomic) PFQuery *venueQuery;
 @property (strong, nonatomic) PFQuery *myEventsQuery;
+@property (strong, nonatomic) PFQuery *followedEventsQuery;
 @property (weak, nonatomic) IBOutlet UISegmentedControl *eventSegmentController;
 @property (weak, nonatomic) IBOutlet UIView *createEventView;
 @property (weak, nonatomic) IBOutlet PFImageView *eventImageView;
@@ -34,6 +36,8 @@
 @property (strong, nonatomic) UIRefreshControl *myEventsTableRefreshControl;
 @property (weak, nonatomic) IBOutlet UILabel *myEventsLabel;
 @property int venueIndex;
+@property (weak, nonatomic) IBOutlet UITableView *myFollowedEventsTableView;
+@property (strong, nonatomic) UIRefreshControl *myFollowedEventsTableRefreshControl;
 
 @end
 
@@ -64,11 +68,18 @@
     self.imageLoadBar.hidden = YES;
     self.manageEventsTableView.hidden = YES;
     self.myEventsLabel.hidden = YES;
+    self.myFollowedEventsTableView.hidden =  YES;
     
     //Set Refresh Controls
     self.myEventsTableRefreshControl = [[UIRefreshControl alloc]init];
     [self.myEventsTableRefreshControl addTarget:self action:@selector(runMyEventQueryAndReloadData ) forControlEvents:UIControlEventValueChanged];
     [self.manageEventsTableView addSubview:self.myEventsTableRefreshControl];
+    
+    
+    self.myFollowedEventsTableRefreshControl = [[UIRefreshControl alloc]init];
+    [self.myFollowedEventsTableRefreshControl addTarget:self action:@selector(runMyFollowedEventQueryAndReloadData) forControlEvents:UIControlEventValueChanged];
+    [self.myFollowedEventsTableView addSubview:self.myFollowedEventsTableRefreshControl];
+    
     
     self.venueQuery = [PFQuery queryWithClassName:spadeClassVenue];
     NSLog(@"Venue Query %@",[self.venueQuery description]);
@@ -77,6 +88,11 @@
     
     self.myEventsQuery = [PFQuery queryWithClassName:spadeClassEvent];
     [self runMyEventQueryAndReloadData];
+    
+    self.followedEventsQuery = [PFQuery queryWithClassName:spadeClassActivity];
+    [self.followedEventsQuery whereKeyExists:spadeActivityToEvent];
+    [self.followedEventsQuery whereKey:spadeActivityFromUser equalTo:[PFUser currentUser]];
+    [self runMyFollowedEventQueryAndReloadData];
     
     
 }
@@ -96,6 +112,7 @@
     if (sender.selectedSegmentIndex == MY_EVENTS_SEGMENT ) {
         //self.navigationItem.rightBarButtonItem = nil;
         self.createEventView.hidden = YES;
+        self.myFollowedEventsTableView.hidden = YES;
         self.myEventsLabel.hidden = NO;
         self.manageEventsTableView.hidden = NO;
         [self runMyEventQueryAndReloadData];
@@ -103,9 +120,18 @@
     }else if (sender.selectedSegmentIndex == CREATE_EVENT_SEGMENT){
         /*self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]initWithTitle:@"Invite Friends" style:UIBarButtonItemStyleBordered target:self action:nil];*/
         self.createEventView.hidden = NO;
+        self.myFollowedEventsTableView.hidden = YES;
         self.manageEventsTableView.hidden  = YES;
         self.myEventsLabel.hidden = YES;
+        
+    }else if (sender.selectedSegmentIndex == FOLLOWING_EVENTS){
+        self.createEventView.hidden = NO;
+        self.myFollowedEventsTableView.hidden = NO;
+        self.manageEventsTableView.hidden  = YES;
+        self.myEventsLabel.hidden = YES;
+        [self runMyFollowedEventQueryAndReloadData];
     }
+        
 }
 
 #pragma mark CREATE EVENT SEGMENT
@@ -326,7 +352,14 @@
 #pragma mark MY EVENTS SEGMENT
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return [self.myEvents count];
+    if (tableView == self.manageEventsTableView) {
+        NSLog(@"manage table count");
+        return [self.myEvents count];
+    }else{
+        NSLog(@"following table count");
+        return [self.followedEvents count];
+    }
+    
 }
 
 // Row display. Implementers should *always* try to reuse cells by setting each cell's reuseIdentifier and querying for available reusable cells with dequeueReusableCellWithIdentifier:
@@ -334,17 +367,35 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    static NSString *CellIdentifier = @"Cell";
+    if (tableView == self.manageEventsTableView) {
+        static NSString *CellIdentifier = @"Cell";
     
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-    if (cell == nil) {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier];
+        UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+        if (cell == nil) {
+            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier];
+        }
+        
+        PFObject *object = [self.myEvents objectAtIndex:indexPath.row];
+        NSLog(@"%@",[object description]);
+        cell.textLabel.text = [object objectForKey:spadeEventName];
+        
+        return cell;
+        
+        
+    }else{
+        static NSString *CellIdentifier = @"Cell";
+        
+        UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+        if (cell == nil) {
+            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier];
+        }
+        
+        PFObject *object = [self.followedEvents objectAtIndex:indexPath.row];
+        NSLog(@"%@",[object description]);
+        cell.textLabel.text = [object objectForKey:spadeEventName];
+        
+        return cell;
     }
-    
-    PFObject *object = [self.myEvents objectAtIndex:indexPath.row];
-    NSLog(@"%@",[object description]);
-    cell.textLabel.text = [object objectForKey:spadeEventName];
-    return cell;
     
 }
 
@@ -383,7 +434,7 @@
 }
 
 
-#pragma mark { }
+
 -(void)runVenueQueryAndLoadData
 {
     [self.venueQuery findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error){
@@ -391,11 +442,33 @@
             NSLog(@"Ran Query");
            
             [self.venues addObjectsFromArray:objects];
-             NSLog(@"%@",[self.venues description]);
             [self.venuePickerView reloadAllComponents];
         }
     
     }];
+
+}
+
+-(void)runMyFollowedEventQueryAndReloadData
+{
+    if (!_followedEvents) _followedEvents = [[NSMutableArray alloc]init];
+    
+    [self.followedEventsQuery findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error){
+    
+        if (!error) {
+            NSMutableArray *events  = [[NSMutableArray alloc]init];
+            
+            for (PFObject *activityLog in objects) {
+                [events addObject:[activityLog objectForKey:spadeActivityToEvent]];
+            }
+            [self.followedEvents removeAllObjects];
+            [self.followedEvents addObjectsFromArray:events];
+            [self.myFollowedEventsTableRefreshControl endRefreshing];
+            [self.myFollowedEventsTableView reloadData];
+        }
+    
+    }];
+
 
 }
 
@@ -405,6 +478,7 @@
     [mediaTypeNotAvailable show];
     
 }
+
 
 -(void)createEventCreationConfirmationAlert
 {

@@ -242,9 +242,21 @@
     if (file) {
         [event setObject:file forKey:spadeEventImageFile];
     }
+    [self logActivityForEvent:event];
     
     [event saveEventually];
     
+
+}
+
++(void)logActivityForEvent:(PFObject *)event
+{
+    PFObject *eventCreated = [PFObject objectWithClassName:spadeClassActivity];
+    [eventCreated setObject:[event objectForKey:spadeEventCreatedBy] forKey:spadeActivityFromUser]; // Se event user
+    [eventCreated setObject:event forKey:spadeActivityToEvent];
+    [eventCreated setObject:spadeActivityActionCreatedEvent forKey:spadeActivityAction];
+    
+    [eventCreated saveEventually];
 
 }
 

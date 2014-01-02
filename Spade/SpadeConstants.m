@@ -42,7 +42,8 @@ NSString * const spadeActivityAction = @"action";
 
 NSString * const spadeActivityActionFollowingVenue = @"Following Venue";
 NSString * const spadeActivityActionFollowingUser = @"Following User";
-
+NSString * const spadeActivityActionAttendingEvent = @"Attending Event";
+NSString * const spadeActivityActionCreatedEvent  = @"Created Event";
 
 //Venue Class
 NSString * const spadeClassVenue = @"Venue";

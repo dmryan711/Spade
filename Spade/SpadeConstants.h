@@ -40,6 +40,8 @@ extern NSString * const spadeActivityAction;
 
 extern NSString * const spadeActivityActionFollowingVenue;
 extern NSString * const spadeActivityActionFollowingUser;
+extern NSString * const spadeActivityActionAttendingEvent;
+extern NSString * const spadeActivityActionCreatedEvent;
 
 
 //Venue

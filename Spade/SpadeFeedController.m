@@ -102,8 +102,13 @@
 - (PFQuery *)queryForTable {
     PFQuery *query = [PFQuery queryWithClassName:self.parseClassName];
     [query includeKey:spadeActivityFromUser];
-    [query includeKey:spadeActivityToVenue];
-    [query includeKey:spadeActivityToUser];
+    [query includeKey:spadeActivityToEvent];
+    [query whereKeyExists:spadeActivityToEvent];
+    
+    PFQuery *myfriends = [PFQuery queryWithClassName:spadeClassUser];
+    [myfriends whereKey:spadeUserFacebookId containedIn:[[PFUser currentUser]objectForKey:spadeUserFriends]];
+    [query whereKey:spadeActivityFromUser matchesQuery:myfriends];
+    
     
     // If no objects are loaded in memory, we look to the cache first to fill the table
     // and then subsequently do a query against the network.
@@ -130,21 +135,25 @@
     
     // Configure the cell
     
-    
+    NSLog(@"%@",object);
     PFUser *user = [object objectForKey:spadeActivityFromUser];
     NSString *action = [object objectForKey:spadeActivityAction];
     NSString *userName = [user objectForKey:spadeUserDisplayName];
     cell.textLabel.text = action;
+    
+    PFObject *event = [object objectForKey:spadeActivityToEvent];
+    NSString *eventName = [event objectForKey:spadeEventName];
+    
+    
    
-    if ([action isEqualToString:spadeActivityActionFollowingVenue]) {
+    if ([action isEqualToString:spadeActivityActionAttendingEvent]) {
+
+        cell.detailTextLabel.text = [NSString stringWithFormat:@"%@ is Attending %@ ", userName , eventName];
         
-        PFObject *venue = [object objectForKey:spadeActivityToVenue];
-        NSString *venueName = [venue objectForKey:spadeVenueName];
-        cell.detailTextLabel.text = [NSString stringWithFormat:@"%@ is following %@ ", userName , venueName];
-    }else if ([action isEqualToString:spadeActivityActionFollowingUser]){
-        PFUser *toUser = [object objectForKey:spadeActivityToUser];
-        NSString *toUserName = [toUser objectForKey:spadeUserDisplayName];
-        cell.detailTextLabel.text = [NSString stringWithFormat:@"%@ is now following %@ ", userName , toUserName];
+        
+    }else if ([action isEqualToString:spadeActivityActionCreatedEvent]){
+        
+        cell.detailTextLabel.text = [NSString stringWithFormat:@"%@ Created the event %@ ", userName , eventName];
     
     }
     
