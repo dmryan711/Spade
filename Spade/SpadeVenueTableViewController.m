@@ -200,28 +200,12 @@
         
         //Set Object
         PFObject *venueSelection = [self.objects objectAtIndex:indexPath.row];
-   
-        
-        
-       
-        
         UIStoryboard *mainStoryboard = [UIStoryboard storyboardWithName:@"Main"
                                                                  bundle: nil];
         //Create Detail View
         SpadeVenueDetailViewController *venueDetail = [mainStoryboard   instantiateViewControllerWithIdentifier:@"venueDetailController"];
-        
-      
-        
-        [venueDetail setVenueName:[venueSelection objectForKey:spadeVenueName]];
-        [venueDetail setAddressOfVenue:[venueSelection objectForKey:spadeVenueAddress]];
-        [venueDetail setCategory:[NSString stringWithFormat:@"%@",[venueSelection objectForKey:spadeVenueCategory]]];
-        [venueDetail setSpendLevel:[NSString stringWithFormat:@"%@",[SpadeUtility  processCurrencyLevel:[venueSelection objectForKey:spadeVenueSpendLevel]]]];
-        [venueDetail setMusic:[NSString stringWithFormat:@"%@",[venueSelection objectForKey:spadeVenueGenre]]];
-        [venueDetail setCover:[NSString stringWithFormat:@"$%@",[venueSelection objectForKey:spadeVenueCover]]];
-        [venueDetail setBottleService:[NSString stringWithFormat:@"%@",[SpadeUtility processBottleService:(BOOL)[venueSelection objectForKey:spadeVenueTableService]]]];
-        [venueDetail setPictureFile:[venueSelection objectForKey:spadeVenuePicture]];
-        [venueDetail setParseObjectId:[venueSelection  objectId]];
-        [venueDetail setVenue:venueSelection];
+
+        [venueDetail setVenue:venueSelection]; //Hand Off Vnue Object
         
         //Check Cache to see if user is following the venue already
         if ([[[SpadeCache sharedCache] followingVenues] containsObject:[venueSelection objectId]]) {
@@ -230,8 +214,6 @@
         
        //FIRE
         [self.navigationController pushViewController:venueDetail animated:YES];
-        
-        
     }
 }
 

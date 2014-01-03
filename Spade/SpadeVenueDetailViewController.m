@@ -49,23 +49,27 @@
 {
     [super viewDidLoad];
     
+    
+
+   
+    
     self.navigationController.navigationBarHidden = NO;
 	// Do any additional setup after loading the view.
     //[self creatBackButton];
-    self.title  = self.venueName;
-    self.categoryLabel.text = self.category;
-    self.coverLabel.text =self.cover;
-    self.musicLabel.text =self.music;
-    self.spendLabel.text = self.spendLevel;
-    self.bottleServiceLabel.text = self.bottleService;
-    self.addressLabel.text = self.addressOfVenue;
+    self.title  = [self.venue objectForKey:spadeVenueName];
+    self.categoryLabel.text = [NSString stringWithFormat:@"%@",[self.venue objectForKey:spadeVenueCategory]];
+    self.coverLabel.text = [NSString stringWithFormat:@"$%@",[self.venue objectForKey:spadeVenueCover]];
+     self.musicLabel.text = [NSString stringWithFormat:@"%@",[self.venue objectForKey:spadeVenueGenre]];
+     self.spendLabel.text = [NSString stringWithFormat:@"%@",[SpadeUtility  processCurrencyLevel:[self.venue objectForKey:spadeVenueSpendLevel]]];
+    self.bottleServiceLabel.text = [NSString stringWithFormat:@"%@",[SpadeUtility processBottleService:(BOOL)[self.venue objectForKey:spadeVenueTableService]]];
+    self.addressLabel.text = [self.venue objectForKey:spadeVenueAddress];
     
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemAction target:self action:@selector(actionButtonPressed)];
   
-    if (self.pictureFile) {
+    if ([self.venue objectForKey:spadeVenuePicture]) {
         NSLog(@"Venue Detail: Image File Found");
         
-        [SpadeUtility loadFile:self.pictureFile forImageView:self.venueProfilePic];
+        [SpadeUtility loadFile:[self.venue objectForKey:spadeVenuePicture]forImageView:self.venueProfilePic];
         
     }else{//Set Pic to Default
         NSLog(@"Venue Detail: No Picture Was Found");
@@ -102,13 +106,13 @@
     
     if([sender.titleLabel.text isEqualToString:spadeFollowButtonTitleFollow]){
         [sender setTitle:spadeFollowButtonTitleUnfollow forState:UIControlStateNormal];
-         [[[SpadeCache sharedCache]followingVenues] addObject:self.parseObjectId];
+         [[[SpadeCache sharedCache]followingVenues] addObject:[self.venue objectId]];
             [SpadeUtility user:[PFUser currentUser] followingVenue:self.venue];
             [self createAndDisplayFollowAlert];
     
     }else if ([sender.titleLabel.text isEqualToString:spadeFollowButtonTitleUnfollow]){
         [sender setTitle:spadeFollowButtonTitleFollow forState:UIControlStateNormal];
-        [[[SpadeCache sharedCache]followingVenues]removeObject:self.parseObjectId];
+        [[[SpadeCache sharedCache]followingVenues]removeObject:[self.venue objectId]];
         [SpadeUtility user:[PFUser currentUser] unfollowingVenue:self.venue];
         
     }
