@@ -6,6 +6,8 @@
 //  Copyright (c) 2013 Devon Ryan. All rights reserved.
 //
 #import "SpadeConstants.h"
+#import "SpadeUtility.h"
+#import "SpadeCache.h"
 #import "SpadeFriendDetailViewController.h"
 
 
@@ -16,6 +18,7 @@
 @property (strong, nonatomic) NSMutableArray *objects;
 @property (strong, nonatomic) PFQuery *query;
 @property (strong, nonatomic) UIRefreshControl *tableRefresh;
+@property (weak, nonatomic) IBOutlet UIButton *followButton;
 @end
 
 @implementation SpadeFriendDetailViewController
@@ -59,8 +62,21 @@
     [self.tableRefresh addTarget:self action:@selector(runQueryAndReloadData) forControlEvents:UIControlEventValueChanged];
     [self.eventTableView addSubview:self.tableRefresh];
     
-    
+    //setFollowButton
+    if ([[[SpadeCache sharedCache]followingUsers] containsObject:[self.friend objectId]]) {
+        [self.followButton setTitle:spadeFollowButtonTitleUnfollow forState:UIControlStateNormal];
+    }else{
+        
+        [self.followButton setTitle:spadeFollowButtonTitleFollow forState:UIControlStateNormal];
+    }
 }
+
+-(void)viewWillDisappear:(BOOL)animated
+{
+    [[[[self.navigationController viewControllers]objectAtIndex:1]tableView]reloadData];
+
+}
+
 
 - (void)didReceiveMemoryWarning
 {
@@ -101,6 +117,27 @@
 }
 
 
+- (IBAction)followButtonPressed:(UIButton *)sender {
+    
+    
+    if([sender.titleLabel.text isEqualToString:spadeFollowButtonTitleFollow]){
+        [sender setTitle:spadeFollowButtonTitleUnfollow forState:UIControlStateNormal];
+        [[[SpadeCache sharedCache] followingUsers] addObject:[self.friend objectId]];
+        [SpadeUtility user:[PFUser currentUser] followingUser:self.friend];
+    
+        [self createAndDisplayFollowAlert];
+        
+    }else if ([sender.titleLabel.text isEqualToString:spadeFollowButtonTitleUnfollow]){
+        
+        [sender setTitle:spadeFollowButtonTitleFollow forState:UIControlStateNormal];
+        [[[SpadeCache sharedCache] followingUsers] removeObject:[self.friend objectId]];
+        [SpadeUtility user:[PFUser currentUser] unfollowingUser:self.friend];
+        
+       
+        
+    }
+    NSLog(@"User Cache: %@",[[SpadeCache sharedCache]followingUsers]);
+}
 
 
 
@@ -121,6 +158,12 @@
         
     }];
 
+    
+}
+
+-(void)createAndDisplayFollowAlert{
+    UIAlertView *followingUser = [[UIAlertView alloc]initWithTitle:[NSString stringWithFormat:@"Following %@",self.title] message:nil delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil];
+    [followingUser show];
     
 }
 

@@ -59,7 +59,6 @@ NSString * const spadeVenueCover  = @"Cover";
 
 //Event Class
 NSString * const spadeClassEvent  = @"Event";
-NSString * const spadeEventCreatedBy =  @"CreatedBy";
 NSString * const spadeEventName = @"Name";
 NSString * const spadeEventVenue =  @"Venue";
 NSString * const spadeEventImageFile = @"ImageFile";

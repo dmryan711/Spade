@@ -82,16 +82,23 @@
     
     
     self.venueQuery = [PFQuery queryWithClassName:spadeClassVenue];
-    NSLog(@"Venue Query %@",[self.venueQuery description]);
     [self runVenueQueryAndLoadData];
     [self setDatePicker];
     
-    self.myEventsQuery = [PFQuery queryWithClassName:spadeClassEvent];
+   
+    
+    self.myEventsQuery = [PFQuery queryWithClassName:spadeClassActivity];
+    [self.myEventsQuery whereKeyExists:spadeActivityToEvent];
+    [self.myEventsQuery includeKey:spadeActivityToEvent];
+    [self.myEventsQuery whereKey:spadeActivityFromUser equalTo:[PFUser currentUser]];
+    [self.myEventsQuery whereKey:spadeActivityAction equalTo:spadeActivityActionCreatedEvent];
     [self runMyEventQueryAndReloadData];
     
     self.followedEventsQuery = [PFQuery queryWithClassName:spadeClassActivity];
+    [self.followedEventsQuery includeKey:spadeActivityToEvent];
     [self.followedEventsQuery whereKeyExists:spadeActivityToEvent];
     [self.followedEventsQuery whereKey:spadeActivityFromUser equalTo:[PFUser currentUser]];
+    [self.followedEventsQuery whereKey:spadeActivityAction equalTo:spadeActivityActionAttendingEvent];
     [self runMyFollowedEventQueryAndReloadData];
     
     
@@ -118,7 +125,6 @@
         [self runMyEventQueryAndReloadData];
         
     }else if (sender.selectedSegmentIndex == CREATE_EVENT_SEGMENT){
-        /*self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]initWithTitle:@"Invite Friends" style:UIBarButtonItemStyleBordered target:self action:nil];*/
         self.createEventView.hidden = NO;
         self.myFollowedEventsTableView.hidden = YES;
         self.manageEventsTableView.hidden  = YES;
@@ -375,9 +381,9 @@
             cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier];
         }
         
-        PFObject *object = [self.myEvents objectAtIndex:indexPath.row];
-        NSLog(@"%@",[object description]);
-        cell.textLabel.text = [object objectForKey:spadeEventName];
+        PFObject *activityObject = [self.myEvents objectAtIndex:indexPath.row];
+        NSLog(@"Managed Activity Object: %@",activityObject);
+        cell.textLabel.text = [[activityObject objectForKey:spadeActivityToEvent] objectForKey:spadeEventName];
         
         return cell;
         
@@ -390,10 +396,10 @@
             cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier];
         }
         
-        PFObject *object = [self.followedEvents objectAtIndex:indexPath.row];
-        NSLog(@"%@",[object description]);
-        cell.textLabel.text = [object objectForKey:spadeEventName];
-        
+        PFObject *activityLog = [self.followedEvents objectAtIndex:indexPath.row];
+        NSLog(@"Following Event Object: %@",activityLog);
+        cell.textLabel.text =  [[activityLog objectForKey:spadeActivityToEvent]objectForKey:spadeEventName];
+
         return cell;
     }
     
@@ -413,12 +419,30 @@
 
 #pragma mark { }
 
+-(void)runVenueQueryAndLoadData
+{
+    [self.venueQuery findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error){
+        if (!error) {
+            NSLog(@"Ran Query");
+            
+            [self.venues addObjectsFromArray:objects];
+            [self.venuePickerView reloadAllComponents];
+        }
+        
+    }];
+    
+}
+
 -(void)runMyEventQueryAndReloadData
 {
     if (!_myEvents) _myEvents = [[NSMutableArray alloc]init];
     
     [self.myEventsQuery findObjectsInBackgroundWithBlock:^(NSArray *objectsFound, NSError *error){
         if (!error) {
+           /* NSMutableArray *myEvents  = [[NSMutableArray alloc]init];
+            for (PFObject *activityLog in objectsFound) {
+                [myEvents addObject:[activityLog objectForKey:spadeActivityToEvent]];
+            }*/
             NSLog(@"Ran");
             [self.myEvents removeAllObjects];
             [self.myEvents addObjectsFromArray:objectsFound];
@@ -433,22 +457,6 @@
     
 }
 
-
-
--(void)runVenueQueryAndLoadData
-{
-    [self.venueQuery findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error){
-        if (!error) {
-            NSLog(@"Ran Query");
-           
-            [self.venues addObjectsFromArray:objects];
-            [self.venuePickerView reloadAllComponents];
-        }
-    
-    }];
-
-}
-
 -(void)runMyFollowedEventQueryAndReloadData
 {
     if (!_followedEvents) _followedEvents = [[NSMutableArray alloc]init];
@@ -456,13 +464,8 @@
     [self.followedEventsQuery findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error){
     
         if (!error) {
-            NSMutableArray *events  = [[NSMutableArray alloc]init];
-            
-            for (PFObject *activityLog in objects) {
-                [events addObject:[activityLog objectForKey:spadeActivityToEvent]];
-            }
             [self.followedEvents removeAllObjects];
-            [self.followedEvents addObjectsFromArray:events];
+            [self.followedEvents addObjectsFromArray:objects];
             [self.myFollowedEventsTableRefreshControl endRefreshing];
             [self.myFollowedEventsTableView reloadData];
         }

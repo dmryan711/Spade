@@ -57,7 +57,6 @@ extern NSString * const spadeVenueCover;
 
 //Event
 extern NSString * const spadeClassEvent;
-extern NSString * const spadeEventCreatedBy;
 extern NSString * const spadeEventVenue;
 extern NSString * const spadeEventImageFile;
 extern NSString * const spadeEventWhen;

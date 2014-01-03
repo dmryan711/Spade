@@ -6,6 +6,7 @@
 //  Copyright (c) 2013 Devon Ryan. All rights reserved.
 //
 
+#import <Parse/Parse.h>
 #import <Foundation/Foundation.h>
 
 @interface SpadeUtility : NSObject

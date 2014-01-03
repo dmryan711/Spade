@@ -335,8 +335,6 @@
     if ([cell.followButton.titleLabel.text isEqualToString:spadeFollowButtonTitleFollow]) {
         [cell.followButton setTitle:spadeFollowButtonTitleUnfollow forState:UIControlStateNormal];
         //set cache to follow user
-        NSLog(@"Beginning to Follow");
-        NSLog(@"User Cache: %@",[[SpadeCache sharedCache]followingUsers]);
         [[[SpadeCache sharedCache]followingUsers] addObject:cell.object.objectId];
         
         //Follow User in Parse
@@ -345,8 +343,6 @@
     }else if ([cell.followButton.titleLabel.text isEqualToString:spadeFollowButtonTitleUnfollow]){
         [cell.followButton setTitle:spadeFollowButtonTitleFollow forState:UIControlStateNormal];
         
-        NSLog(@"Beginning to UnFollow");
-        NSLog(@"User Cache: %@",[[SpadeCache sharedCache]followingUsers]);
         //set cache to remove user from follow list
         [[[SpadeCache sharedCache]followingUsers] removeObject:cell.object.objectId];
         
@@ -358,6 +354,8 @@
         
         NSLog(@"Error: %@",error.description);
     }
+
+    NSLog(@"User Cache: %@",[[SpadeCache sharedCache]followingUsers]);
 
 }
 

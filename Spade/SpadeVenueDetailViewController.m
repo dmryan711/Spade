@@ -8,6 +8,7 @@
 
 #import "SpadeVenueDetailViewController.h"
 #import "SpadeUtility.h"
+#import "SpadeConstants.h"
 #import "SpadeCache.h"
 
 @interface SpadeVenueDetailViewController ()
@@ -73,15 +74,20 @@
     
     //setFollowButton
     if (self.isFollowing) {
-        self.followButton.enabled = NO;
+        [self.followButton setTitle:spadeFollowButtonTitleUnfollow forState:UIControlStateNormal];
+    }else{
+    
+        [self.followButton setTitle:spadeFollowButtonTitleFollow forState:UIControlStateNormal];
     }
     
 }
 
+#define VENUE_TABLEVIEW_CONTROLLER 0
 -(void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
-    
+    //Reloading Table VIew to keep follow buttons in sync
+    [[[[self.navigationController viewControllers]objectAtIndex:VENUE_TABLEVIEW_CONTROLLER] tableView]reloadData];
     
 
 }
@@ -91,20 +97,24 @@
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
-- (IBAction)followButtonPressed:(id)sender {
+- (IBAction)followButtonPressed:(UIButton *)sender {
+    //setFollowButton
     
-    NSLog(@"Venue Detail: Pew, Pew. Follow Button Was Selected");
-    self.followButton.enabled = NO;
+    if([sender.titleLabel.text isEqualToString:spadeFollowButtonTitleFollow]){
+        [sender setTitle:spadeFollowButtonTitleUnfollow forState:UIControlStateNormal];
+         [[[SpadeCache sharedCache]followingVenues] addObject:self.parseObjectId];
+            [SpadeUtility user:[PFUser currentUser] followingVenue:self.venue];
+            [self createAndDisplayFollowAlert];
+    
+    }else if ([sender.titleLabel.text isEqualToString:spadeFollowButtonTitleUnfollow]){
+        [sender setTitle:spadeFollowButtonTitleFollow forState:UIControlStateNormal];
+        [[[SpadeCache sharedCache]followingVenues]removeObject:self.parseObjectId];
+        [SpadeUtility user:[PFUser currentUser] unfollowingVenue:self.venue];
+        
+    }
     //Set Local Cache
-    [[[SpadeCache sharedCache]followingVenues] addObject:self.parseObjectId];
-    NSLog(@"%@",[[SpadeCache sharedCache]followingVenues].description);
-    
-    [SpadeUtility user:[PFUser currentUser] followingVenue:self.venue];
-    
-    
-    [self createAndDisplayFollowAlert];
-    
-    
+    NSLog(@"%@",[[SpadeCache sharedCache]followingVenues]);
+ 
     
 }
 - (IBAction)createEventPressed:(id)sender {

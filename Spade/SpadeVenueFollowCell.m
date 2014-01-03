@@ -6,6 +6,8 @@
 //  Copyright (c) 2013 Devon Ryan. All rights reserved.
 //
 
+#import "SpadeCache.h"
+#import "SpadeConstants.h"
 #import "SpadeVenueFollowCell.h"
 
 @implementation SpadeVenueFollowCell
@@ -15,9 +17,11 @@
     self = [super initWithFrame:frame];
     if (self) {
         // Initialization code
+        
     }
     return self;
 }
+
 
 /*
 // Only override drawRect: if you perform custom drawing.

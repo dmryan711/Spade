@@ -44,6 +44,7 @@
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
     self.title =  @"Venues";
+    
 
 }
 
@@ -58,6 +59,7 @@
 
 - (void)objectsDidLoad:(NSError *)error {
     [super objectsDidLoad:error];
+    NSLog(@"objects loaded called");
     
     // This method is called every time objects are loaded from Parse via the PFQuery
 }
@@ -100,6 +102,12 @@
     cell.delegate = self;
     cell.object = object;
     // Configure the cell
+    if ([[[SpadeCache sharedCache]followingVenues]containsObject:[object objectId]]) {
+        [cell.followButton setTitle:spadeFollowButtonTitleUnfollow forState:UIControlStateNormal];
+    }else{
+        [cell.followButton setTitle:spadeFollowButtonTitleFollow forState:UIControlStateNormal];
+        
+    }
     if ([object objectForKey:spadeVenuePicture]) {
         [cell.venueImage setFile:[object objectForKey:spadeVenuePicture]];
         [cell.venueImage   loadInBackground];
@@ -228,14 +236,14 @@
 }
 
 
+
+
 #pragma mark Cell Delegate Methods
 -(void)followButtonWasPressedForCell:(SpadeFollowCell *)cell
 {
     if ([cell.followButton.titleLabel.text isEqualToString:spadeFollowButtonTitleFollow]) {
         [cell.followButton setTitle:spadeFollowButtonTitleUnfollow forState:UIControlStateNormal];
         //set cache to follow venue
-        NSLog(@"Beginning to Follow");
-        NSLog(@"Venue Cache: %@",[[SpadeCache sharedCache]followingVenues]);
         [[[SpadeCache sharedCache]followingVenues] addObject:cell.object.objectId];
         
         //Follow Venue in Parse
@@ -244,8 +252,6 @@
     }else if ([cell.followButton.titleLabel.text isEqualToString:spadeFollowButtonTitleUnfollow]){
         [cell.followButton setTitle:spadeFollowButtonTitleFollow forState:UIControlStateNormal];
         
-        NSLog(@"Beginning to UnFollow");
-        NSLog(@"Venue Cache: %@",[[SpadeCache sharedCache]followingVenues]);
         //set cache to remove user from follow list
         [[[SpadeCache sharedCache]followingVenues] removeObject:cell.object.objectId];
         
@@ -253,10 +259,13 @@
         [SpadeUtility user:[PFUser currentUser] unfollowingVenue:cell.object];
         
     }else{
-        NSError *error = [NSError errorWithDomain:@"Cell Title Not Matching Follow/UNfollow" code:1 userInfo:@{@"Title": [NSString stringWithFormat:@"Button Title: %@", cell.nameLabel.text ]}];
+        NSError *error = [NSError errorWithDomain:@"Cell Title Not Matching Follow/Unfollow" code:1 userInfo:@{@"Title": [NSString stringWithFormat:@"Button Title: %@", cell.nameLabel.text ]}];
         
         NSLog(@"Error: %@",error.description);
     }
+    
+    NSLog(@"User Cache: %@",[[SpadeCache sharedCache]followingVenues]);
+
 
 }
 

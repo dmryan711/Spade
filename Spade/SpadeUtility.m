@@ -235,7 +235,6 @@
 +(void)user:(PFUser *)user creatingEventWithName:(NSString *)eventName forVenue:(PFObject *)venue forWhen:(NSString *)when withImageFile:(PFFile *)file
 {
     PFObject *event =[PFObject objectWithClassName:spadeClassEvent];
-    [event setObject:user forKey:spadeEventCreatedBy];
     [event setObject:eventName forKey:spadeEventName];
     [event setObject:venue forKey:spadeEventVenue];
     [event setObject:when forKey:spadeEventWhen];
@@ -252,7 +251,7 @@
 +(void)logActivityForEvent:(PFObject *)event
 {
     PFObject *eventCreated = [PFObject objectWithClassName:spadeClassActivity];
-    [eventCreated setObject:[event objectForKey:spadeEventCreatedBy] forKey:spadeActivityFromUser]; // Se event user
+    [eventCreated setObject:[PFUser currentUser] forKey:spadeActivityFromUser]; // Se event user
     [eventCreated setObject:event forKey:spadeActivityToEvent];
     [eventCreated setObject:spadeActivityActionCreatedEvent forKey:spadeActivityAction];
     
