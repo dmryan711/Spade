@@ -7,6 +7,7 @@
 //
 
 #import "SpadeFeedController.h"
+#import "SpadeFeedCell.h"
 #import "SpadeAppDelegate.h"
 #import "SpadeLoginViewController.h"
 #import "SpadeProfileController.h"
@@ -16,7 +17,9 @@
 #import "SpadeCache.h"
 
 @interface SpadeFeedController ()
-@property (strong,nonatomic) NSArray *dataSet;
+@property (strong,nonatomic) NSMutableArray *objects;
+@property (strong, nonatomic) PFQuery *query;
+@property (strong, nonatomic) UIRefreshControl *tableRefresh;
 
 @end
 
@@ -29,6 +32,7 @@
     self = [super initWithStyle:style];
     if (self) {
         // Custom initialization
+        
 
             }
     return self;
@@ -36,11 +40,16 @@
 
 -(void)awakeFromNib
 {
-    self.parseClassName = spadeClassActivity;
-    self.textKey = @"objectId";
-    self.pullToRefreshEnabled = YES;
-    self.paginationEnabled = NO;
+    
+    self.query =  [PFQuery queryWithClassName:spadeClassActivity];
+    //self.parseClassName = spadeClassActivity;
+    //self.textKey = @"objectId";
+    //self.pullToRefreshEnabled = YES;
+    //self.paginationEnabled = NO;
     //self.objectsPerPage = 3;
+
+        
+
 }
 
 - (void)viewDidLoad
@@ -50,6 +59,7 @@
     [super viewDidLoad];
    
     //[self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:@"Cell"];
+    NSLog(@"load");
     self.title = @"Night Feed";
     if (![PFUser currentUser] ) { // No user logged in
         // Create the log in view controller
@@ -63,8 +73,27 @@
         
         [self performSelector:@selector(loadFriendsView) withObject:nil afterDelay:.5];
         
-    
+
     }
+    
+    //Set Query and Run
+    [self.query includeKey:spadeActivityFromUser];
+
+    [self.query includeKey:spadeActivityToEvent];
+    [self.query includeKey:spadeEventVenue];
+    [self.query includeKey:spadeVenuePicture];
+    [self.query orderByDescending:@"createdAt"];
+    
+    PFQuery *myfriends = [PFQuery queryWithClassName:spadeClassUser];
+    [myfriends whereKey:spadeUserFacebookId containedIn:[[PFUser currentUser]objectForKey:spadeUserFriends]];
+    [self.query whereKey:spadeActivityFromUser matchesQuery:myfriends];
+    
+    [self runQueryAndReloadData];
+    
+    //Add Refresh Control
+    self.tableRefresh = [[UIRefreshControl alloc]init];
+    [self.tableRefresh addTarget:self action:@selector(runQueryAndReloadData) forControlEvents:UIControlEventValueChanged];
+    [self.tableView addSubview:self.tableRefresh];
 
     self.navigationItem.rightBarButtonItem =[[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemAction target:self action:@selector(settingsPressed)];
     // Uncomment the following line to preserve selection between presentations.
@@ -72,6 +101,8 @@
  
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
+    
+    self.tableView.backgroundView = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"leather.png"]];
 }
 
 
@@ -82,83 +113,125 @@
     // Dispose of any resources that can be recreated.
 }
 
-#pragma mark - Parse
+#pragma mark - Table view data source
 
-- (void)objectsDidLoad:(NSError *)error {
-    [super objectsDidLoad:error];
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
+    // Return the number of sections.
     
-    // This method is called every time objects are loaded from Parse via the PFQuery
+    return 1;
+
+   
+    
 }
 
-- (void)objectsWillLoad {
-    [super objectsWillLoad];
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
     
-    // This method is called before a PFQuery is fired to get more objects
-}
-
-
-// Override to customize what kind of query to perform on the class. The default is to query for
-// all objects ordered by createdAt descending.
-- (PFQuery *)queryForTable {
-    PFQuery *query = [PFQuery queryWithClassName:self.parseClassName];
-    [query includeKey:spadeActivityFromUser];
-    [query includeKey:spadeActivityToEvent];
-    [query whereKeyExists:spadeActivityToEvent];
-    
-    PFQuery *myfriends = [PFQuery queryWithClassName:spadeClassUser];
-    [myfriends whereKey:spadeUserFacebookId containedIn:[[PFUser currentUser]objectForKey:spadeUserFriends]];
-    [query whereKey:spadeActivityFromUser matchesQuery:myfriends];
-    
-    
-    // If no objects are loaded in memory, we look to the cache first to fill the table
-    // and then subsequently do a query against the network.
     if ([self.objects count] == 0) {
-        query.cachePolicy = kPFCachePolicyCacheThenNetwork;
+        return 0;
+    }else{
+    
+        return ([self.objects count] *2)-1;
     }
-    
-    [query orderByDescending:@"createdAt"];
-    
-    return query;
+
+
 }
 
-
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if (indexPath.row % 2 == 1)
+        return 40;
+    return 169;
+}
 
 // Override to customize the look of a cell representing an object. The default is to display
 // a UITableViewCellStyleDefault style cell with the label being the first key in the object.
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath object:(PFObject *)object {
-    static NSString *CellIdentifier = @"Cell";
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
+    NSLog(@"hit");
+
     
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-    if (cell == nil) {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier];
+    if (indexPath.row % 2 == 1) {
+        NSLog(@"Odd");
+        //Even
+        static NSString *CellIdentifier = @"Cell";
+        UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+        if (cell == nil) {
+            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier];
+            
+        }
+        
+        [cell.contentView setAlpha:0];
+        cell.backgroundColor = [UIColor clearColor];
+        [cell setUserInteractionEnabled:NO];
+        
+        return cell;
+        
+    }else{
+        NSLog(@"Even");
+        static NSString *FeedCellIdentifier = @"spadeFeedCell";
+        
+         SpadeFeedCell *feedCell = [tableView dequeueReusableCellWithIdentifier:FeedCellIdentifier];
+        if (feedCell == nil) {
+            feedCell = [[SpadeFeedCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:FeedCellIdentifier];
+        }
+        
+        // Configure the cell
+
+        
+        NSUInteger newIndex = (indexPath.row /2);
+        
+        NSLog(@"%@",_objects);
+        PFUser *user = [[self.objects objectAtIndex:newIndex] objectForKey:spadeActivityFromUser];
+        PFObject *event = [[self.objects objectAtIndex:newIndex]objectForKey:spadeActivityToEvent];
+        NSLog(@"EVENT:%@",event.description);
+
+        PFObject *venue = [event objectForKey:spadeEventVenue];
+        NSLog(@"VENUE:%@",venue.description);
+        NSString *action = [[self.objects objectAtIndex:newIndex] objectForKey:spadeActivityAction];
+        
+        //PFObject *event = [object objectForKey:spadeActivityToEvent];
+        //NSString *eventName = [event objectForKey:spadeEventName];
+        
+        if([user objectForKey:spadeUserSmallProfilePic]){
+            [feedCell.userImageView setFile:[user objectForKey:spadeUserSmallProfilePic]];
+            [feedCell.userImageView loadInBackground];
+        }else{
+            feedCell.userImageView.image = [UIImage imageNamed:@"AvatarPlaceholder.png"];
+        }
+        if ([event objectForKey:spadeEventImageFile]) {
+            [feedCell.eventImageView setFile:[event objectForKey:spadeEventImageFile]];
+            [feedCell.eventImageView loadInBackground];
+        }
+       /* }else if([venue objectForKey:spadeVenuePicture]){
+            NSLog(@"hit");
+            feedCell.eventImageView.file =[venue objectForKey:spadeVenuePicture];
+            [feedCell.eventImageView loadInBackground];
+        }*/else{
+            feedCell.eventImageView.image = [UIImage imageNamed:@"AvatarPlaceholder.png"];
+            
+        }
+    
+        
+        if ([action isEqualToString:spadeActivityActionAttendingEvent]) {
+            feedCell.actionLabel.text = [NSString stringWithFormat:@"%@\nis attending\n%@",[user objectForKey:spadeUserDisplayName],[event objectForKey:spadeEventName]] ;
+            
+            
+        }else if ([action isEqualToString:spadeActivityActionCreatedEvent]){
+            feedCell.actionLabel.text = @"Created";
+            feedCell.actionLabel.text = [NSString stringWithFormat:@"%@\n created the event\n%@",[user objectForKey:spadeUserDisplayName],[event objectForKey:spadeEventName]] ;
+            
+        }
+        
+        
+        return feedCell;
+
+    
     }
-    
-    // Configure the cell
-    
-    NSLog(@"%@",object);
-    PFUser *user = [object objectForKey:spadeActivityFromUser];
-    NSString *action = [object objectForKey:spadeActivityAction];
-    NSString *userName = [user objectForKey:spadeUserDisplayName];
-    cell.textLabel.text = action;
-    
-    PFObject *event = [object objectForKey:spadeActivityToEvent];
-    NSString *eventName = [event objectForKey:spadeEventName];
     
     
    
-    if ([action isEqualToString:spadeActivityActionAttendingEvent]) {
-
-        cell.detailTextLabel.text = [NSString stringWithFormat:@"%@ is Attending %@ ", userName , eventName];
-        
-        
-    }else if ([action isEqualToString:spadeActivityActionCreatedEvent]){
-        
-        cell.detailTextLabel.text = [NSString stringWithFormat:@"%@ Created the event %@ ", userName , eventName];
-    
-    }
-    
-    
-    return cell;
 }
 
 
@@ -209,6 +282,28 @@
 
 
 #pragma mark { }
+
+-(void)runQueryAndReloadData
+{
+    NSLog(@"Ran Query");
+    if (!_objects) _objects = [[NSMutableArray alloc]init];
+    
+    [self.query findObjectsInBackgroundWithBlock:^(NSArray *objectsFound, NSError *error){
+        if (!error) {
+            NSLog(@"Ran");
+           // NSLog(@"Objects Found:%@",objectsFound);
+            [self.objects removeAllObjects];
+            [self.objects addObjectsFromArray:objectsFound];
+            [self.tableView reloadData];
+            [self.tableRefresh endRefreshing];
+            NSLog(@"%@", [self.objects description]);
+        }
+        
+    }];
+
+    
+
+}
 -(void)logOutPressed
 {
     

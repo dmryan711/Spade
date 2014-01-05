@@ -35,6 +35,7 @@
     self.pullToRefreshEnabled = YES;
     self.paginationEnabled = NO;
     self.objectsPerPage = 3;
+   // self.tableView.backgroundColor = [UIColor blackColor];
     
     
 

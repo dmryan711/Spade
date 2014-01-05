@@ -60,6 +60,9 @@
 		919DC3BD1874F360007E8BC0 /* UITabBar+FlatUI.m in Sources */ = {isa = PBXBuildFile; fileRef = 919DC3A91874F360007E8BC0 /* UITabBar+FlatUI.m */; };
 		919DC3BE1874F360007E8BC0 /* UITableViewCell+FlatUI.m in Sources */ = {isa = PBXBuildFile; fileRef = 919DC3AB1874F360007E8BC0 /* UITableViewCell+FlatUI.m */; };
 		919DC3BF1874F360007E8BC0 /* UIToolbar+FlatUI.m in Sources */ = {isa = PBXBuildFile; fileRef = 919DC3AD1874F360007E8BC0 /* UIToolbar+FlatUI.m */; };
+		919DC3C118775DE1007E8BC0 /* nicubunu_Card_symbols_Spade.jpeg in Resources */ = {isa = PBXBuildFile; fileRef = 919DC3C018775DE1007E8BC0 /* nicubunu_Card_symbols_Spade.jpeg */; };
+		919DC3C418775E57007E8BC0 /* SpadeFeedCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 919DC3C318775E57007E8BC0 /* SpadeFeedCell.m */; };
+		919DC3C618790221007E8BC0 /* leather.png in Resources */ = {isa = PBXBuildFile; fileRef = 919DC3C518790221007E8BC0 /* leather.png */; };
 		91D9D6351842F643005BD0BC /* Parse.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 91D9D6341842F643005BD0BC /* Parse.framework */; };
 		91D9D6371842F72A005BD0BC /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 91D9D6361842F72A005BD0BC /* AudioToolbox.framework */; };
 		91D9D6391842F735005BD0BC /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 91D9D6381842F735005BD0BC /* CFNetwork.framework */; };
@@ -178,6 +181,10 @@
 		919DC3AB1874F360007E8BC0 /* UITableViewCell+FlatUI.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UITableViewCell+FlatUI.m"; sourceTree = "<group>"; };
 		919DC3AC1874F360007E8BC0 /* UIToolbar+FlatUI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIToolbar+FlatUI.h"; sourceTree = "<group>"; };
 		919DC3AD1874F360007E8BC0 /* UIToolbar+FlatUI.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIToolbar+FlatUI.m"; sourceTree = "<group>"; };
+		919DC3C018775DE1007E8BC0 /* nicubunu_Card_symbols_Spade.jpeg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = nicubunu_Card_symbols_Spade.jpeg; path = ../../../../Desktop/nicubunu_Card_symbols_Spade.jpeg; sourceTree = "<group>"; };
+		919DC3C218775E57007E8BC0 /* SpadeFeedCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SpadeFeedCell.h; sourceTree = "<group>"; };
+		919DC3C318775E57007E8BC0 /* SpadeFeedCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SpadeFeedCell.m; sourceTree = "<group>"; };
+		919DC3C518790221007E8BC0 /* leather.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = leather.png; path = ../../../../Desktop/leather.png; sourceTree = "<group>"; };
 		91D9D6341842F643005BD0BC /* Parse.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Parse.framework; path = ../../../Downloads/Parse.framework; sourceTree = "<group>"; };
 		91D9D6361842F72A005BD0BC /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		91D9D6381842F735005BD0BC /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
@@ -272,6 +279,8 @@
 			isa = PBXGroup;
 			children = (
 				9141E87618407A5000A5DE15 /* Main.storyboard */,
+				919DC3C218775E57007E8BC0 /* SpadeFeedCell.h */,
+				919DC3C318775E57007E8BC0 /* SpadeFeedCell.m */,
 				9196A8E0186D29F500513082 /* SpadeFollowCell.h */,
 				9196A8E1186D29F500513082 /* SpadeFollowCell.m */,
 				9196A8E7186F8ACF00513082 /* SpadeVenueFollowCell.h */,
@@ -428,6 +437,8 @@
 		91D9D64B184317CE005BD0BC /* Assets */ = {
 			isa = PBXGroup;
 			children = (
+				919DC3C518790221007E8BC0 /* leather.png */,
+				919DC3C018775DE1007E8BC0 /* nicubunu_Card_symbols_Spade.jpeg */,
 				9196A8E3186D2E0400513082 /* AvatarPlaceholder.png */,
 				9196A8E4186D2E0400513082 /* AvatarPlaceholder@2x.png */,
 				9196A8CE1868D60700513082 /* default_venue_Image.jpeg */,
@@ -524,6 +535,8 @@
 			files = (
 				9196A8D11868D61300513082 /* skyline_7@2x.png in Resources */,
 				9196A8CF1868D60700513082 /* default_venue_Image.jpeg in Resources */,
+				919DC3C118775DE1007E8BC0 /* nicubunu_Card_symbols_Spade.jpeg in Resources */,
+				919DC3C618790221007E8BC0 /* leather.png in Resources */,
 				9196A8E5186D2E0400513082 /* AvatarPlaceholder.png in Resources */,
 				9196A8D31868D61B00513082 /* skyline@2x.png in Resources */,
 				9141E87D18407A5000A5DE15 /* Images.xcassets in Resources */,
@@ -551,6 +564,7 @@
 				915BEDB01857DB5A00FCA17A /* UIImage+RoundedCornerAdditions.m in Sources */,
 				9112354218569F170092253B /* SpadeEventController.m in Sources */,
 				919DC3BD1874F360007E8BC0 /* UITabBar+FlatUI.m in Sources */,
+				919DC3C418775E57007E8BC0 /* SpadeFeedCell.m in Sources */,
 				919DC3BA1874F360007E8BC0 /* UIProgressView+FlatUI.m in Sources */,
 				919DC3BF1874F360007E8BC0 /* UIToolbar+FlatUI.m in Sources */,
 				9196A8D9186A919F00513082 /* SpadeEditProfileViewController.m in Sources */,

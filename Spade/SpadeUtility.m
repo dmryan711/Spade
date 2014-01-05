@@ -259,4 +259,13 @@
 
 }
 
+/*+(NSArray *)crunchAttendeeActivities:(NSMutableArray *)arrayOfAttendingActivities
+{
+    for (PFObject *attendingActivity in arrayOfAttendingActivities) {
+        if
+    }
+
+    
+}*/
+
 @end
