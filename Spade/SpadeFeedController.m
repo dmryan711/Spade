@@ -15,6 +15,7 @@
 #import "SpadeConstants.h"
 #import "SpadeFriendTableViewController.h"
 #import "SpadeCache.h"
+#import "SpadeEventDetailViewController.h"
 
 @interface SpadeFeedController ()
 @property (strong,nonatomic) NSMutableArray *objects;
@@ -102,7 +103,7 @@
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
     
-    self.tableView.backgroundView = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"leather.png"]];
+    //self.tableView.backgroundView = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"leather.png"]];
 }
 
 
@@ -182,7 +183,7 @@
         
         NSUInteger newIndex = (indexPath.row /2);
         
-        NSLog(@"%@",_objects);
+        
         PFUser *user = [[self.objects objectAtIndex:newIndex] objectForKey:spadeActivityFromUser];
         PFObject *event = [[self.objects objectAtIndex:newIndex]objectForKey:spadeActivityToEvent];
         NSLog(@"EVENT:%@",event.description);
@@ -383,5 +384,24 @@
 }
 
  */
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    NSUInteger newIndex = (indexPath.row /2);
+    
+    PFObject *event = [[self.objects objectAtIndex:newIndex]objectForKey:spadeActivityToEvent];
+    
+    
+    UIStoryboard *mainStoryboard = [UIStoryboard storyboardWithName:@"Main"
+                                                             bundle: nil];
+    //Create Detail View
+    SpadeEventDetailViewController *eventDetailViewController = [mainStoryboard   instantiateViewControllerWithIdentifier:@"eventDetailController"];
+    
+    eventDetailViewController.object = event;
+    
+    [self.navigationController pushViewController:eventDetailViewController animated:YES];
 
+    
+
+
+}
 @end

@@ -62,6 +62,12 @@ extern NSString * const spadeEventImageFile;
 extern NSString * const spadeEventWhen;
 extern NSString * const spadeEventName;
 
+//Chat
+extern NSString * const spadeClassChat;
+extern NSString * const spadeChatFromUser;
+extern NSString * const spadeChatforEvent;
+extern NSString * const spadeChatMessage;
+
 
 //AlertView Titles Used for Comparison
 extern NSString * const spadeAlertViewTitleConfirmFollower;

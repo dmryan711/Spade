@@ -64,6 +64,13 @@ NSString * const spadeEventVenue =  @"Venue";
 NSString * const spadeEventImageFile = @"ImageFile";
 NSString * const spadeEventWhen = @"EventWhen";
 
+//Chat Class
+NSString * const spadeClassChat = @"Chat";
+NSString * const spadeChatFromUser = @"fromUser";
+NSString * const spadeChatforEvent = @"forEvent";
+NSString * const spadeChatMessage = @"message";
+
+
 //Alert View Titles for Comparison
 NSString * const spadeAlertViewTitleConfirmFollower = @"Just Asking!";
 NSString * const spadeAlertViewTitleConfirmEvent = @"Create Event";
