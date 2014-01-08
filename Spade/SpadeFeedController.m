@@ -78,15 +78,17 @@
     }
     
     //Set Query and Run
+    self.query.cachePolicy = kPFCachePolicyCacheThenNetwork;
     [self.query includeKey:spadeActivityFromUser];
-
     [self.query includeKey:spadeActivityToEvent];
     [self.query includeKey:spadeEventVenue];
+    [self.query includeKey:spadeVenueName];
     [self.query includeKey:spadeVenuePicture];
     [self.query orderByDescending:@"createdAt"];
     
     PFQuery *myfriends = [PFQuery queryWithClassName:spadeClassUser];
     [myfriends whereKey:spadeUserFacebookId containedIn:[[PFUser currentUser]objectForKey:spadeUserFriends]];
+    myfriends.cachePolicy = kPFCachePolicyCacheThenNetwork;
     [self.query whereKey:spadeActivityFromUser matchesQuery:myfriends];
     
     [self runQueryAndReloadData];
@@ -150,11 +152,9 @@
 // a UITableViewCellStyleDefault style cell with the label being the first key in the object.
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
-    NSLog(@"hit");
 
     
     if (indexPath.row % 2 == 1) {
-        NSLog(@"Odd");
         //Even
         static NSString *CellIdentifier = @"Cell";
         UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
@@ -170,7 +170,6 @@
         return cell;
         
     }else{
-        NSLog(@"Even");
         static NSString *FeedCellIdentifier = @"spadeFeedCell";
         
          SpadeFeedCell *feedCell = [tableView dequeueReusableCellWithIdentifier:FeedCellIdentifier];
@@ -205,18 +204,20 @@
             [feedCell.eventImageView setFile:[event objectForKey:spadeEventImageFile]];
             [feedCell.eventImageView loadInBackground];
         }
-       /* }else if([venue objectForKey:spadeVenuePicture]){
-            NSLog(@"hit");
-            feedCell.eventImageView.file =[venue objectForKey:spadeVenuePicture];
-            [feedCell.eventImageView loadInBackground];
-        }*/else{
+        else{
             feedCell.eventImageView.image = [UIImage imageNamed:@"AvatarPlaceholder.png"];
             
         }
     
         
         if ([action isEqualToString:spadeActivityActionAttendingEvent]) {
-            feedCell.actionLabel.text = [NSString stringWithFormat:@"%@\nis attending\n%@",[user objectForKey:spadeUserDisplayName],[event objectForKey:spadeEventName]] ;
+            if ([[self.objects objectAtIndex:newIndex]objectForKey:@"otherUserCount"]) {
+                NSNumber *otherCount = [[self.objects objectAtIndex:newIndex]objectForKey:@"otherUserCount"];
+                feedCell.actionLabel.text = [NSString stringWithFormat:@"%@ and %@ other friends\n are attending\n%@",[user objectForKey:spadeUserDisplayName], otherCount,[event objectForKey:spadeEventName]];
+            }else{
+                feedCell.actionLabel.text = [NSString stringWithFormat:@"%@\nis attending\n%@",[user objectForKey:spadeUserDisplayName],[event objectForKey:spadeEventName]] ;
+            }
+            
             
             
         }else if ([action isEqualToString:spadeActivityActionCreatedEvent]){
@@ -294,17 +295,57 @@
             NSLog(@"Ran");
            // NSLog(@"Objects Found:%@",objectsFound);
             [self.objects removeAllObjects];
-            [self.objects addObjectsFromArray:objectsFound];
+            
+            [self.objects addObjectsFromArray:[self crunchUpdates:objectsFound]];
             [self.tableView reloadData];
             [self.tableRefresh endRefreshing];
             NSLog(@"%@", [self.objects description]);
+            
         }
         
     }];
 
-    
-
 }
+
+-(NSArray *)crunchUpdates:(NSArray *)objectsFoundInQuery{
+	NSMutableArray *crunchedActivities = [[NSMutableArray alloc]init];
+	NSMutableDictionary *crunchedObject = [[NSMutableDictionary alloc]init];
+	
+	for(int i = 0; i< [objectsFoundInQuery count]; i++){
+        if ([[[objectsFoundInQuery objectAtIndex:i]objectForKey:spadeActivityAction] isEqualToString:spadeActivityActionAttendingEvent]) {
+        
+            int crunches = 0;
+            for(int j = i +1; j < [objectsFoundInQuery count]; j++){
+			
+                if([[[[objectsFoundInQuery objectAtIndex:i] objectForKey:spadeActivityToEvent]objectId] isEqualToString:[[[objectsFoundInQuery objectAtIndex:j] objectForKey:spadeActivityToEvent]objectId]]	){//Match Found. crunch
+                    
+                    if(crunches == 0){ //first Crunch
+                        [crunchedObject addEntriesFromDictionary: @{spadeActivityFromUser:[[objectsFoundInQuery objectAtIndex:i]objectForKey:spadeActivityFromUser],spadeActivityAction: spadeActivityActionAttendingEvent, spadeActivityToEvent:[[objectsFoundInQuery objectAtIndex:i] objectForKey:spadeActivityToEvent]}];
+                                       }
+                        crunches ++;
+                    NSNumber *crunchesNumber = [NSNumber numberWithInt:crunches];
+                    [crunchedObject addEntriesFromDictionary:@{@"otherUserCount":crunchesNumber}]; //add key and incremented other count
+                    }
+                }
+            
+                if(crunches == 0){ //No Crunches Made
+                    [crunchedActivities addObject:[objectsFoundInQuery objectAtIndex:i]];
+                
+                }else{ //crunches found
+                    [crunchedActivities addObject:crunchedObject];
+                    crunchedObject = nil; //reset the object
+                
+                    //Need to skip over the matches if they were made
+                    i +=crunches;
+                }
+        }else{
+            [crunchedActivities addObject:[objectsFoundInQuery objectAtIndex:i]];
+        }
+    }
+    return crunchedActivities;
+}
+
+
 -(void)logOutPressed
 {
     

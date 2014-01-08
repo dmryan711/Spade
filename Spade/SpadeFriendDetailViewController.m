@@ -54,6 +54,7 @@
     [self.friendProfileImage loadInBackground];
     
     //Set Query and Run
+    self.query.cachePolicy = kPFCachePolicyCacheThenNetwork;
     [self.query whereKey:spadeActivityToUser equalTo:self.friend];
     [self runQueryAndReloadData];
     

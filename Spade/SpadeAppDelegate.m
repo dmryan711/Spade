@@ -34,7 +34,7 @@
     // Override point for customization after application launch.
     
     //Initially Set Flag to NO
-    [[NSUserDefaults standardUserDefaults] registerDefaults:@{spadePicFLag:@NO, spadeNameFlag:@NO, spadeFirstLoginFlag:@NO}];
+    [[NSUserDefaults standardUserDefaults] registerDefaults:@{spadePicFLag:@NO, spadeNameFlag:@NO, spadeFirstLoginFlag:@YES}];
 
                                                                  
     /*****   PARSE APPLICATION *******/
@@ -312,6 +312,7 @@
     
     //Query for Followed Venues
     PFQuery *queryFollowedVenues = [PFQuery queryWithClassName:spadeClassActivity];
+    queryFollowedVenues.cachePolicy = kPFCachePolicyNetworkOnly;
     [queryFollowedVenues whereKey:spadeActivityFromUser equalTo:[PFUser currentUser]];
     [queryFollowedVenues whereKeyExists:spadeActivityToVenue];
     
@@ -333,6 +334,7 @@
     
     //Query for Followed Users
     PFQuery *queryFollowedUsers = [PFQuery queryWithClassName:spadeClassActivity];
+    queryFollowedUsers.cachePolicy = kPFCachePolicyNetworkOnly;
     [queryFollowedUsers whereKey:spadeActivityFromUser equalTo:[PFUser currentUser]];
     [queryFollowedUsers whereKeyExists:spadeActivityToUser];
     //Run Query
@@ -356,6 +358,7 @@
 
     //Query for Followed Users
     PFQuery *queryFollowedEvents = [PFQuery queryWithClassName:spadeClassActivity];
+    queryFollowedEvents.cachePolicy = kPFCachePolicyNetworkOnly;
     [queryFollowedEvents whereKey:spadeActivityFromUser equalTo:[PFUser currentUser]];
     [queryFollowedEvents whereKeyExists:spadeActivityToEvent];
     //Run Query

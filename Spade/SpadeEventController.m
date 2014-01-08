@@ -82,12 +82,14 @@
     
     
     self.venueQuery = [PFQuery queryWithClassName:spadeClassVenue];
+    self.venueQuery.cachePolicy = kPFCachePolicyCacheThenNetwork;
     [self runVenueQueryAndLoadData];
     [self setDatePicker];
     
    
     
     self.myEventsQuery = [PFQuery queryWithClassName:spadeClassActivity];
+    self.myEventsQuery.cachePolicy = kPFCachePolicyCacheThenNetwork;
     [self.myEventsQuery whereKeyExists:spadeActivityToEvent];
     [self.myEventsQuery includeKey:spadeActivityToEvent];
     [self.myEventsQuery whereKey:spadeActivityFromUser equalTo:[PFUser currentUser]];
@@ -95,6 +97,7 @@
     [self runMyEventQueryAndReloadData];
     
     self.followedEventsQuery = [PFQuery queryWithClassName:spadeClassActivity];
+    self.followedEventsQuery.cachePolicy = kPFCachePolicyCacheThenNetwork;
     [self.followedEventsQuery includeKey:spadeActivityToEvent];
     [self.followedEventsQuery whereKeyExists:spadeActivityToEvent];
     [self.followedEventsQuery whereKey:spadeActivityFromUser equalTo:[PFUser currentUser]];
