@@ -58,6 +58,7 @@
 		91D9D6471842F783005BD0BC /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 91D9D6461842F783005BD0BC /* SystemConfiguration.framework */; };
 		91D9D64A1843021D005BD0BC /* SpadeLoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 91D9D6491843021D005BD0BC /* SpadeLoginViewController.m */; };
 		91D9D65518432156005BD0BC /* FacebookSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 91D9D65418432156005BD0BC /* FacebookSDK.framework */; };
+		91F74AA8187CF72600F322BC /* SpadeChatViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 91F74AA7187CF72600F322BC /* SpadeChatViewController.m */; };
 		91FF259B1859791600FA923A /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 91FF259A1859791600FA923A /* CoreFoundation.framework */; };
 /* End PBXBuildFile section */
 
@@ -148,6 +149,8 @@
 		91D9D6481843021D005BD0BC /* SpadeLoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SpadeLoginViewController.h; sourceTree = "<group>"; };
 		91D9D6491843021D005BD0BC /* SpadeLoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SpadeLoginViewController.m; sourceTree = "<group>"; };
 		91D9D65418432156005BD0BC /* FacebookSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FacebookSDK.framework; path = "../../../Downloads/ParsePlatform-LoginAndSignUpTutorial-0710943/FacebookSDK.framework"; sourceTree = "<group>"; };
+		91F74AA6187CF72600F322BC /* SpadeChatViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SpadeChatViewController.h; sourceTree = "<group>"; };
+		91F74AA7187CF72600F322BC /* SpadeChatViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SpadeChatViewController.m; sourceTree = "<group>"; };
 		91FF259A1859791600FA923A /* CoreFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreFoundation.framework; path = System/Library/Frameworks/CoreFoundation.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
@@ -202,6 +205,8 @@
 		9112353E18569CD30092253B /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				91F74AA6187CF72600F322BC /* SpadeChatViewController.h */,
+				91F74AA7187CF72600F322BC /* SpadeChatViewController.m */,
 				9112354018569F170092253B /* SpadeEventController.h */,
 				9112354118569F170092253B /* SpadeEventController.m */,
 				919DC3C71879F2CF007E8BC0 /* SpadeEventDetailViewController.h */,
@@ -486,6 +491,7 @@
 				9196A8DC186B574700513082 /* SpadeFriendTableViewController.m in Sources */,
 				915BEDAF1857DB5A00FCA17A /* UIImage+AlphaAdditions.m in Sources */,
 				91D9D64A1843021D005BD0BC /* SpadeLoginViewController.m in Sources */,
+				91F74AA8187CF72600F322BC /* SpadeChatViewController.m in Sources */,
 				919DC3C91879F2CF007E8BC0 /* SpadeEventDetailViewController.m in Sources */,
 				9196A8E9186F8ACF00513082 /* SpadeVenueFollowCell.m in Sources */,
 				9141E87118407A5000A5DE15 /* main.m in Sources */,

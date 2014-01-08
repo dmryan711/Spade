@@ -11,7 +11,7 @@
 #import <Parse/Parse.h>
 
 
-@interface SpadeEventDetailViewController : UIViewController <UITextFieldDelegate,SpadeFollowCellDelegate,UITableViewDataSource,UITableViewDelegate>
+@interface SpadeEventDetailViewController : UIViewController <SpadeFollowCellDelegate,UITableViewDataSource,UITableViewDelegate>
 
 @property (strong, nonatomic) PFObject *object;
 
