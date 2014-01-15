@@ -5,7 +5,7 @@
 //  Created by Devon Ryan on 12/3/13.
 //  Copyright (c) 2013 Devon Ryan. All rights reserved.
 //
-
+#import "SpadeEventCreationViewController.h"
 #import "SpadeFeedController.h"
 #import "SpadeFeedCell.h"
 #import "SpadeAppDelegate.h"
@@ -185,10 +185,8 @@
         
         PFUser *user = [[self.objects objectAtIndex:newIndex] objectForKey:spadeActivityFromUser];
         PFObject *event = [[self.objects objectAtIndex:newIndex]objectForKey:spadeActivityToEvent];
-        NSLog(@"EVENT:%@",event.description);
 
-        PFObject *venue = [event objectForKey:spadeEventVenue];
-        NSLog(@"VENUE:%@",venue.description);
+        //PFObject *venue = [event objectForKey:spadeEventVenue];
         NSString *action = [[self.objects objectAtIndex:newIndex] objectForKey:spadeActivityAction];
         
         //PFObject *event = [object objectForKey:spadeActivityToEvent];
@@ -213,7 +211,11 @@
         if ([action isEqualToString:spadeActivityActionAttendingEvent]) {
             if ([[self.objects objectAtIndex:newIndex]objectForKey:@"otherUserCount"]) {
                 NSNumber *otherCount = [[self.objects objectAtIndex:newIndex]objectForKey:@"otherUserCount"];
-                feedCell.actionLabel.text = [NSString stringWithFormat:@"%@ and %@ other friends\n are attending\n%@",[user objectForKey:spadeUserDisplayName], otherCount,[event objectForKey:spadeEventName]];
+                if ([otherCount isEqualToNumber:[NSNumber numberWithInt:1]]) {
+                    feedCell.actionLabel.text = [NSString stringWithFormat:@"%@ and %@ other friend\n is attending\n%@",[user objectForKey:spadeUserDisplayName], otherCount,[event objectForKey:spadeEventName]];
+                }else{
+                    feedCell.actionLabel.text = [NSString stringWithFormat:@"%@ and %@ other friends\n are attending\n%@",[user objectForKey:spadeUserDisplayName], otherCount,[event objectForKey:spadeEventName]];
+                }
             }else{
                 feedCell.actionLabel.text = [NSString stringWithFormat:@"%@\nis attending\n%@",[user objectForKey:spadeUserDisplayName],[event objectForKey:spadeEventName]] ;
             }
@@ -225,14 +227,9 @@
             feedCell.actionLabel.text = [NSString stringWithFormat:@"%@\n created the event\n%@",[user objectForKey:spadeUserDisplayName],[event objectForKey:spadeEventName]] ;
             
         }
-        
-        
         return feedCell;
 
-    
     }
-    
-    
    
 }
 
@@ -241,6 +238,7 @@
 #define LOGOUT_BUTTON 0
 #define PROFILE_BUTTON 1
 #define FIND_FRIEND 2
+#define BETA 3
 -(void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
 {
     if (buttonIndex == LOGOUT_BUTTON) {
@@ -252,6 +250,9 @@
     
     }else if (buttonIndex == FIND_FRIEND){
         [self segueToFriendView];
+    
+    }else if (buttonIndex == BETA){
+        [self segueToBeta];
     
     }
 
@@ -282,6 +283,17 @@
     
 }
 
+-(void)segueToBeta
+{
+    UIStoryboard *mainStoryboard = [UIStoryboard storyboardWithName:@"Main"
+                                                             bundle: nil];
+    //Create Detail View
+    SpadeEventCreationViewController *beta = [mainStoryboard   instantiateViewControllerWithIdentifier:@"beta"];
+    
+    [self.navigationController pushViewController:beta animated:YES];
+    
+}
+
 
 #pragma mark { }
 
@@ -296,7 +308,7 @@
            // NSLog(@"Objects Found:%@",objectsFound);
             [self.objects removeAllObjects];
             
-            [self.objects addObjectsFromArray:[self crunchUpdates:objectsFound]];
+            [self.objects addObjectsFromArray:[self crunchUpdates:(NSMutableArray *)objectsFound]];
             [self.tableView reloadData];
             [self.tableRefresh endRefreshing];
             NSLog(@"%@", [self.objects description]);
@@ -307,44 +319,58 @@
 
 }
 
--(NSArray *)crunchUpdates:(NSArray *)objectsFoundInQuery{
+-(NSArray *)crunchUpdates:(NSMutableArray *)objectsFoundInQuery{
 	NSMutableArray *crunchedActivities = [[NSMutableArray alloc]init];
 	NSMutableDictionary *crunchedObject = [[NSMutableDictionary alloc]init];
-	
+	NSLog(@"UNCRUNCHED BLAHHH:%@",objectsFoundInQuery);
 	for(int i = 0; i< [objectsFoundInQuery count]; i++){
+        NSLog(@"I Loop:%i",i);
         if ([[[objectsFoundInQuery objectAtIndex:i]objectForKey:spadeActivityAction] isEqualToString:spadeActivityActionAttendingEvent]) {
-        
             int crunches = 0;
             for(int j = i +1; j < [objectsFoundInQuery count]; j++){
-			
-                if([[[[objectsFoundInQuery objectAtIndex:i] objectForKey:spadeActivityToEvent]objectId] isEqualToString:[[[objectsFoundInQuery objectAtIndex:j] objectForKey:spadeActivityToEvent]objectId]]	){//Match Found. crunch
-                    
-                    if(crunches == 0){ //first Crunch
-                        [crunchedObject addEntriesFromDictionary: @{spadeActivityFromUser:[[objectsFoundInQuery objectAtIndex:i]objectForKey:spadeActivityFromUser],spadeActivityAction: spadeActivityActionAttendingEvent, spadeActivityToEvent:[[objectsFoundInQuery objectAtIndex:i] objectForKey:spadeActivityToEvent]}];
-                                       }
+                if ([[[objectsFoundInQuery objectAtIndex:j]objectForKey:spadeActivityAction] isEqualToString:spadeActivityActionAttendingEvent]){
+                    NSLog(@"J Loop:%i",j);
+                
+                    if([[[[objectsFoundInQuery objectAtIndex:i] objectForKey:spadeActivityToEvent]objectId] isEqualToString:[[[objectsFoundInQuery objectAtIndex:j] objectForKey:spadeActivityToEvent]objectId]]	){//Match Found. crunch
+                        NSLog(@"Match");
+                        if(crunches == 0){ //first Crunch
+                            [crunchedObject addEntriesFromDictionary: @{spadeActivityFromUser:[[objectsFoundInQuery objectAtIndex:i]objectForKey:spadeActivityFromUser],spadeActivityAction: spadeActivityActionAttendingEvent, spadeActivityToEvent:[[objectsFoundInQuery objectAtIndex:i] objectForKey:spadeActivityToEvent]}];
+                        }
                         crunches ++;
-                    NSNumber *crunchesNumber = [NSNumber numberWithInt:crunches];
-                    [crunchedObject addEntriesFromDictionary:@{@"otherUserCount":crunchesNumber}]; //add key and incremented other count
+                        NSNumber *crunchesNumber = [NSNumber numberWithInt:crunches];
+                        [crunchedObject addEntriesFromDictionary:@{@"otherUserCount":crunchesNumber}]; //add key and incremented other count
+                    
+                        //Removing Compared Object
+                        [objectsFoundInQuery removeObjectAtIndex: j];
+                        j--;
+                        
+                        NSLog(@"Crunched Object in J Loop:%@",[crunchedObject description]);
                     }
                 }
+            }
             
-                if(crunches == 0){ //No Crunches Made
-                    [crunchedActivities addObject:[objectsFoundInQuery objectAtIndex:i]];
+            if(crunches == 0){ //No Crunches Made
+                [crunchedActivities addObject:[objectsFoundInQuery objectAtIndex:i]];
                 
-                }else{ //crunches found
-                    [crunchedActivities addObject:crunchedObject];
-                    crunchedObject = nil; //reset the object
+            }else{ //crunches found
+                NSLog(@"Crunched Object in I Loop:%@",[crunchedObject description]);
+                NSDictionary *tempDict = [NSDictionary dictionaryWithDictionary:crunchedObject];
+                [crunchedActivities addObject:tempDict];
+                [crunchedObject removeAllObjects]; //reset the object
+                NSLog(@"Crunched Activities:%@",[crunchedActivities description]);
+ 
                 
-                    //Need to skip over the matches if they were made
-                    i +=crunches;
-                }
+                //Removing Comparing Object
+                [objectsFoundInQuery removeObjectAtIndex:i];
+                i--;
+            }
         }else{
-            [crunchedActivities addObject:[objectsFoundInQuery objectAtIndex:i]];
+            [crunchedActivities addObject:[objectsFoundInQuery objectAtIndex:i]]; // if it is the "Created" Action
         }
     }
+    NSLog(@"CRUNCH NOM NOM: %@",crunchedActivities);
     return crunchedActivities;
 }
-
 
 -(void)logOutPressed
 {
@@ -356,7 +382,7 @@
 -(void)settingsPressed{
     
     
-    UIActionSheet *settingsPressed = [[UIActionSheet alloc]initWithTitle:@"Settings" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:@"Log Out" otherButtonTitles:@"Profile",@"Find Friends", nil];
+    UIActionSheet *settingsPressed = [[UIActionSheet alloc]initWithTitle:@"Settings" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:@"Log Out" otherButtonTitles:@"Profile",@"Find Friends",@"Beta Event Create", nil];
 
     [settingsPressed showFromBarButtonItem:self.navigationItem.rightBarButtonItem animated:YES];
 }

@@ -18,7 +18,7 @@
 @property (strong, nonatomic) IBOutlet UIButton *sendButton;
 @property (weak, nonatomic) IBOutlet UITextField *chatEntryField;
 @property (weak, nonatomic) IBOutlet UIView *chatView;
-
+@property (strong, nonatomic) NSTimer *timer;
 
 @end
 
@@ -32,9 +32,12 @@
     
 }
 
+#define RELOAD_INTERVAL 3
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    NSLog(@"Loaded");
     
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
@@ -65,13 +68,19 @@
     
      [self runQueryAndReloadData];
     
+  self.timer =  [NSTimer scheduledTimerWithTimeInterval:RELOAD_INTERVAL target:self selector:@selector(runQueryAndReloadData) userInfo:nil repeats:YES];
+    
 }
 
 - (void)viewDidUnload
 {
     [super viewDidUnload];
     [self freeKeyboardNotifications];
+    NSLog(@"unloaded");
+    
 }
+
+
 
 - (void)didReceiveMemoryWarning
 {
@@ -231,7 +240,7 @@
     [chatEntry setObject:[PFUser currentUser] forKey:spadeChatFromUser];
     [chatEntry saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error){
         if (succeeded) {
-            [self runQueryAndReloadData];
+           // [self runQueryAndReloadData];
         }
         
     }];
