@@ -67,7 +67,11 @@
     
     [self runVenueQueryAndLoadData];
 
-
+    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc]initWithTitle:@"Cancel" style:UIBarButtonItemStyleDone target:self action:@selector(cancelPressed)];
+    
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]initWithTitle:@"Save" style:UIBarButtonItemStyleBordered target:self action:@selector(savePressed)];
+    
+    
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
  
@@ -217,7 +221,7 @@
     
     UIActionSheet *eventImage = [[UIActionSheet alloc]initWithTitle:@"Select Picture Source" delegate:self cancelButtonTitle:@"Nevermind" destructiveButtonTitle:nil otherButtonTitles:@"Choose From Library",@"Take a Photo", nil];
     
-    [eventImage showFromTabBar:self.tabBarController.tabBar];
+    [eventImage showInView:self.view];
 
 }
 
@@ -405,11 +409,6 @@
 }
 
 
-
-
-
-
-
 -(void)removeDatePicker
 {
     if (self.datePicker) {
@@ -485,6 +484,14 @@
     [mediaTypeNotAvailable show];
     
 }
+
+-(void)cancelPressed
+{
+    [self.navigationController dismissViewControllerAnimated:self completion:nil];
+}
+
+-(void)savePressed
+{}
 
 #pragma mark Action Sheet Delegate Methods
 #define CAMERA_ROLL 0
