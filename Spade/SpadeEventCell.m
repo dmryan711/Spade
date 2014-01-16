@@ -25,7 +25,7 @@
 
 -(void)awakeFromNib
 {
-    self.showCell = NO ;
+    self.showCell = YES ;
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated

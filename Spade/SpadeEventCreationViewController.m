@@ -137,10 +137,11 @@
             cell.value.text = self.venuePickerSelection;
             [cell addSubview:self.venuePickerView];
             [self.venuePickerView selectRow:[self.venues count]/2 inComponent:0 animated:YES];
+            self.venuePickerSelection = [[self.venues objectAtIndex:[self.venues count]/2] objectForKey:spadeVenueName];
             return cell;
         }
         self.venueCell = [tableView dequeueReusableCellWithIdentifier:LabelCellIdentifier forIndexPath:indexPath];
-        self.venueCell.label.text = @"Venue";
+        self.venueCell.label.text = @"Venue:";
         return self.venueCell;
         
     }else if (indexPath.section == DATE_SECTION){
@@ -184,25 +185,25 @@
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
     if (section == NAME_SECTION) {
-        return @"Event Name";
+        return @"Enter a Name";
     }else if (section == VENUE_SECTION){
-        return @"Event Venue";
+        return @"Select a Venue";
     }else if (section == DATE_SECTION){
-        return @"Event Date";
+        return @"Select a Date";
     }else if (section == TIME_SETION){
-        return @"Event Time";
+        return @"Select a Time";
     
     }else{ //if (section == PHOTO_SECTION){
-        return @"Event Photo";
+        return @"Upload a Photo (Optional)";
     }
 }
 
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     
     if ((indexPath.row == 1 && indexPath.section == VENUE_SECTION) || (indexPath.row == 1 && indexPath.section == DATE_SECTION) || (indexPath.row == 1 && indexPath.section == TIME_SETION)) {
-        return 180;
+        return 190;
     }else if (indexPath.section == PHOTO_SECTION){
-        return 150;
+        return 120;
     
     }else{
         return 44;
@@ -241,19 +242,19 @@
         [self changeNameCell];
         
     }else if (indexPath.section == VENUE_SECTION){
-        [self.venueCell toggleShowCell];
+        //[self.venueCell toggleShowCell];
         [self changeVenueCell];
         [self.tableView cellForRowAtIndexPath:indexPath].selected  = NO;
 
       
     }else if (indexPath.section == DATE_SECTION){
-        [self.dateCell toggleShowCell];
+        //[self.dateCell toggleShowCell];
         [self changeDateCell];
         [self.tableView cellForRowAtIndexPath:indexPath].selected  = NO;
         
         
     }else if (indexPath.section == TIME_SETION){
-        [self.timeCell toggleShowCell];
+        //[self.timeCell toggleShowCell];
         [self changeTimeCell];
         [self.tableView cellForRowAtIndexPath:indexPath].selected  = NO;
         
@@ -317,10 +318,7 @@
 
 - (void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component
 {
-  
-    NSLog(@"Value Set ");
-   self.venuePickerSelection = [[self.venues objectAtIndex:row]objectForKey:spadeVenueName];
-    
+    self.venuePickerSelection = [[self.venues objectAtIndex:row] objectForKey:spadeVenueName];
 }
 
 
@@ -361,6 +359,9 @@
         self.venueCell.label.text = @"";
         self.venueCell.value.text = @"Done";// show done button image instead
         
+        [self.venueCell toggleShowCell];
+        
+        
     }else{
         [self removeVenuePicker];
     }
@@ -375,6 +376,7 @@
         self.venuePickerView = nil;
         [self.tableView deleteRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:1 inSection:VENUE_SECTION]] withRowAnimation:UITableViewRowAnimationFade];
         self.venueCell.label.text = @"Venue:";
+        [self.venueCell toggleShowCell];
     }
 
 
@@ -393,6 +395,8 @@
         
         self.dateCell.label.text = @"";
         self.dateCell.value.text = @"Done";// show done button image instead
+        [self.dateCell toggleShowCell];
+       
         
     }else{
         [self removeDatePicker];
@@ -416,6 +420,7 @@
         self.datePicker = nil;
         [self.tableView deleteRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:1 inSection:DATE_SECTION]] withRowAnimation:UITableViewRowAnimationFade];
         self.dateCell.label.text = @"Date:";
+        [self.dateCell toggleShowCell];
     }
 
 
@@ -432,6 +437,7 @@
         
         self.timeCell.label.text = @"";
         self.timeCell.value.text = @"Done";// show done button image instead
+        [self.timeCell toggleShowCell];
         
     }else{
         [self removeTimePicker];
@@ -449,20 +455,24 @@
         self.timePicker = nil;
         [self.tableView deleteRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:1 inSection:TIME_SETION]] withRowAnimation:UITableViewRowAnimationFade];
         self.timeCell.label.text = @"Time:";
+        [self.timeCell toggleShowCell];
     }
 
 }
 
 -(void)runVenueQueryAndLoadData
 {
+    
+   
     [self.venueQuery findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error){
         if (!_venues) _venues = [[NSMutableArray alloc]init];
         
         if (!error) {
             NSLog(@"Ran Query");
+            
             [self.venues removeAllObjects];
             [self.venues addObjectsFromArray:objects];
-            
+       
         }
         
     }];

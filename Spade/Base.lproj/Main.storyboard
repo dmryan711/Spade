@@ -452,18 +452,20 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                     </view>
                     <navigationItem key="navigationItem" id="htz-71-Wcy">
                         <nil key="title"/>
-                        <segmentedControl key="titleView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="bar" selectedSegmentIndex="0" id="swl-mv-M3Z">
-                            <rect key="frame" x="21" y="7" width="278" height="30"/>
-                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            <segments>
-                                <segment title="Create"/>
-                                <segment title="Manage"/>
-                                <segment title="Attending"/>
-                            </segments>
-                            <connections>
-                                <action selector="eventSegmentChanged:" destination="5fV-Aa-qSI" eventType="valueChanged" id="Rzx-y1-kj0"/>
-                            </connections>
-                        </segmentedControl>
+                        <barButtonItem key="rightBarButtonItem" style="plain" id="IJC-JX-4pq">
+                            <segmentedControl key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="bar" selectedSegmentIndex="0" id="swl-mv-M3Z">
+                                <rect key="frame" x="154" y="7" width="150" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <segments>
+                                    <segment title="C"/>
+                                    <segment title="M"/>
+                                    <segment title="A"/>
+                                </segments>
+                                <connections>
+                                    <action selector="eventSegmentChanged:" destination="5fV-Aa-qSI" eventType="valueChanged" id="Rzx-y1-kj0"/>
+                                </connections>
+                            </segmentedControl>
+                        </barButtonItem>
                     </navigationItem>
                     <connections>
                         <outlet property="createEventView" destination="NyK-7Y-g2G" id="khz-mE-nBx"/>
@@ -562,19 +564,19 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                                     <outlet property="value" destination="5Oo-cv-lNM" id="k9K-4Y-m3r"/>
                                 </connections>
                             </tableViewCell>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="EventUploadImageIdentifier" rowHeight="228" id="92h-5b-wzt" customClass="SpadePhotoCell">
-                                <rect key="frame" x="0.0" y="174" width="320" height="228"/>
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="EventUploadImageIdentifier" rowHeight="162" id="92h-5b-wzt" customClass="SpadePhotoCell">
+                                <rect key="frame" x="0.0" y="174" width="320" height="162"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="92h-5b-wzt" id="7mH-3W-ces">
-                                    <rect key="frame" x="0.0" y="0.0" width="320" height="227"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="320" height="161"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="default_venue_Image.jpeg" translatesAutoresizingMaskIntoConstraints="NO" id="ZPx-Ql-WoN" customClass="PFImageView">
-                                            <rect key="frame" x="40" y="50" width="240" height="128"/>
+                                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="AvatarPlaceholder.png" translatesAutoresizingMaskIntoConstraints="NO" id="ZPx-Ql-WoN" customClass="PFImageView">
+                                            <rect key="frame" x="109" y="34" width="102" height="93"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         </imageView>
-                                        <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Utx-vv-BAe">
-                                            <rect key="frame" x="0.0" y="0.0" width="320" height="227"/>
+                                        <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Utx-vv-BAe">
+                                            <rect key="frame" x="11" y="0.0" width="299" height="152"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                             <state key="normal">
                                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
@@ -584,15 +586,17 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                                             </connections>
                                         </button>
                                         <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" fixedFrame="YES" progress="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="8Po-so-Jd7">
-                                            <rect key="frame" x="85" y="31" width="150" height="2"/>
+                                            <rect key="frame" x="85" y="10" width="150" height="2"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         </progressView>
                                     </subviews>
                                     <constraints>
-                                        <constraint firstAttribute="centerX" secondItem="ZPx-Ql-WoN" secondAttribute="centerX" id="25l-hd-FbG"/>
-                                        <constraint firstAttribute="centerY" secondItem="Utx-vv-BAe" secondAttribute="centerY" constant="-0.5" id="A9E-7J-ie9"/>
-                                        <constraint firstAttribute="centerY" secondItem="ZPx-Ql-WoN" secondAttribute="centerY" constant="-0.5" id="qIe-Pa-zt4"/>
-                                        <constraint firstAttribute="centerX" secondItem="Utx-vv-BAe" secondAttribute="centerX" id="w34-Gg-Q2n"/>
+                                        <constraint firstItem="ZPx-Ql-WoN" firstAttribute="leading" secondItem="7mH-3W-ces" secondAttribute="leading" constant="109" id="6xj-xa-sh9"/>
+                                        <constraint firstItem="ZPx-Ql-WoN" firstAttribute="top" secondItem="7mH-3W-ces" secondAttribute="top" constant="34" id="8BO-di-LIK"/>
+                                        <constraint firstAttribute="trailing" secondItem="ZPx-Ql-WoN" secondAttribute="trailing" constant="109" id="CZ2-Sf-BjQ"/>
+                                        <constraint firstAttribute="centerX" secondItem="ZPx-Ql-WoN" secondAttribute="centerX" id="TaN-qJ-WUy"/>
+                                        <constraint firstAttribute="centerY" secondItem="ZPx-Ql-WoN" secondAttribute="centerY" id="WR7-X7-ABt"/>
+                                        <constraint firstAttribute="bottom" secondItem="ZPx-Ql-WoN" secondAttribute="bottom" constant="34" id="pWP-Bs-Ghe"/>
                                     </constraints>
                                 </tableViewCellContentView>
                                 <connections>
@@ -1306,7 +1310,6 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
     </scenes>
     <resources>
         <image name="AvatarPlaceholder.png" width="43" height="43"/>
-        <image name="default_venue_Image.jpeg" width="225" height="225"/>
     </resources>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>
