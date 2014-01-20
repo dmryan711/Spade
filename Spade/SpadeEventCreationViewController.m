@@ -7,6 +7,7 @@
 //
 
 #import <Parse/Parse.h>
+#import "SpadeUtility.h"
 #import "SpadeEventCreationViewController.h"
 #import "SpadeEventCell.h"
 #import "SpadeEventVenueCell.h"
@@ -23,7 +24,6 @@
 @property (strong, nonatomic) PFQuery *venueQuery;
 @property (strong, nonatomic) NSMutableArray *venues;
 @property (strong, nonatomic)  UIPickerView *venuePickerView;
-@property (strong, nonatomic) NSString *venuePickerSelection;
 @property (strong, nonatomic) NSString *nameSelection;
 @property (strong, nonatomic) UIDatePicker *datePicker;
 @property (strong, nonatomic) UIDatePicker *timePicker;
@@ -67,9 +67,11 @@
     
     [self runVenueQueryAndLoadData];
 
-    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc]initWithTitle:@"Cancel" style:UIBarButtonItemStyleDone target:self action:@selector(cancelPressed)];
+    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc]initWithTitle:@"Cancel" style:UIBarButtonItemStyleDone target:self action:@selector(dismissView)];
     
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]initWithTitle:@"Save" style:UIBarButtonItemStyleBordered target:self action:@selector(savePressed)];
+    
+
     
     
     // Uncomment the following line to preserve selection between presentations.
@@ -138,14 +140,17 @@
             [self.venuePickerView reloadAllComponents];
             
             SpadeEventVenueCell *cell = [[SpadeEventVenueCell alloc]initWithFrame:CGRectMake(0, 0, 320, 180)];
-            cell.value.text = self.venuePickerSelection;
+            cell.value.text = [self.venuePickerSelection objectForKey:spadeVenueName];
             [cell addSubview:self.venuePickerView];
             [self.venuePickerView selectRow:[self.venues count]/2 inComponent:0 animated:YES];
-            self.venuePickerSelection = [[self.venues objectAtIndex:[self.venues count]/2] objectForKey:spadeVenueName];
+            self.venuePickerSelection = [self.venues objectAtIndex:[self.venues count]/2];
             return cell;
         }
         self.venueCell = [tableView dequeueReusableCellWithIdentifier:LabelCellIdentifier forIndexPath:indexPath];
         self.venueCell.label.text = @"Venue:";
+        if (self.venuePickerSelection) {
+            self.venueCell.value.text = [self.venuePickerSelection objectForKey:spadeVenueName];
+        }
         return self.venueCell;
         
     }else if (indexPath.section == DATE_SECTION){
@@ -322,7 +327,7 @@
 
 - (void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component
 {
-    self.venuePickerSelection = [[self.venues objectAtIndex:row] objectForKey:spadeVenueName];
+    self.venuePickerSelection = [self.venues objectAtIndex:row];
 }
 
 
@@ -376,7 +381,7 @@
 {
     if (self.venuePickerView) {
         self.numberOFVenueRows--;
-        self.venueCell.value.text =  self.venuePickerSelection;
+        self.venueCell.value.text =  [self.venuePickerSelection objectForKey:spadeVenueName];
         self.venuePickerView = nil;
         [self.tableView deleteRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:1 inSection:VENUE_SECTION]] withRowAnimation:UITableViewRowAnimationFade];
         self.venueCell.label.text = @"Venue:";
@@ -485,13 +490,30 @@
     
 }
 
--(void)cancelPressed
+-(void)dismissView
 {
     [self.navigationController dismissViewControllerAnimated:self completion:nil];
 }
 
 -(void)savePressed
-{}
+{
+    if ([self.nameCell.nameLabel.text isEqualToString:@""] || [self.venueCell.value.text isEqualToString:@""] || [self.dateCell.value.text isEqualToString:@""] || [self.timeCell.value.text isEqualToString:@""]) {
+        [self createNotEnoughInformationAlert];
+    }else{
+        [SpadeUtility user:[PFUser currentUser] creatingEventWithName:self.nameCell.nameLabel.text forVenue:self.venuePickerSelection forDate:self.dateCell.value.text forTime:self.timeCell.value.text withImageFile:self.photoCell.fileForEventImage];
+        [self dismissView];
+    }
+}
+
+
+
+
+
+-(void)createNotEnoughInformationAlert
+{
+    UIAlertView *notEnoughInformationAlert = [[UIAlertView alloc]initWithTitle:@"Not Enough Information" message:@"Your Event needs:\n a NAME\n a WHERE\n and a WHEN\n The image is optional, but first appearences are everything.\n Let that sink in..." delegate:nil cancelButtonTitle:@"Roger That" otherButtonTitles: nil];
+    [notEnoughInformationAlert show];
+}
 
 #pragma mark Action Sheet Delegate Methods
 #define CAMERA_ROLL 0

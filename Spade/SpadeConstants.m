@@ -63,6 +63,7 @@ NSString * const spadeEventName = @"Name";
 NSString * const spadeEventVenue =  @"Venue";
 NSString * const spadeEventImageFile = @"ImageFile";
 NSString * const spadeEventWhen = @"EventWhen";
+NSString * const spadeEventTime = @"EventTime";
 
 //Chat Class
 NSString * const spadeClassChat = @"Chat";

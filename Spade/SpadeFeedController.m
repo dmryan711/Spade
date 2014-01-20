@@ -238,7 +238,7 @@
 #define LOGOUT_BUTTON 0
 #define PROFILE_BUTTON 1
 #define FIND_FRIEND 2
-#define BETA 3
+//#define BETA 3
 -(void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
 {
     if (buttonIndex == LOGOUT_BUTTON) {
@@ -251,8 +251,8 @@
     }else if (buttonIndex == FIND_FRIEND){
         [self segueToFriendView];
     
-    }else if (buttonIndex == BETA){
-        [self segueToBeta];
+   /* }else if (buttonIndex == BETA){
+        [self segueToBeta];*/
     
     }
 
@@ -283,7 +283,7 @@
     
 }
 
--(void)segueToBeta
+/*-(void)segueToBeta
 {
     UIStoryboard *mainStoryboard = [UIStoryboard storyboardWithName:@"Main"
                                                              bundle: nil];
@@ -292,7 +292,7 @@
     
     [self.navigationController pushViewController:beta animated:YES];
     
-}
+}*/
 
 
 #pragma mark { }
@@ -382,7 +382,7 @@
 -(void)settingsPressed{
     
     
-    UIActionSheet *settingsPressed = [[UIActionSheet alloc]initWithTitle:@"Settings" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:@"Log Out" otherButtonTitles:@"Profile",@"Find Friends",@"Beta Event Create", nil];
+    UIActionSheet *settingsPressed = [[UIActionSheet alloc]initWithTitle:@"Settings" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:@"Log Out" otherButtonTitles:@"Profile",@"Find Friends", nil];
 
     [settingsPressed showFromBarButtonItem:self.navigationItem.rightBarButtonItem animated:YES];
 }

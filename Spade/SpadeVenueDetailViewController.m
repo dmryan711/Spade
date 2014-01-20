@@ -10,6 +10,7 @@
 #import "SpadeUtility.h"
 #import "SpadeConstants.h"
 #import "SpadeCache.h"
+#import "SpadeEventCreationViewController.h"
 
 @interface SpadeVenueDetailViewController ()
 
@@ -122,7 +123,16 @@
     
 }
 - (IBAction)createEventPressed:(id)sender {
-    NSLog(@"Venue Detail/: Pew, Pew. Create Event Pressed");
+    UIStoryboard *mainStoryboard = [UIStoryboard storyboardWithName:@"Main"
+                                                             bundle: nil];
+    //Create Detail View
+    SpadeEventCreationViewController *createEvent = [mainStoryboard   instantiateViewControllerWithIdentifier:@"CreateEventViewController"];
+    
+    createEvent.venuePickerSelection = self.venue;
+    
+    UINavigationController *tempNav = [[UINavigationController alloc]initWithRootViewController:createEvent];
+    [self presentViewController:tempNav animated:YES completion:nil];
+
 }
 
 

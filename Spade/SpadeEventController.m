@@ -12,6 +12,9 @@
 #import "SpadeConstants.h"
 #import "SpadeUtility.h"
 #import "SpadeEventCreationViewController.h"
+#import "SpadeFollowCell.h"
+#import "SpadeMyEventsCell.h"
+#import "SpadeEventDetailViewController.h"
 @interface SpadeEventController ()
 
 @property (strong, nonatomic) NSMutableArray *myEvents;
@@ -42,7 +45,7 @@
 {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-     self.manageEventsTableView.hidden = YES;
+     self.manageEventsTableView.hidden = NO;
     self.myFollowedEventsTableView.hidden =  YES;
     
     //Set Refresh Controls
@@ -72,8 +75,15 @@
     [self runMyFollowedEventQueryAndReloadData];
     
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(presentCreateEventViewController)];
+
+}
+
+-(void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+   // [self runMyEventQueryAndReloadData];
     
-    
+
 }
 
 - (void)didReceiveMemoryWarning
@@ -124,31 +134,37 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    static NSString *myEventsCellIdentifier = @"myEventsCell";
+    static NSString *followedEventsCellIdentifier = @"followedEventsCell";
     if (tableView == self.manageEventsTableView) {
-        static NSString *CellIdentifier = @"Cell";
+        
     
-        UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+        SpadeMyEventsCell *cell = [tableView dequeueReusableCellWithIdentifier:myEventsCellIdentifier];
         if (cell == nil) {
-            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier];
+            cell = [[SpadeMyEventsCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:myEventsCellIdentifier];
         }
         
         PFObject *activityObject = [self.myEvents objectAtIndex:indexPath.row];
-        NSLog(@"Managed Activity Object: %@",activityObject);
-        cell.textLabel.text = [[activityObject objectForKey:spadeActivityToEvent] objectForKey:spadeEventName];
+        cell.eventNameLabel.text = [[activityObject objectForKey:spadeActivityToEvent] objectForKey:spadeEventName];
+        if ([[activityObject objectForKey:spadeActivityToEvent]objectForKey:spadeEventImageFile]){
+            cell.eventImage.file =[[activityObject objectForKey:spadeActivityToEvent]objectForKey:spadeEventImageFile];
+            [cell.eventImage loadInBackground];
+        }else{
+            cell.eventImage.image = [UIImage imageNamed:@"AvatarPlaceholder.png"];
+        }
         
         return cell;
         
         
     }else{
-        static NSString *CellIdentifier = @"Cell";
         
-        UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+        
+        SpadeFollowCell *cell = [tableView dequeueReusableCellWithIdentifier:followedEventsCellIdentifier];
         if (cell == nil) {
-            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier];
+            cell = [[SpadeFollowCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:followedEventsCellIdentifier];
         }
         
         PFObject *activityLog = [self.followedEvents objectAtIndex:indexPath.row];
-        NSLog(@"Following Event Object: %@",activityLog);
         cell.textLabel.text =  [[activityLog objectForKey:spadeActivityToEvent]objectForKey:spadeEventName];
 
         return cell;
@@ -165,7 +181,38 @@
 }
 
 
-
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if (tableView == self.manageEventsTableView) {
+        //Create Detail View
+        
+        UIStoryboard *mainStoryboard = [UIStoryboard storyboardWithName:@"Main"
+                                                                 bundle: nil];
+        SpadeEventDetailViewController *eventDetail = [mainStoryboard   instantiateViewControllerWithIdentifier:@"eventDetailController"];
+                                                       
+        
+        eventDetail.object = [self.myEvents objectAtIndex:indexPath.row];
+                                                       [tableView cellForRowAtIndexPath:indexPath].selected = NO;
+        
+        //UINavigationController *tempNav = [[UINavigationController alloc]initWithRootViewController:eventDetail];
+        [self.navigationController pushViewController:eventDetail animated:YES];
+        
+    }else{ //followedEventsTableView
+        
+        UIStoryboard *mainStoryboard = [UIStoryboard storyboardWithName:@"Main"
+                                                                 bundle: nil];
+        SpadeEventDetailViewController *eventDetail = [mainStoryboard   instantiateViewControllerWithIdentifier:@"eventDetailController"];
+        
+        eventDetail.object = [self.followedEvents objectAtIndex:indexPath.row];
+        [tableView cellForRowAtIndexPath:indexPath].selected = NO;
+        
+        //UINavigationController *tempNav = [[UINavigationController alloc]initWithRootViewController:eventDetail];
+        [self.navigationController pushViewController:eventDetail animated:YES];
+    
+    
+    }
+    
+}
 
 
 #pragma mark { }
@@ -224,12 +271,6 @@
 
 }
 
-
--(void)createNotEnoughInformationAlert
-{
-    UIAlertView *notEnoughInformationAlert = [[UIAlertView alloc]initWithTitle:@"Not Enough Information" message:@"Your Event needs:\n a NAME\n a WHERE\n and a WHEN\n The image is optional, but first appearences are everything.\n Let that sink in..." delegate:nil cancelButtonTitle:@"Roger That" otherButtonTitles: nil];
-    [notEnoughInformationAlert show];
-}
 
 -(void)refresh:(UIRefreshControl *)refreshControl
 {

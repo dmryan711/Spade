@@ -215,6 +215,7 @@
 
 -(void) keyboardWillHide:(NSNotification*)aNotification
 {
+    
     NSLog(@"Keyboard will hide");
     NSDictionary* info = [aNotification userInfo];
     
@@ -243,6 +244,8 @@
            // [self runQueryAndReloadData];
         }
         
+
+        
     }];
     
     self.chatEntryField.text =  @"";
@@ -254,6 +257,7 @@
 #pragma mark { }
 -(void)runQueryAndReloadData
 {
+    NSLog(@"RUn RUN RUn");
     
     if (!_chatData) _chatData = [[NSMutableArray alloc]init];
     
@@ -264,6 +268,7 @@
             [self.chatData addObjectsFromArray:objectsFound];
             [self.tableView reloadData];
             [self.refreshControl  endRefreshing];
+            //[self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForItem:[self.chatData count] -1 inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:YES];
         }
         
     }];

@@ -8,7 +8,7 @@
 #import <Parse/Parse.h>
 #import <UIKit/UIKit.h>
 
-@interface SpadeFriendDetailViewController : UIViewController<UITableViewDelegate,UITableViewDataSource>
+@interface SpadeFriendDetailViewController : UIViewController
 
 @property  (strong,nonatomic) PFUser *friend;
 

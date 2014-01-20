@@ -48,6 +48,7 @@
 		919DC3C418775E57007E8BC0 /* SpadeFeedCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 919DC3C318775E57007E8BC0 /* SpadeFeedCell.m */; };
 		919DC3C91879F2CF007E8BC0 /* SpadeEventDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 919DC3C81879F2CF007E8BC0 /* SpadeEventDetailViewController.m */; };
 		919DC3CC1879FA73007E8BC0 /* SpadeChatCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 919DC3CB1879FA73007E8BC0 /* SpadeChatCell.m */; };
+		91D2220C188DAA7100750688 /* SpadeMyEventsCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 91D2220B188DAA7100750688 /* SpadeMyEventsCell.m */; };
 		91D9D6351842F643005BD0BC /* Parse.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 91D9D6341842F643005BD0BC /* Parse.framework */; };
 		91D9D6371842F72A005BD0BC /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 91D9D6361842F72A005BD0BC /* AudioToolbox.framework */; };
 		91D9D6391842F735005BD0BC /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 91D9D6381842F735005BD0BC /* CFNetwork.framework */; };
@@ -144,6 +145,8 @@
 		919DC3C81879F2CF007E8BC0 /* SpadeEventDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SpadeEventDetailViewController.m; sourceTree = "<group>"; };
 		919DC3CA1879FA73007E8BC0 /* SpadeChatCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SpadeChatCell.h; sourceTree = "<group>"; };
 		919DC3CB1879FA73007E8BC0 /* SpadeChatCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SpadeChatCell.m; sourceTree = "<group>"; };
+		91D2220A188DAA7100750688 /* SpadeMyEventsCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SpadeMyEventsCell.h; sourceTree = "<group>"; };
+		91D2220B188DAA7100750688 /* SpadeMyEventsCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SpadeMyEventsCell.m; sourceTree = "<group>"; };
 		91D9D6341842F643005BD0BC /* Parse.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Parse.framework; path = ../../../Downloads/Parse.framework; sourceTree = "<group>"; };
 		91D9D6361842F72A005BD0BC /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		91D9D6381842F735005BD0BC /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
@@ -254,6 +257,8 @@
 			isa = PBXGroup;
 			children = (
 				9141E87618407A5000A5DE15 /* Main.storyboard */,
+				91D2220A188DAA7100750688 /* SpadeMyEventsCell.h */,
+				91D2220B188DAA7100750688 /* SpadeMyEventsCell.m */,
 				91E962B218862743007D1BDE /* SpadePhotoCell.h */,
 				91E962B318862743007D1BDE /* SpadePhotoCell.m */,
 				911B8F6518820BC900BCED88 /* SpadeNameCell.h */,
@@ -506,6 +511,7 @@
 				9196A8D9186A919F00513082 /* SpadeEditProfileViewController.m in Sources */,
 				915BEDAE1857DB5A00FCA17A /* UIImage+ResizeAdditions.m in Sources */,
 				91632CF01857CFE000FB276E /* SpadeProfileController.m in Sources */,
+				91D2220C188DAA7100750688 /* SpadeMyEventsCell.m in Sources */,
 				9196A8E2186D29F500513082 /* SpadeFollowCell.m in Sources */,
 				9196A8DF186C903200513082 /* SpadeConstants.m in Sources */,
 				91F74AB4187E304200F322BC /* SpadeEventVenueCell.m in Sources */,

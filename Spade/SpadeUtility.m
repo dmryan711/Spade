@@ -232,12 +232,13 @@
 
 }
 
-+(void)user:(PFUser *)user creatingEventWithName:(NSString *)eventName forVenue:(PFObject *)venue forWhen:(NSString *)when withImageFile:(PFFile *)file
++(void)user:(PFUser *)user creatingEventWithName:(NSString *)eventName forVenue:(PFObject *)venue forDate:(NSString *)date forTime:(NSString *)time withImageFile:(PFFile *)file
 {
     PFObject *event =[PFObject objectWithClassName:spadeClassEvent];
     [event setObject:eventName forKey:spadeEventName];
     [event setObject:venue forKey:spadeEventVenue];
-    [event setObject:when forKey:spadeEventWhen];
+    [event setObject:date forKey:spadeEventWhen];
+    [event setObject:time forKey:spadeEventTime];
     if (file) {
         [event setObject:file forKey:spadeEventImageFile];
     }

@@ -10,4 +10,6 @@
 #import "SpadePhotoCell.h"
 @interface SpadeEventCreationViewController : UITableViewController <UIPickerViewDataSource, UIPickerViewDelegate,UITextFieldDelegate,SpadePhotoCellDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIActionSheetDelegate>
 
+@property (strong, nonatomic) PFObject *venuePickerSelection;
+
 @end

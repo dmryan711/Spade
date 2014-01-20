@@ -61,6 +61,7 @@ extern NSString * const spadeEventVenue;
 extern NSString * const spadeEventImageFile;
 extern NSString * const spadeEventWhen;
 extern NSString * const spadeEventName;
+extern NSString * const spadeEventTime;
 
 //Chat
 extern NSString * const spadeClassChat;
