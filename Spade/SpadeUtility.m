@@ -85,6 +85,9 @@
 
 }
 
+
+
+
 #define LEVEL_1 1
 #define LEVEL_2 2
 #define LEVEL_3 3
@@ -187,7 +190,6 @@
     [activity setObject:[PFUser currentUser] forKey:spadeActivityFromUser];
     [activity setObject:friendUser forKey:spadeActivityToUser];
     [activity setObject:spadeActivityActionFollowingUser forKey:spadeActivityAction];
-    NSLog(@"follow user");
     [activity saveEventually];
     
 }
@@ -218,6 +220,7 @@
 }
 +(void)user:(PFUser *)user unfollowingUsers:(NSArray *)friendUsers
 {
+    
     PFQuery *activityFollowingQuery = [PFQuery queryWithClassName:spadeClassActivity];
     [activityFollowingQuery whereKeyExists:spadeActivityToUser];
     [activityFollowingQuery whereKey:spadeActivityFromUser equalTo:user];
@@ -242,14 +245,14 @@
     if (file) {
         [event setObject:file forKey:spadeEventImageFile];
     }
-    [self logActivityForEvent:event];
+    [self createEvent:event];
     
     [event saveEventually];
     
 
 }
 
-+(void)logActivityForEvent:(PFObject *)event
++(void)createEvent:(PFObject *)event
 {
     PFObject *eventCreated = [PFObject objectWithClassName:spadeClassActivity];
     [eventCreated setObject:[PFUser currentUser] forKey:spadeActivityFromUser]; // Se event user
@@ -258,6 +261,28 @@
     
     [eventCreated saveEventually];
 
+}
+
++(void)user:(PFUser *)user attendingEvent:(PFObject *)event
+{
+    PFObject *eventAttending = [PFObject objectWithClassName:spadeClassActivity];
+    [eventAttending setObject:user forKey:spadeActivityFromUser];
+    [eventAttending setObject:event forKey:spadeActivityToEvent];
+    [eventAttending setObject:spadeActivityActionAttendingEvent forKey:spadeActivityAction];
+    
+    [eventAttending saveEventually];
+    
+}
+
++(void)user:(PFUser *)user unAttendingEvent:(PFObject *)event
+{
+    
+    PFQuery *attendingEvent = [PFQuery queryWithClassName:spadeClassActivity];
+    [attendingEvent whereKey:spadeActivityAction containsString:spadeActivityActionAttendingEvent];
+    [attendingEvent whereKey:spadeActivityFromUser equalTo:user];
+    [attendingEvent whereKey:spadeActivityToEvent equalTo:event];
+    
+    [[attendingEvent getFirstObject] deleteEventually];
 }
 
 /*+(NSArray *)crunchAttendeeActivities:(NSMutableArray *)arrayOfAttendingActivities

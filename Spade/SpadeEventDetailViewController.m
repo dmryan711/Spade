@@ -38,6 +38,7 @@
     return self;
 }
 
+
 -(void)awakeFromNib
 {
     self.friendsForEventQuery = [PFQuery queryWithClassName:spadeClassActivity];
@@ -85,7 +86,7 @@
 
 
 #pragma mark TableView Data Source
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+- (SpadeFollowCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
         static NSString *FriendCellIdentifier = @"FriendCell";
         
@@ -98,9 +99,11 @@
         
         cell.delegate = self;
         cell.object = friend;
+    
+    
+    
         
-        
-        if ([[[SpadeCache sharedCache]followingUsers] containsObject:friend.objectId]) {
+        if ([[[[[SpadeCache sharedCache]cache]objectForKey:spadeCache]objectForKey:spadeCacheUser] containsObject:friend]) {
             [cell.followButton setTitle:spadeFollowButtonTitleUnfollow forState:UIControlStateNormal];
         }else{
             [cell.followButton setTitle:spadeFollowButtonTitleFollow forState:UIControlStateNormal];
@@ -135,13 +138,18 @@
     return [self.friendData count];
 
 }
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+/*- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     return 96;
     
-}
+}*/
 
 #pragma mark - Table view delegate
+
+-(NSIndexPath *)tableView:(UITableView *)tableView willSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return nil;
+}
 
 /*- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -177,12 +185,10 @@
     if (!_friendData) _friendData = [[NSMutableArray alloc]init];
     [self.friendsForEventQuery findObjectsInBackgroundWithBlock:^(NSArray *objectsFound, NSError *error){
         if (!error) {
-            NSLog(@"Ran");
             [self.friendData removeAllObjects];
             [self.friendData addObjectsFromArray:objectsFound];
             [self.friendsTable reloadData];
             [self.friendTableRefreshControl endRefreshing];
-            NSLog(@"Friend Data:%@",[self.friendData description]);
         }
     
     }];
@@ -242,27 +248,23 @@
     if ([cell.followButton.titleLabel.text isEqualToString:spadeFollowButtonTitleFollow]) {
         [cell.followButton setTitle:spadeFollowButtonTitleUnfollow forState:UIControlStateNormal];
         //set cache to follow user
-        [[[SpadeCache sharedCache]followingUsers] addObject:cell.object.objectId];
         
-        //Follow User in Parse
-        [SpadeUtility user:[PFUser currentUser] followingUser:(PFUser *)cell.object];
+        [[SpadeCache sharedCache]addFollowedUser:(PFUser *)cell.object];
+        
+      
         
     }else if ([cell.followButton.titleLabel.text isEqualToString:spadeFollowButtonTitleUnfollow]){
         [cell.followButton setTitle:spadeFollowButtonTitleFollow forState:UIControlStateNormal];
         
         //set cache to remove user from follow list
-        [[[SpadeCache sharedCache]followingUsers] removeObject:cell.object.objectId];
+        [[SpadeCache sharedCache]removeFollowedUser:(PFUser *)cell.object];
         
-        //unfollow from Parse
-        [SpadeUtility user:[PFUser currentUser] unfollowingUser:(PFUser *)cell.object];
         
     }else{
         NSError *error = [NSError errorWithDomain:@"Cell Title Not Matching Follow/UNfollow" code:1 userInfo:@{@"Title": [NSString stringWithFormat:@"Button Title: %@", cell.nameLabel.text ]}];
         
-        NSLog(@"Error: %@",error.description);
     }
     
-    NSLog(@"User Cache: %@",[[SpadeCache sharedCache]followingUsers]);
     
 }
 

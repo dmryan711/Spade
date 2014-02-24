@@ -37,8 +37,6 @@
 {
     [super viewDidLoad];
     
-    NSLog(@"Loaded");
-    
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
     
@@ -76,7 +74,6 @@
 {
     [super viewDidUnload];
     [self freeKeyboardNotifications];
-    NSLog(@"unloaded");
     
 }
 
@@ -257,7 +254,6 @@
 #pragma mark { }
 -(void)runQueryAndReloadData
 {
-    NSLog(@"RUn RUN RUn");
     
     if (!_chatData) _chatData = [[NSMutableArray alloc]init];
     

@@ -8,6 +8,7 @@
 
 #import "SpadeVenueDetailViewController.h"
 #import "SpadeUtility.h"
+#import "SpadeMapViewController.h"
 #import "SpadeConstants.h"
 #import "SpadeCache.h"
 #import "SpadeEventCreationViewController.h"
@@ -68,12 +69,10 @@
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemAction target:self action:@selector(actionButtonPressed)];
   
     if ([self.venue objectForKey:spadeVenuePicture]) {
-        NSLog(@"Venue Detail: Image File Found");
         
         [SpadeUtility loadFile:[self.venue objectForKey:spadeVenuePicture]forImageView:self.venueProfilePic];
         
     }else{//Set Pic to Default
-        NSLog(@"Venue Detail: No Picture Was Found");
         self.venueProfilePic.image = [UIImage imageNamed:@"default_venue_Image.jpeg"];
     }
     
@@ -107,18 +106,17 @@
     
     if([sender.titleLabel.text isEqualToString:spadeFollowButtonTitleFollow]){
         [sender setTitle:spadeFollowButtonTitleUnfollow forState:UIControlStateNormal];
-         [[[SpadeCache sharedCache]followingVenues] addObject:[self.venue objectId]];
-            [SpadeUtility user:[PFUser currentUser] followingVenue:self.venue];
-            [self createAndDisplayFollowAlert];
+        [[SpadeCache sharedCache]addFollowedVenue:self.venue];
+
+        [self createAndDisplayFollowAlert];
     
     }else if ([sender.titleLabel.text isEqualToString:spadeFollowButtonTitleUnfollow]){
         [sender setTitle:spadeFollowButtonTitleFollow forState:UIControlStateNormal];
-        [[[SpadeCache sharedCache]followingVenues]removeObject:[self.venue objectId]];
-        [SpadeUtility user:[PFUser currentUser] unfollowingVenue:self.venue];
+        
+        [[SpadeCache sharedCache]removeFollowedVenue:self.venue];
         
     }
-    //Set Local Cache
-    NSLog(@"%@",[[SpadeCache sharedCache]followingVenues]);
+
  
     
 }
@@ -138,7 +136,7 @@
 
 -(void)actionButtonPressed
 {
-    UIActionSheet *venueActionList = [[UIActionSheet alloc]initWithTitle:@"Venue Action List" delegate:self cancelButtonTitle:@"Nevermind" destructiveButtonTitle:nil otherButtonTitles:@"Get Directions", nil];
+    UIActionSheet *venueActionList = [[UIActionSheet alloc]initWithTitle:@"Mao" delegate:self cancelButtonTitle:@"Nevermind" destructiveButtonTitle:nil otherButtonTitles:@"See on Map", nil];
     [venueActionList showFromBarButtonItem:self.navigationItem.rightBarButtonItem animated:YES];
 
 }
@@ -149,11 +147,11 @@
         UIStoryboard *mainStoryboard = [UIStoryboard storyboardWithName:@"Main"
                                                                  bundle: nil];
         //Create Detail View
-        UIViewController *mapViewController = [mainStoryboard   instantiateViewControllerWithIdentifier:@"mapViewController"];
+        SpadeMapViewController *mapViewController = [mainStoryboard   instantiateViewControllerWithIdentifier:@"mapViewController"];
+        
+        mapViewController.address = [self.venue objectForKey:spadeVenueAddress];
         
         //FIRE
-        
-
         [self.navigationController pushViewController:mapViewController animated:YES];
     }
 

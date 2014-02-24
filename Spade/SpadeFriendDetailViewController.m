@@ -40,7 +40,9 @@
     [self.friendProfileImage loadInBackground];
     
     //setFollowButton
-    if ([[[SpadeCache sharedCache]followingUsers] containsObject:[self.friend objectId]]) {
+    
+    
+    if ([[[[SpadeCache sharedCache].cache objectForKey:spadeCache]objectForKey:spadeCacheUser] containsObject:self.friend]) {
         [self.followButton setTitle:spadeFollowButtonTitleUnfollow forState:UIControlStateNormal];
     }else{
         
@@ -68,21 +70,17 @@
     
     if([sender.titleLabel.text isEqualToString:spadeFollowButtonTitleFollow]){
         [sender setTitle:spadeFollowButtonTitleUnfollow forState:UIControlStateNormal];
-        [[[SpadeCache sharedCache] followingUsers] addObject:[self.friend objectId]];
-        [SpadeUtility user:[PFUser currentUser] followingUser:self.friend];
+        [[SpadeCache sharedCache] addFollowedUser:self.friend];
     
         [self createAndDisplayFollowAlert];
         
     }else if ([sender.titleLabel.text isEqualToString:spadeFollowButtonTitleUnfollow]){
         
         [sender setTitle:spadeFollowButtonTitleFollow forState:UIControlStateNormal];
-        [[[SpadeCache sharedCache] followingUsers] removeObject:[self.friend objectId]];
-        [SpadeUtility user:[PFUser currentUser] unfollowingUser:self.friend];
         
-       
-        
+        [[SpadeCache sharedCache]removeFollowedUser:self.friend];
+ 
     }
-    NSLog(@"User Cache: %@",[[SpadeCache sharedCache]followingUsers]);
 }
 
 

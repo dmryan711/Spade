@@ -15,6 +15,10 @@
 #import "SpadeFollowCell.h"
 #import "SpadeMyEventsCell.h"
 #import "SpadeEventDetailViewController.h"
+#import "UINavigationBar+FlatUI.h"
+#import "UIColor+FlatUI.h"
+
+
 @interface SpadeEventController ()
 
 @property (strong, nonatomic) NSMutableArray *myEvents;
@@ -44,6 +48,8 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    [self.navigationController.navigationBar configureFlatNavigationBarWithColor:[UIColor blendedColorWithForegroundColor:[UIColor blackColor] backgroundColor:[UIColor wisteriaColor] percentBlend:.6]];
+    
     // Do any additional setup after loading the view.
      self.manageEventsTableView.hidden = NO;
     self.myFollowedEventsTableView.hidden =  YES;
@@ -75,6 +81,9 @@
     [self runMyFollowedEventQueryAndReloadData];
     
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(presentCreateEventViewController)];
+    
+    self.navigationItem.leftBarButtonItem.tintColor = [UIColor cloudsColor];
+    self.eventSegmentController.tintColor = [UIColor cloudsColor];
 
 }
 
@@ -120,10 +129,8 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     if (tableView == self.manageEventsTableView) {
-        NSLog(@"manage table count");
         return [self.myEvents count];
     }else{
-        NSLog(@"following table count");
         return [self.followedEvents count];
     }
     
@@ -239,7 +246,6 @@
             for (PFObject *activityLog in objectsFound) {
                 [myEvents addObject:[activityLog objectForKey:spadeActivityToEvent]];
             }*/
-            NSLog(@"Ran");
             [self.myEvents removeAllObjects];
             [self.myEvents addObjectsFromArray:objectsFound];
             [self.myEventsTableRefreshControl endRefreshing];

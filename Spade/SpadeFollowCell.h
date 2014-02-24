@@ -18,6 +18,7 @@
 @property (weak, nonatomic) id <SpadeFollowCellDelegate> delegate;
 @property (weak, nonatomic) IBOutlet PFImageView *profileImageView;
 @property (strong, nonatomic) PFObject *object;
+@property (strong, nonatomic) PFUser *userObject;
 
 
 

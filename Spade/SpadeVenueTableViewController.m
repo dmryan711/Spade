@@ -11,6 +11,8 @@
 #import "SpadeUtility.h"
 #import "SpadeCache.h"
 #import "SpadeConstants.h"
+#import "UINavigationBar+FlatUI.h"
+#import "UIColor+FlatUI.h"
 
 @interface SpadeVenueTableViewController ()
 
@@ -46,6 +48,12 @@
 	// Do any additional setup after loading the view.
     self.title =  @"Venues";
     
+    
+    [self.navigationController.navigationBar setTitleTextAttributes:@{NSForegroundColorAttributeName : [UIColor whiteColor]}];
+
+    
+    [self.navigationController.navigationBar configureFlatNavigationBarWithColor:[UIColor blendedColorWithForegroundColor:[UIColor blackColor] backgroundColor:[UIColor wisteriaColor] percentBlend:.6]];
+    
 
 }
 
@@ -60,7 +68,6 @@
 
 - (void)objectsDidLoad:(NSError *)error {
     [super objectsDidLoad:error];
-    NSLog(@"objects loaded called");
     
     // This method is called every time objects are loaded from Parse via the PFQuery
 }
@@ -102,8 +109,9 @@
     }
     cell.delegate = self;
     cell.object = object;
+    
     // Configure the cell
-    if ([[[SpadeCache sharedCache]followingVenues]containsObject:[object objectId]]) {
+    if ([[[[[SpadeCache sharedCache]cache]objectForKey:spadeCache]objectForKey:spadeCacheVenues] containsObject:object]) {
         [cell.followButton setTitle:spadeFollowButtonTitleUnfollow forState:UIControlStateNormal];
     }else{
         [cell.followButton setTitle:spadeFollowButtonTitleFollow forState:UIControlStateNormal];
@@ -209,7 +217,8 @@
         [venueDetail setVenue:venueSelection]; //Hand Off Vnue Object
         
         //Check Cache to see if user is following the venue already
-        if ([[[SpadeCache sharedCache] followingVenues] containsObject:[venueSelection objectId]]) {
+        
+        if ([[[[[SpadeCache sharedCache]cache]objectForKey:spadeCache]objectForKey:spadeCacheVenues] containsObject:venueSelection]) {
             venueDetail.isFollowing = YES;
         }
         
@@ -227,27 +236,22 @@
     if ([cell.followButton.titleLabel.text isEqualToString:spadeFollowButtonTitleFollow]) {
         [cell.followButton setTitle:spadeFollowButtonTitleUnfollow forState:UIControlStateNormal];
         //set cache to follow venue
-        [[[SpadeCache sharedCache]followingVenues] addObject:cell.object.objectId];
+        [[SpadeCache sharedCache]addFollowedVenue:cell.object];
         
-        //Follow Venue in Parse
-        [SpadeUtility user:[PFUser currentUser] followingVenue:cell.object];
+
         
     }else if ([cell.followButton.titleLabel.text isEqualToString:spadeFollowButtonTitleUnfollow]){
         [cell.followButton setTitle:spadeFollowButtonTitleFollow forState:UIControlStateNormal];
         
         //set cache to remove user from follow list
-        [[[SpadeCache sharedCache]followingVenues] removeObject:cell.object.objectId];
+        [[SpadeCache sharedCache]removeFollowedVenue:cell.object];
         
-        //unfollow from Parse
-        [SpadeUtility user:[PFUser currentUser] unfollowingVenue:cell.object];
         
     }else{
         NSError *error = [NSError errorWithDomain:@"Cell Title Not Matching Follow/Unfollow" code:1 userInfo:@{@"Title": [NSString stringWithFormat:@"Button Title: %@", cell.nameLabel.text ]}];
         
-        NSLog(@"Error: %@",error.description);
     }
     
-    NSLog(@"User Cache: %@",[[SpadeCache sharedCache]followingVenues]);
 
 
 }

@@ -72,6 +72,15 @@ NSString * const spadeChatforEvent = @"forEvent";
 NSString * const spadeChatMessage = @"message";
 
 
+//Cache Constants
+NSString * const spadeCache = @"user";
+NSString * const spadeCacheVenues = @"followedVenues";
+NSString * const spadeCacheEvents = @"attendingEvents";
+NSString * const spadeCacheUser = @"followedUsers";
+
+
+
+
 //Alert View Titles for Comparison
 NSString * const spadeAlertViewTitleConfirmFollower = @"Just Asking!";
 NSString * const spadeAlertViewTitleConfirmEvent = @"Create Event";

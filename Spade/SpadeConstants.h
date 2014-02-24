@@ -69,6 +69,12 @@ extern NSString * const spadeChatFromUser;
 extern NSString * const spadeChatforEvent;
 extern NSString * const spadeChatMessage;
 
+//Cache Constants
+extern NSString * const spadeCache;
+extern NSString * const spadeCacheVenues;
+extern NSString * const spadeCacheEvents;
+extern NSString * const spadeCacheUser;
+
 
 //AlertView Titles Used for Comparison
 extern NSString * const spadeAlertViewTitleConfirmFollower;

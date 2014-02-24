@@ -15,11 +15,14 @@
 #import "SpadeEditProfileViewController.h"
 #import "SpadeConstants.h"
 #import "SpadeFriendTableViewController.h"
+#import "UITabBar+FlatUI.h"
+#import "UIColor+FlatUI.h"
 
 @interface SpadeAppDelegate ()
 
 @property (strong,nonatomic) UITabBarController *tabBarController;
 @property (strong,nonatomic) NSMutableData *data;
+@property (strong, nonatomic) NSCache *cache;
 
 
 @end
@@ -28,6 +31,7 @@
 @implementation SpadeAppDelegate
 
 #pragma mark Application Delegate Methods
+#define MIDDLE_VC 1
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
@@ -55,10 +59,22 @@
     //Getting a Reference to the UITabBarController & setting the delegate
     self.tabBarController = [mainStoryboard instantiateInitialViewController];
     self.tabBarController.delegate = self;
+    
+    //Configure the tab bar
+    [self.tabBarController.tabBar configureFlatTabBarWithColor:[UIColor blackColor] selectedColor:[UIColor blendedColorWithForegroundColor:[UIColor blackColor] backgroundColor:[UIColor wisteriaColor] percentBlend:.6]];
+    
+    [self.tabBarController setSelectedIndex:MIDDLE_VC];
+    
+    
+    
+    //[[UIView appearance] setTintColor:[UIColor whiteColor]];
+
 
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     [self.window setRootViewController:self.tabBarController];
     [self.window makeKeyAndVisible];
+    
+    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
     
     return YES;
 }
@@ -167,9 +183,6 @@
     //Request User Information
     [request startWithCompletionHandler:^(FBRequestConnection *connection, id result, NSError *error){
         if (!error) {
-            
-            
-            //NSLog(@"%@",[result description]);
             
             //Store Facebook Results to local objects
             NSDictionary *userData = (NSDictionary *)result;
@@ -305,6 +318,8 @@
     
     [self presentLoginView];
     
+    [[[SpadeCache sharedCache] cache] removeAllObjects];
+    
 }
 
 
@@ -320,16 +335,16 @@
     [queryFollowedVenues findObjectsInBackgroundWithBlock:^(NSArray *followedVenuesForUserFromParse, NSError *error){
         if (!error) {
             for(PFObject *object in followedVenuesForUserFromParse){
+                [[SpadeCache sharedCache] addFollowedVenue:[object objectForKey:spadeActivityToVenue]];
                 
-                [[[SpadeCache sharedCache]followingVenues]addObject:[[object objectForKey:spadeActivityToVenue]objectId]];
             }
-           NSLog(@"In App Del User Cache: %@",[[SpadeCache sharedCache]followingUsers]);
+            
         }else{
             NSLog(@"App Delegate Set Query Error:%@",error);
         
         }
         
-        NSLog(@"Venue Cache %@",[[SpadeCache sharedCache]followingVenues]);
+        NSLog(@"Venue Cache\n\n\n\n\n\n\n\n\n %@",[[[SpadeCache sharedCache].cache objectForKey:spadeCache]objectForKey:spadeCacheVenues]);
     }];
     
     //Query for Followed Users
@@ -340,23 +355,21 @@
     //Run Query
     [queryFollowedUsers findObjectsInBackgroundWithBlock:^(NSArray *followedUsersForUserFromParse, NSError *error){
         if (!error) {
-            for(PFObject *object in followedUsersForUserFromParse){
-                [[[SpadeCache sharedCache]followingUsers]addObject:[[object objectForKey:spadeActivityToUser]objectId]];
+            for(PFUser *object in followedUsersForUserFromParse){
+                [[SpadeCache sharedCache] addFollowedUser:[object objectForKey:spadeActivityToUser]];
             }
             
         }else{
             NSLog(@"App Delegate Set Query Error:%@",error);
             
         }
-        
-        
-        
+        NSLog(@"Followed User Cache\n\n\n\n\n\n\n\n\n %@",[[[SpadeCache sharedCache].cache objectForKey:spadeCache]objectForKey:spadeCacheUser]);
         
     }];
 
     
 
-    //Query for Followed Users
+    //Query for Attending Events
     PFQuery *queryFollowedEvents = [PFQuery queryWithClassName:spadeClassActivity];
     queryFollowedEvents.cachePolicy = kPFCachePolicyNetworkOnly;
     [queryFollowedEvents whereKey:spadeActivityFromUser equalTo:[PFUser currentUser]];
@@ -365,14 +378,15 @@
     [queryFollowedEvents  findObjectsInBackgroundWithBlock:^(NSArray *followedEventsForUserFromParse, NSError *error){
         if (!error) {
             for(PFObject *object in followedEventsForUserFromParse){
-                [[[SpadeCache sharedCache]followingEvents]addObject:[[object objectForKey:spadeActivityToEvent]objectId]];
+                [[SpadeCache sharedCache] addAttendingEvent:[object objectForKey:spadeActivityToEvent]];
             }
         }else{
             NSLog(@"App Delegate Set Query Error:%@",error);
             
         }
         
-        NSLog(@"Event Cache %@",[[SpadeCache sharedCache]followingEvents]);
+        
+      NSLog(@"Attending Events Cache\n\n\n\n\n\n\n\n\n %@",[[[SpadeCache sharedCache].cache objectForKey:spadeCache]objectForKey:spadeCacheEvents]);
 
     }];
 

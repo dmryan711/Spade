@@ -11,11 +11,22 @@
 
 @interface SpadeCache : NSObject
 
-@property (strong, nonatomic) NSMutableArray *followingVenues;
-@property (strong, nonatomic) NSMutableArray *followingUsers;
-@property (strong, nonatomic) NSMutableArray *followingEvents;
 
 +(SpadeCache *)sharedCache;
+
+@property (strong, nonatomic) NSCache *cache;
+
+-(void)addFollowedVenue:(PFObject *)followedVenue;
+-(void)addAttendingEvent:(PFObject *)attendingEvent;
+-(void)addFollowedUser:(PFUser *)followedUser;
+
+-(void)removeFollowedVenue:(PFObject *)followedVenue;
+-(void)removeAttendedEvent:(PFObject *)attendingEvent;
+-(void)removeFollowedUser:(PFUser *)followedUser;
+
+-(NSArray *)followedVenues;
+-(NSArray *)attendingEvents;
+-(NSArray *)followedUsers;
 
 
 @end

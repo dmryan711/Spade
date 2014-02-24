@@ -11,6 +11,8 @@
 #import "SpadeUtility.h"
 #import "SpadeProfileController.h"
 #import "SpadeEditProfileViewController.h"
+#import "UINavigationBar+FlatUI.h"
+#import "UIColor+FlatUI.h"
 
 @interface SpadeProfileController ()
 //@property (weak, nonatomic) IBOutlet PFImageView *profileImage;
@@ -37,13 +39,18 @@
 
 - (void)viewDidLoad
 {
-    NSLog(@"Profile View Loaded");
     [super viewDidLoad];
+    
+ [self.navigationController.navigationBar configureFlatNavigationBarWithColor:[UIColor blendedColorWithForegroundColor:[UIColor blackColor] backgroundColor:[UIColor wisteriaColor] percentBlend:.6]];
+    
 	// Do any additional setup after loading the view.
     
      //Bypassing Linker issue When the storyboarding class is loaded at runtime, the PF[.*]Class is referenced using a string. The linker doesn't analyze code functionality, so it doesn't know that the class is used. Since no other source files references that class, the linker optimizes it out of existence when making the executable
     [PFImageView class];
       self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]initWithTitle:@"Edit" style:UIBarButtonItemStyleBordered target:self action:@selector(editPressed)];
+    
+    self.navigationItem.rightBarButtonItem.tintColor = [UIColor cloudsColor];
+    self.navigationItem.backBarButtonItem.tintColor = [UIColor cloudsColor];
     self.profileImageFile = [[PFUser currentUser] objectForKey:spadeUserMediumProfilePic];
     
 

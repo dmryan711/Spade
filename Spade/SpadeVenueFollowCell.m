@@ -24,7 +24,6 @@
 
 
 /*- (void)setFrame:(CGRect)frame {
-    NSLog(@"Setting Frame");
     frame.origin.x += 20;
     frame.size.width -= 40;
     [super setFrame:frame];

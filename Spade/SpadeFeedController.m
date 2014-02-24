@@ -16,6 +16,9 @@
 #import "SpadeFriendTableViewController.h"
 #import "SpadeCache.h"
 #import "SpadeEventDetailViewController.h"
+#import "UINavigationBar+FlatUI.h"
+#import "UIColor+FlatUI.h"
+#import "UIFont+FlatUI.h"
 
 @interface SpadeFeedController ()
 @property (strong,nonatomic) NSMutableArray *objects;
@@ -27,6 +30,7 @@
 @implementation SpadeFeedController
 
 #define APPLICATION_DELEGATE (SpadeAppDelegate *)[[UIApplication sharedApplication] delegate]
+#define TITLE_FONT_SIZE 12
 #pragma mark Table View Controller Delegate Methods
 - (id)initWithStyle:(UITableViewStyle)style
 {
@@ -58,21 +62,27 @@
     
 
     [super viewDidLoad];
-   
     //[self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:@"Cell"];
-    NSLog(@"load");
     self.title = @"Night Feed";
+
+    [self.navigationController.navigationBar setTitleTextAttributes:@{NSForegroundColorAttributeName : [UIColor whiteColor]}];
+
+    
+    [self.navigationController.navigationBar configureFlatNavigationBarWithColor:[UIColor blendedColorWithForegroundColor:[UIColor blackColor] backgroundColor:[UIColor wisteriaColor] percentBlend:.6]];
+    
+    [[UINavigationBar appearance] setTintColor:[UIColor whiteColor]];
+
     if (![PFUser currentUser] ) { // No user logged in
         // Create the log in view controller
         [APPLICATION_DELEGATE presentLoginView];
     }else if ([[NSUserDefaults standardUserDefaults]boolForKey:spadeFirstLoginFlag]) {
         
-        NSLog(@"First TIME");
         //[[NSUserDefaults standardUserDefaults]setBool:NO forKey:spadeFirstLoginFlag];
         // Present Friend List
         
         
         [self performSelector:@selector(loadFriendsView) withObject:nil afterDelay:.5];
+        [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
         
 
     }
@@ -85,6 +95,7 @@
     [self.query includeKey:spadeVenueName];
     [self.query includeKey:spadeVenuePicture];
     [self.query orderByDescending:@"createdAt"];
+    
     
     PFQuery *myfriends = [PFQuery queryWithClassName:spadeClassUser];
     [myfriends whereKey:spadeUserFacebookId containedIn:[[PFUser currentUser]objectForKey:spadeUserFriends]];
@@ -99,6 +110,8 @@
     [self.tableView addSubview:self.tableRefresh];
 
     self.navigationItem.rightBarButtonItem =[[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemAction target:self action:@selector(settingsPressed)];
+    
+    self.navigationItem.rightBarButtonItem.tintColor = [UIColor cloudsColor];
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
  
@@ -109,6 +122,10 @@
 }
 
 
+-(UIStatusBarStyle)preferredStatusBarStyle
+{
+    return UIStatusBarStyleLightContent;
+}
 
 - (void)didReceiveMemoryWarning
 {
@@ -299,19 +316,15 @@
 
 -(void)runQueryAndReloadData
 {
-    NSLog(@"Ran Query");
     if (!_objects) _objects = [[NSMutableArray alloc]init];
     
     [self.query findObjectsInBackgroundWithBlock:^(NSArray *objectsFound, NSError *error){
         if (!error) {
-            NSLog(@"Ran");
-           // NSLog(@"Objects Found:%@",objectsFound);
             [self.objects removeAllObjects];
             
             [self.objects addObjectsFromArray:[self crunchUpdates:(NSMutableArray *)objectsFound]];
             [self.tableView reloadData];
             [self.tableRefresh endRefreshing];
-            NSLog(@"%@", [self.objects description]);
             
         }
         
@@ -322,17 +335,13 @@
 -(NSArray *)crunchUpdates:(NSMutableArray *)objectsFoundInQuery{
 	NSMutableArray *crunchedActivities = [[NSMutableArray alloc]init];
 	NSMutableDictionary *crunchedObject = [[NSMutableDictionary alloc]init];
-	NSLog(@"UNCRUNCHED BLAHHH:%@",objectsFoundInQuery);
 	for(int i = 0; i< [objectsFoundInQuery count]; i++){
-        NSLog(@"I Loop:%i",i);
         if ([[[objectsFoundInQuery objectAtIndex:i]objectForKey:spadeActivityAction] isEqualToString:spadeActivityActionAttendingEvent]) {
             int crunches = 0;
             for(int j = i +1; j < [objectsFoundInQuery count]; j++){
                 if ([[[objectsFoundInQuery objectAtIndex:j]objectForKey:spadeActivityAction] isEqualToString:spadeActivityActionAttendingEvent]){
-                    NSLog(@"J Loop:%i",j);
                 
                     if([[[[objectsFoundInQuery objectAtIndex:i] objectForKey:spadeActivityToEvent]objectId] isEqualToString:[[[objectsFoundInQuery objectAtIndex:j] objectForKey:spadeActivityToEvent]objectId]]	){//Match Found. crunch
-                        NSLog(@"Match");
                         if(crunches == 0){ //first Crunch
                             [crunchedObject addEntriesFromDictionary: @{spadeActivityFromUser:[[objectsFoundInQuery objectAtIndex:i]objectForKey:spadeActivityFromUser],spadeActivityAction: spadeActivityActionAttendingEvent, spadeActivityToEvent:[[objectsFoundInQuery objectAtIndex:i] objectForKey:spadeActivityToEvent]}];
                         }
@@ -344,7 +353,6 @@
                         [objectsFoundInQuery removeObjectAtIndex: j];
                         j--;
                         
-                        NSLog(@"Crunched Object in J Loop:%@",[crunchedObject description]);
                     }
                 }
             }
@@ -353,11 +361,9 @@
                 [crunchedActivities addObject:[objectsFoundInQuery objectAtIndex:i]];
                 
             }else{ //crunches found
-                NSLog(@"Crunched Object in I Loop:%@",[crunchedObject description]);
                 NSDictionary *tempDict = [NSDictionary dictionaryWithDictionary:crunchedObject];
                 [crunchedActivities addObject:tempDict];
                 [crunchedObject removeAllObjects]; //reset the object
-                NSLog(@"Crunched Activities:%@",[crunchedActivities description]);
  
                 
                 //Removing Comparing Object
@@ -368,7 +374,6 @@
             [crunchedActivities addObject:[objectsFoundInQuery objectAtIndex:i]]; // if it is the "Created" Action
         }
     }
-    NSLog(@"CRUNCH NOM NOM: %@",crunchedActivities);
     return crunchedActivities;
 }
 

@@ -472,7 +472,6 @@
         if (!_venues) _venues = [[NSMutableArray alloc]init];
         
         if (!error) {
-            NSLog(@"Ran Query");
             
             [self.venues removeAllObjects];
             [self.venues addObjectsFromArray:objects];

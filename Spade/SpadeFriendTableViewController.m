@@ -56,7 +56,7 @@
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]initWithTitle:@"Done" style:UIBarButtonItemStylePlain target:self action:@selector(doneSelected)];
     
     
-    if ([[[SpadeCache sharedCache]followingUsers]count] < MIN_FOLLOWER) {
+    if ([[[[[SpadeCache sharedCache]cache]objectForKey:spadeCache]objectForKey:spadeCacheUser]count] < MIN_FOLLOWER) {
         [self createAndDisplayFollowerAlert];
     
     }
@@ -119,10 +119,12 @@
     }
     
     cell.delegate = self;
+   // cell.userObject = (PFUser *)object;
     cell.object = object;
     
     
-    if ([[[SpadeCache sharedCache]followingUsers] containsObject:object.objectId]) {
+    
+    if ([[[[[SpadeCache sharedCache]cache]objectForKey:spadeCache]objectForKey:spadeCacheUser] containsObject:(PFUser *)object]) {
         [cell.followButton setTitle:spadeFollowButtonTitleUnfollow forState:UIControlStateNormal];
     }else{
         [cell.followButton setTitle:spadeFollowButtonTitleFollow forState:UIControlStateNormal];
@@ -212,7 +214,12 @@
 
 #pragma mark - Table view delegate
 
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+-(NSIndexPath *)tableView:(UITableView *)tableView willSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return nil;
+}
+
+/*- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [super tableView:tableView didSelectRowAtIndexPath:indexPath];
     if (indexPath.row < [self.objects count]) {
@@ -232,7 +239,7 @@
         
         
     }
-}
+}*/
 
 
 #pragma mark Navigation Button Methods
@@ -240,8 +247,7 @@
 -(void)doneSelected
 {
     
-    if ([[[SpadeCache sharedCache]followingUsers]count]  >= MIN_FOLLOWER) {
-        NSLog(@"Enough Folllowers");
+    if ([[[[[SpadeCache  sharedCache]cache]objectForKey:spadeCache]objectForKey:spadeCacheUser]count]  >= MIN_FOLLOWER) {
         //Unset Login Flag
         if ([[NSUserDefaults standardUserDefaults]boolForKey:spadeFirstLoginFlag]) {
             //[[NSUserDefaults standardUserDefaults]setBool:NO forKey:spadeFirstLoginFlag];
@@ -249,12 +255,10 @@
         
         if ([self.navigationController.viewControllers objectAtIndex:0] == self){
             
-            NSLog(@"No Nav");
             [self dismissViewControllerAnimated:YES completion:nil];
             
         }else{
             
-            NSLog(@"Nav");
             [self.navigationController popViewControllerAnimated:YES];
         
         }
@@ -299,7 +303,8 @@
 
 -(void)createAndDisplayNotEnoughFollowerAlert
 {
-    int remainingLeftToFollow =  MIN_FOLLOWER - (int)[[[SpadeCache sharedCache]followingUsers]count] ;
+    
+    int remainingLeftToFollow =  MIN_FOLLOWER - (int)[[[[[SpadeCache sharedCache]cache]objectForKey:spadeCache]objectForKey:spadeCacheUser]count] ;
     UIAlertView *followerAlert = [[UIAlertView alloc]initWithTitle:@"Almost There!" message:[NSString stringWithFormat:@"Please select %i more friends to follow",remainingLeftToFollow] delegate:self cancelButtonTitle:@"Sounds Good" otherButtonTitles:nil];
     
     [followerAlert show];
@@ -335,19 +340,14 @@
     if ([cell.followButton.titleLabel.text isEqualToString:spadeFollowButtonTitleFollow]) {
         [cell.followButton setTitle:spadeFollowButtonTitleUnfollow forState:UIControlStateNormal];
         //set cache to follow user
-        [[[SpadeCache sharedCache]followingUsers] addObject:cell.object.objectId];
-        
-        //Follow User in Parse
-        [SpadeUtility user:[PFUser currentUser] followingUser:(PFUser *)cell.object];
+        [[SpadeCache sharedCache]addFollowedUser:(PFUser *)cell.object];
+
         
     }else if ([cell.followButton.titleLabel.text isEqualToString:spadeFollowButtonTitleUnfollow]){
         [cell.followButton setTitle:spadeFollowButtonTitleFollow forState:UIControlStateNormal];
         
         //set cache to remove user from follow list
-        [[[SpadeCache sharedCache]followingUsers] removeObject:cell.object.objectId];
-        
-        //unfollow from Parse
-        [SpadeUtility user:[PFUser currentUser] unfollowingUser:(PFUser *)cell.object];
+        [[SpadeCache sharedCache]removeFollowedUser:cell.object];
     
     }else{
         NSError *error = [NSError errorWithDomain:@"Cell Title Not Matching Follow/UNfollow" code:1 userInfo:@{@"Title": [NSString stringWithFormat:@"Button Title: %@", cell.nameLabel.text ]}];
@@ -355,7 +355,7 @@
         NSLog(@"Error: %@",error.description);
     }
 
-    NSLog(@"User Cache: %@",[[SpadeCache sharedCache]followingUsers]);
+   
 
 }
 

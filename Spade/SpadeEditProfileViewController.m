@@ -197,10 +197,8 @@
 }
 - (IBAction)viewTapped:(id)sender {
     
-    NSLog(@"Tapped");
     
     if ([self.userNameTextField isFirstResponder]) {
-        NSLog(@"True") ;
         self.userNameForEdit = self.userNameTextField.text;
         
          [self.view endEditing:YES];
