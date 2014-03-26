@@ -75,6 +75,18 @@
     [self.window makeKeyAndVisible];
     
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
+
+
+    for (NSString* family in [UIFont familyNames])
+    {
+        NSLog(@"%@", family);
+        
+        for (NSString* name in [UIFont fontNamesForFamilyName: family])
+        {
+            NSLog(@"  %@", name);
+        }
+    }
+    
     
     return YES;
 }
@@ -344,7 +356,7 @@
         
         }
         
-        NSLog(@"Venue Cache\n\n\n\n\n\n\n\n\n %@",[[[SpadeCache sharedCache].cache objectForKey:spadeCache]objectForKey:spadeCacheVenues]);
+       // NSLog(@"Venue Cache\n\n\n\n\n\n\n\n\n %@",[[[SpadeCache sharedCache].cache objectForKey:spadeCache]objectForKey:spadeCacheVenues]);
     }];
     
     //Query for Followed Users
@@ -363,7 +375,7 @@
             NSLog(@"App Delegate Set Query Error:%@",error);
             
         }
-        NSLog(@"Followed User Cache\n\n\n\n\n\n\n\n\n %@",[[[SpadeCache sharedCache].cache objectForKey:spadeCache]objectForKey:spadeCacheUser]);
+       // NSLog(@"Followed User Cache\n\n\n\n\n\n\n\n\n %@",[[[SpadeCache sharedCache].cache objectForKey:spadeCache]objectForKey:spadeCacheUser]);
         
     }];
 
@@ -378,6 +390,7 @@
     [queryFollowedEvents  findObjectsInBackgroundWithBlock:^(NSArray *followedEventsForUserFromParse, NSError *error){
         if (!error) {
             for(PFObject *object in followedEventsForUserFromParse){
+                //NSLog(@"Attneding Event: %@",[object objectForKey:spadeActivityToEvent]);
                 [[SpadeCache sharedCache] addAttendingEvent:[object objectForKey:spadeActivityToEvent]];
             }
         }else{
@@ -386,7 +399,7 @@
         }
         
         
-      NSLog(@"Attending Events Cache\n\n\n\n\n\n\n\n\n %@",[[[SpadeCache sharedCache].cache objectForKey:spadeCache]objectForKey:spadeCacheEvents]);
+     // NSLog(@"Attending Events Cache\n\n\n\n\n\n\n\n\n %@",[[[SpadeCache sharedCache].cache objectForKey:spadeCache]objectForKey:spadeCacheEvents]);
 
     }];
 

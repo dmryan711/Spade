@@ -14,4 +14,6 @@
 @property (weak, nonatomic) IBOutlet UILabel *actionLabel;
 
 @property (weak, nonatomic) IBOutlet  PFImageView *userImageView;
+@property (weak, nonatomic) IBOutlet UILabel *userNameLabel;
+@property (weak, nonatomic) IBOutlet UILabel *venueNameLabel;
 @end

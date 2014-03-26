@@ -42,6 +42,7 @@ extern NSString * const spadeActivityActionFollowingVenue;
 extern NSString * const spadeActivityActionFollowingUser;
 extern NSString * const spadeActivityActionAttendingEvent;
 extern NSString * const spadeActivityActionCreatedEvent;
+extern NSString * const spadeActivityForVenue ;
 
 
 //Venue
@@ -90,6 +91,10 @@ extern NSString * const spadeDevonFacebookId;
 //Event Placeholder Text
 extern NSString  * const spadeEventPlaceHolderWhereLabel;
 extern NSString  * const spadeEventPlaceHolderWhenLabel;
+
+//Attendance Button
+extern NSString  * const spadeEventAttendanceButtonTitleAttend ;
+extern NSString  * const spadeEventAttendanceButtonTitleUnattend;
 
 
 

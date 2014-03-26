@@ -8,13 +8,14 @@
 
 #import <UIKit/UIKit.h>
 #import <Parse/Parse.h>
+#import "FUIButton.h"
 @protocol SpadeFollowCellDelegate;
 @class PFImageView;
 
 @interface SpadeFollowCell : UITableViewCell
 
 @property (weak, nonatomic) IBOutlet UILabel *nameLabel;
-@property (weak, nonatomic) IBOutlet UIButton *followButton;
+@property (weak, nonatomic) IBOutlet FUIButton *followButton;
 @property (weak, nonatomic) id <SpadeFollowCellDelegate> delegate;
 @property (weak, nonatomic) IBOutlet PFImageView *profileImageView;
 @property (strong, nonatomic) PFObject *object;

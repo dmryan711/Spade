@@ -70,6 +70,7 @@
     [self.myEventsQuery includeKey:spadeActivityToEvent];
     [self.myEventsQuery whereKey:spadeActivityFromUser equalTo:[PFUser currentUser]];
     [self.myEventsQuery whereKey:spadeActivityAction equalTo:spadeActivityActionCreatedEvent];
+    [self.myEventsQuery orderByDescending:@"createdAt"];
     [self runMyEventQueryAndReloadData];
     
     self.followedEventsQuery = [PFQuery queryWithClassName:spadeClassActivity];
@@ -78,6 +79,7 @@
     [self.followedEventsQuery whereKeyExists:spadeActivityToEvent];
     [self.followedEventsQuery whereKey:spadeActivityFromUser equalTo:[PFUser currentUser]];
     [self.followedEventsQuery whereKey:spadeActivityAction equalTo:spadeActivityActionAttendingEvent];
+    [self.followedEventsQuery orderByDescending:@"createdAt"];
     [self runMyFollowedEventQueryAndReloadData];
     
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(presentCreateEventViewController)];
@@ -157,7 +159,7 @@
             cell.eventImage.file =[[activityObject objectForKey:spadeActivityToEvent]objectForKey:spadeEventImageFile];
             [cell.eventImage loadInBackground];
         }else{
-            cell.eventImage.image = [UIImage imageNamed:@"AvatarPlaceholder.png"];
+            cell.eventImage.image = [UIImage imageNamed:@"spade.png"];
         }
         
         return cell;
@@ -172,7 +174,15 @@
         }
         
         PFObject *activityLog = [self.followedEvents objectAtIndex:indexPath.row];
-        cell.textLabel.text =  [[activityLog objectForKey:spadeActivityToEvent]objectForKey:spadeEventName];
+        cell.nameLabel.text =  [[activityLog objectForKey:spadeActivityToEvent]objectForKey:spadeEventName];
+        
+        if ([[activityLog objectForKey:spadeActivityToEvent]objectForKey:spadeEventImageFile]){
+            cell.profileImageView.file =[[activityLog objectForKey:spadeActivityToEvent]objectForKey:spadeEventImageFile];
+            [cell.profileImageView loadInBackground];
+        }else{
+            cell.profileImageView.image = [UIImage imageNamed:@"spade.png"];
+        }
+
 
         return cell;
     }
@@ -233,6 +243,8 @@
     SpadeEventCreationViewController *createEvent = [mainStoryboard   instantiateViewControllerWithIdentifier:@"CreateEventViewController"];
     
     UINavigationController *tempNav = [[UINavigationController alloc]initWithRootViewController:createEvent];
+    tempNav.navigationBar.tintColor = [UIColor purpleColor];
+    tempNav.navigationBar.translucent  = NO;
     [self presentViewController:tempNav animated:YES completion:nil];
 }
 

@@ -12,6 +12,15 @@
 		9120610B184A62E700E3DA0C /* SpadeUtility.m in Sources */ = {isa = PBXBuildFile; fileRef = 9120610A184A62E700E3DA0C /* SpadeUtility.m */; };
 		91221336185C407300BA29E8 /* SpadeVenueTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 91221335185C407300BA29E8 /* SpadeVenueTableViewController.m */; };
 		91221339185CCED500BA29E8 /* SpadeVenueDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 91221338185CCED500BA29E8 /* SpadeVenueDetailViewController.m */; };
+		9124528818E244340071CE3B /* spade_5@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9124528618E244340071CE3B /* spade_5@2x.png */; };
+		9124528918E244340071CE3B /* spade_5.png in Resources */ = {isa = PBXBuildFile; fileRef = 9124528718E244340071CE3B /* spade_5.png */; };
+		9124529818E287720071CE3B /* spade_6@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9124529618E287720071CE3B /* spade_6@2x.png */; };
+		9124529918E287720071CE3B /* spade_6.png in Resources */ = {isa = PBXBuildFile; fileRef = 9124529718E287720071CE3B /* spade_6.png */; };
+		9124529F18E28CE80071CE3B /* Defaulttttt.png in Resources */ = {isa = PBXBuildFile; fileRef = 9124529C18E28CE80071CE3B /* Defaulttttt.png */; };
+		912452A018E28CE80071CE3B /* Defaultttttt@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9124529D18E28CE80071CE3B /* Defaultttttt@2x.png */; };
+		912452A318E28D8B0071CE3B /* Test.png in Resources */ = {isa = PBXBuildFile; fileRef = 912452A218E28D8B0071CE3B /* Test.png */; };
+		912452A518E2912F0071CE3B /* LoginLogo2.png in Resources */ = {isa = PBXBuildFile; fileRef = 912452A418E2912F0071CE3B /* LoginLogo2.png */; };
+		912452AD18E2985D0071CE3B /* Spade-Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 912452AC18E2985D0071CE3B /* Spade-Icon.png */; };
 		9133C14718A2E4E600730B9E /* FUIAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9133C12218A2E4E600730B9E /* FUIAlertView.m */; };
 		9133C14818A2E4E600730B9E /* FUIButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 9133C12418A2E4E600730B9E /* FUIButton.m */; };
 		9133C14918A2E4E600730B9E /* FUICellBackgroundView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9133C12618A2E4E600730B9E /* FUICellBackgroundView.m */; };
@@ -67,6 +76,23 @@
 		919DC3C418775E57007E8BC0 /* SpadeFeedCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 919DC3C318775E57007E8BC0 /* SpadeFeedCell.m */; };
 		919DC3C91879F2CF007E8BC0 /* SpadeEventDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 919DC3C81879F2CF007E8BC0 /* SpadeEventDetailViewController.m */; };
 		919DC3CC1879FA73007E8BC0 /* SpadeChatCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 919DC3CB1879FA73007E8BC0 /* SpadeChatCell.m */; };
+		91AB44B418E091EC00B78719 /* Lato-Bla.otf in Resources */ = {isa = PBXBuildFile; fileRef = 91AB44AA18E091BA00B78719 /* Lato-Bla.otf */; };
+		91AB44B518E091EC00B78719 /* Lato-BlaIta.otf in Resources */ = {isa = PBXBuildFile; fileRef = 91AB44AB18E091BA00B78719 /* Lato-BlaIta.otf */; };
+		91AB44B618E091EC00B78719 /* Lato-Bol.otf in Resources */ = {isa = PBXBuildFile; fileRef = 91AB44AC18E091BA00B78719 /* Lato-Bol.otf */; };
+		91AB44B718E091EC00B78719 /* Lato-BolIta.otf in Resources */ = {isa = PBXBuildFile; fileRef = 91AB44AD18E091BA00B78719 /* Lato-BolIta.otf */; };
+		91AB44B818E091EC00B78719 /* Lato-Hai.otf in Resources */ = {isa = PBXBuildFile; fileRef = 91AB44AE18E091BA00B78719 /* Lato-Hai.otf */; };
+		91AB44B918E091EC00B78719 /* Lato-HaiIta.otf in Resources */ = {isa = PBXBuildFile; fileRef = 91AB44AF18E091BA00B78719 /* Lato-HaiIta.otf */; };
+		91AB44BA18E091EC00B78719 /* Lato-Lig.otf in Resources */ = {isa = PBXBuildFile; fileRef = 91AB44B018E091BA00B78719 /* Lato-Lig.otf */; };
+		91AB44BB18E091EC00B78719 /* Lato-LigIta.otf in Resources */ = {isa = PBXBuildFile; fileRef = 91AB44B118E091BA00B78719 /* Lato-LigIta.otf */; };
+		91AB44BC18E091EC00B78719 /* Lato-Reg.otf in Resources */ = {isa = PBXBuildFile; fileRef = 91AB44B218E091BA00B78719 /* Lato-Reg.otf */; };
+		91AB44BD18E091EC00B78719 /* Lato-RegIta.otf in Resources */ = {isa = PBXBuildFile; fileRef = 91AB44B318E091BA00B78719 /* Lato-RegIta.otf */; };
+		91AB44BF18E0F60F00B78719 /* spade.png in Resources */ = {isa = PBXBuildFile; fileRef = 91AB44BE18E0F60F00B78719 /* spade.png */; };
+		91AB44C218E1B8CC00B78719 /* spade_2@2x.gif in Resources */ = {isa = PBXBuildFile; fileRef = 91AB44C018E1B8CC00B78719 /* spade_2@2x.gif */; };
+		91AB44C318E1B8CC00B78719 /* spade_2.gif in Resources */ = {isa = PBXBuildFile; fileRef = 91AB44C118E1B8CC00B78719 /* spade_2.gif */; };
+		91AB44C618E1C2B500B78719 /* spade_3@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 91AB44C418E1C2B500B78719 /* spade_3@2x.png */; };
+		91AB44C718E1C2B500B78719 /* spade_3.png in Resources */ = {isa = PBXBuildFile; fileRef = 91AB44C518E1C2B500B78719 /* spade_3.png */; };
+		91AB44CA18E1C3F800B78719 /* spade_4@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 91AB44C818E1C3F800B78719 /* spade_4@2x.png */; };
+		91AB44CB18E1C3F800B78719 /* spade_4.png in Resources */ = {isa = PBXBuildFile; fileRef = 91AB44C918E1C3F800B78719 /* spade_4.png */; };
 		91D2220C188DAA7100750688 /* SpadeMyEventsCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 91D2220B188DAA7100750688 /* SpadeMyEventsCell.m */; };
 		91D2220E188DB75F00750688 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 91D2220D188DB75F00750688 /* MapKit.framework */; };
 		91D22211188DB95200750688 /* SpadeMapViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 91D22210188DB95200750688 /* SpadeMapViewController.m */; };
@@ -111,6 +137,15 @@
 		91221335185C407300BA29E8 /* SpadeVenueTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SpadeVenueTableViewController.m; sourceTree = "<group>"; };
 		91221337185CCED500BA29E8 /* SpadeVenueDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SpadeVenueDetailViewController.h; sourceTree = "<group>"; };
 		91221338185CCED500BA29E8 /* SpadeVenueDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SpadeVenueDetailViewController.m; sourceTree = "<group>"; };
+		9124528618E244340071CE3B /* spade_5@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "spade_5@2x.png"; path = "../spade_5@2x.png"; sourceTree = "<group>"; };
+		9124528718E244340071CE3B /* spade_5.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = spade_5.png; path = ../spade_5.png; sourceTree = "<group>"; };
+		9124529618E287720071CE3B /* spade_6@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "spade_6@2x.png"; sourceTree = "<group>"; };
+		9124529718E287720071CE3B /* spade_6.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = spade_6.png; sourceTree = "<group>"; };
+		9124529C18E28CE80071CE3B /* Defaulttttt.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Defaulttttt.png; path = ../Defaulttttt.png; sourceTree = "<group>"; };
+		9124529D18E28CE80071CE3B /* Defaultttttt@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Defaultttttt@2x.png"; path = "../Defaultttttt@2x.png"; sourceTree = "<group>"; };
+		912452A218E28D8B0071CE3B /* Test.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Test.png; sourceTree = "<group>"; };
+		912452A418E2912F0071CE3B /* LoginLogo2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = LoginLogo2.png; sourceTree = "<group>"; };
+		912452AC18E2985D0071CE3B /* Spade-Icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Spade-Icon.png"; sourceTree = SOURCE_ROOT; };
 		9133C12018A2E4E600730B9E /* FlatUIKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FlatUIKit.h; path = Spade/FlatUIKit.h; sourceTree = "<group>"; };
 		9133C12118A2E4E600730B9E /* FUIAlertView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FUIAlertView.h; path = Spade/FUIAlertView.h; sourceTree = "<group>"; };
 		9133C12218A2E4E600730B9E /* FUIAlertView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FUIAlertView.m; path = Spade/FUIAlertView.m; sourceTree = "<group>"; };
@@ -206,6 +241,23 @@
 		919DC3C81879F2CF007E8BC0 /* SpadeEventDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SpadeEventDetailViewController.m; sourceTree = "<group>"; };
 		919DC3CA1879FA73007E8BC0 /* SpadeChatCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SpadeChatCell.h; sourceTree = "<group>"; };
 		919DC3CB1879FA73007E8BC0 /* SpadeChatCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SpadeChatCell.m; sourceTree = "<group>"; };
+		91AB44AA18E091BA00B78719 /* Lato-Bla.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Lato-Bla.otf"; sourceTree = "<group>"; };
+		91AB44AB18E091BA00B78719 /* Lato-BlaIta.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Lato-BlaIta.otf"; sourceTree = "<group>"; };
+		91AB44AC18E091BA00B78719 /* Lato-Bol.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Lato-Bol.otf"; sourceTree = "<group>"; };
+		91AB44AD18E091BA00B78719 /* Lato-BolIta.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Lato-BolIta.otf"; sourceTree = "<group>"; };
+		91AB44AE18E091BA00B78719 /* Lato-Hai.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Lato-Hai.otf"; sourceTree = "<group>"; };
+		91AB44AF18E091BA00B78719 /* Lato-HaiIta.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Lato-HaiIta.otf"; sourceTree = "<group>"; };
+		91AB44B018E091BA00B78719 /* Lato-Lig.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Lato-Lig.otf"; sourceTree = "<group>"; };
+		91AB44B118E091BA00B78719 /* Lato-LigIta.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Lato-LigIta.otf"; sourceTree = "<group>"; };
+		91AB44B218E091BA00B78719 /* Lato-Reg.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Lato-Reg.otf"; sourceTree = "<group>"; };
+		91AB44B318E091BA00B78719 /* Lato-RegIta.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Lato-RegIta.otf"; sourceTree = "<group>"; };
+		91AB44BE18E0F60F00B78719 /* spade.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = spade.png; sourceTree = "<group>"; };
+		91AB44C018E1B8CC00B78719 /* spade_2@2x.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = "spade_2@2x.gif"; sourceTree = "<group>"; };
+		91AB44C118E1B8CC00B78719 /* spade_2.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = spade_2.gif; sourceTree = "<group>"; };
+		91AB44C418E1C2B500B78719 /* spade_3@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "spade_3@2x.png"; sourceTree = "<group>"; };
+		91AB44C518E1C2B500B78719 /* spade_3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = spade_3.png; sourceTree = "<group>"; };
+		91AB44C818E1C3F800B78719 /* spade_4@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "spade_4@2x.png"; sourceTree = "<group>"; };
+		91AB44C918E1C3F800B78719 /* spade_4.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = spade_4.png; sourceTree = "<group>"; };
 		91D2220A188DAA7100750688 /* SpadeMyEventsCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SpadeMyEventsCell.h; sourceTree = "<group>"; };
 		91D2220B188DAA7100750688 /* SpadeMyEventsCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SpadeMyEventsCell.m; sourceTree = "<group>"; };
 		91D2220D188DB75F00750688 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
@@ -399,6 +451,7 @@
 		9141E85818407A5000A5DE15 = {
 			isa = PBXGroup;
 			children = (
+				91AB44A918E091BA00B78719 /* OTF */,
 				9133C15A18A2E53800730B9E /* FlatKit */,
 				915BEDA71857DB4800FCA17A /* Uitility */,
 				9141E86A18407A5000A5DE15 /* Spade */,
@@ -449,6 +502,7 @@
 				9112353E18569CD30092253B /* Controllers */,
 				9112353C18569C830092253B /* Model */,
 				9141E87C18407A5000A5DE15 /* Images.xcassets */,
+				912452AC18E2985D0071CE3B /* Spade-Icon.png */,
 				91D9D64B184317CE005BD0BC /* Assets */,
 				9141E86B18407A5000A5DE15 /* Supporting Files */,
 			);
@@ -497,9 +551,41 @@
 			name = Uitility;
 			sourceTree = "<group>";
 		};
+		91AB44A918E091BA00B78719 /* OTF */ = {
+			isa = PBXGroup;
+			children = (
+				91AB44AA18E091BA00B78719 /* Lato-Bla.otf */,
+				91AB44AB18E091BA00B78719 /* Lato-BlaIta.otf */,
+				91AB44AC18E091BA00B78719 /* Lato-Bol.otf */,
+				91AB44AD18E091BA00B78719 /* Lato-BolIta.otf */,
+				91AB44AE18E091BA00B78719 /* Lato-Hai.otf */,
+				91AB44AF18E091BA00B78719 /* Lato-HaiIta.otf */,
+				91AB44B018E091BA00B78719 /* Lato-Lig.otf */,
+				91AB44B118E091BA00B78719 /* Lato-LigIta.otf */,
+				91AB44B218E091BA00B78719 /* Lato-Reg.otf */,
+				91AB44B318E091BA00B78719 /* Lato-RegIta.otf */,
+			);
+			path = OTF;
+			sourceTree = "<group>";
+		};
 		91D9D64B184317CE005BD0BC /* Assets */ = {
 			isa = PBXGroup;
 			children = (
+				912452A418E2912F0071CE3B /* LoginLogo2.png */,
+				912452A218E28D8B0071CE3B /* Test.png */,
+				9124529C18E28CE80071CE3B /* Defaulttttt.png */,
+				9124529D18E28CE80071CE3B /* Defaultttttt@2x.png */,
+				9124529618E287720071CE3B /* spade_6@2x.png */,
+				91AB44C818E1C3F800B78719 /* spade_4@2x.png */,
+				91AB44C918E1C3F800B78719 /* spade_4.png */,
+				9124529718E287720071CE3B /* spade_6.png */,
+				9124528618E244340071CE3B /* spade_5@2x.png */,
+				9124528718E244340071CE3B /* spade_5.png */,
+				91AB44C418E1C2B500B78719 /* spade_3@2x.png */,
+				91AB44C518E1C2B500B78719 /* spade_3.png */,
+				91AB44C018E1B8CC00B78719 /* spade_2@2x.gif */,
+				91AB44C118E1B8CC00B78719 /* spade_2.gif */,
+				91AB44BE18E0F60F00B78719 /* spade.png */,
 				913DE257187B5CE000CDBCE7 /* leather.png */,
 				913DE258187B5CE000CDBCE7 /* nicubunu_Card_symbols_Spade.jpeg */,
 				9196A8E3186D2E0400513082 /* AvatarPlaceholder.png */,
@@ -599,16 +685,42 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				91AB44B418E091EC00B78719 /* Lato-Bla.otf in Resources */,
+				91AB44B518E091EC00B78719 /* Lato-BlaIta.otf in Resources */,
+				9124529918E287720071CE3B /* spade_6.png in Resources */,
+				912452A518E2912F0071CE3B /* LoginLogo2.png in Resources */,
+				91AB44B618E091EC00B78719 /* Lato-Bol.otf in Resources */,
+				9124528918E244340071CE3B /* spade_5.png in Resources */,
+				91AB44B718E091EC00B78719 /* Lato-BolIta.otf in Resources */,
+				91AB44B818E091EC00B78719 /* Lato-Hai.otf in Resources */,
+				91AB44CA18E1C3F800B78719 /* spade_4@2x.png in Resources */,
+				91AB44B918E091EC00B78719 /* Lato-HaiIta.otf in Resources */,
+				91AB44C218E1B8CC00B78719 /* spade_2@2x.gif in Resources */,
+				91AB44BA18E091EC00B78719 /* Lato-Lig.otf in Resources */,
+				91AB44BF18E0F60F00B78719 /* spade.png in Resources */,
+				91AB44BB18E091EC00B78719 /* Lato-LigIta.otf in Resources */,
+				91AB44C618E1C2B500B78719 /* spade_3@2x.png in Resources */,
+				91AB44CB18E1C3F800B78719 /* spade_4.png in Resources */,
+				912452AD18E2985D0071CE3B /* Spade-Icon.png in Resources */,
+				91AB44BC18E091EC00B78719 /* Lato-Reg.otf in Resources */,
+				91AB44BD18E091EC00B78719 /* Lato-RegIta.otf in Resources */,
 				9196A8D11868D61300513082 /* skyline_7@2x.png in Resources */,
+				91AB44C718E1C2B500B78719 /* spade_3.png in Resources */,
 				9196A8CF1868D60700513082 /* default_venue_Image.jpeg in Resources */,
 				913DE259187B5CE000CDBCE7 /* leather.png in Resources */,
 				9196A8E5186D2E0400513082 /* AvatarPlaceholder.png in Resources */,
 				9196A8D31868D61B00513082 /* skyline@2x.png in Resources */,
+				91AB44C318E1B8CC00B78719 /* spade_2.gif in Resources */,
 				9141E87D18407A5000A5DE15 /* Images.xcassets in Resources */,
 				913DE25A187B5CE000CDBCE7 /* nicubunu_Card_symbols_Spade.jpeg in Resources */,
+				912452A318E28D8B0071CE3B /* Test.png in Resources */,
+				9124529818E287720071CE3B /* spade_6@2x.png in Resources */,
+				9124528818E244340071CE3B /* spade_5@2x.png in Resources */,
 				9141E86F18407A5000A5DE15 /* InfoPlist.strings in Resources */,
 				9141E87818407A5000A5DE15 /* Main.storyboard in Resources */,
 				9196A8E6186D2E0400513082 /* AvatarPlaceholder@2x.png in Resources */,
+				9124529F18E28CE80071CE3B /* Defaulttttt.png in Resources */,
+				912452A018E28CE80071CE3B /* Defaultttttt@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

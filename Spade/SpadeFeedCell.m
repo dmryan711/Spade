@@ -7,6 +7,7 @@
 //
 
 #import "SpadeFeedCell.h"
+#import <QuartzCore/QuartzCore.h>
 
 @implementation SpadeFeedCell
 
@@ -16,6 +17,7 @@
     if (self) {
         // Initialization code
     }
+
     return self;
 }
 
@@ -23,6 +25,10 @@
     frame.origin.x += 20;
     frame.size.width -= 40;
     [super setFrame:frame];
+    
+    [self.layer setCornerRadius:7.0f];
+    [self.layer setMasksToBounds:YES];
+    [self.layer setBorderWidth:2.0f];
 }
 
 

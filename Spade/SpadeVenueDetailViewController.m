@@ -66,7 +66,8 @@
     self.bottleServiceLabel.text = [NSString stringWithFormat:@"%@",[SpadeUtility processBottleService:(BOOL)[self.venue objectForKey:spadeVenueTableService]]];
     self.addressLabel.text = [self.venue objectForKey:spadeVenueAddress];
     
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemAction target:self action:@selector(actionButtonPressed)];
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]initWithTitle:@"Map" style:UIBarButtonItemStyleBordered target:self action:@selector(pushMapView)];
+    /*self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemAction target:self action:@selector(actionButtonPressed)];*/
   
     if ([self.venue objectForKey:spadeVenuePicture]) {
         
@@ -136,7 +137,7 @@
 
 -(void)actionButtonPressed
 {
-    UIActionSheet *venueActionList = [[UIActionSheet alloc]initWithTitle:@"Mao" delegate:self cancelButtonTitle:@"Nevermind" destructiveButtonTitle:nil otherButtonTitles:@"See on Map", nil];
+    UIActionSheet *venueActionList = [[UIActionSheet alloc]initWithTitle:@"Map" delegate:self cancelButtonTitle:@"Nevermind" destructiveButtonTitle:nil otherButtonTitles:@"See on Map", nil];
     [venueActionList showFromBarButtonItem:self.navigationItem.rightBarButtonItem animated:YES];
 
 }
@@ -148,6 +149,8 @@
                                                                  bundle: nil];
         //Create Detail View
         SpadeMapViewController *mapViewController = [mainStoryboard   instantiateViewControllerWithIdentifier:@"mapViewController"];
+        
+        NSLog(@"Venue Address: %@", [self.venue objectForKey:spadeVenueAddress]);
         
         mapViewController.address = [self.venue objectForKey:spadeVenueAddress];
         
@@ -173,6 +176,21 @@
     
 }*/
 
+-(void)pushMapView
+{
+    UIStoryboard *mainStoryboard = [UIStoryboard storyboardWithName:@"Main"
+                                                             bundle: nil];
+    //Create Detail View
+    SpadeMapViewController *mapViewController = [mainStoryboard   instantiateViewControllerWithIdentifier:@"mapViewController"];
+    
+    NSLog(@"Venue Address: %@", [self.venue objectForKey:spadeVenueAddress]);
+    
+    mapViewController.address = [self.venue objectForKey:spadeVenueAddress];
+    
+    //FIRE
+    [self.navigationController pushViewController:mapViewController animated:YES];
+
+}
 
 -(void)createAndDisplayFollowAlert{
     UIAlertView *followingVenue = [[UIAlertView alloc]initWithTitle:[NSString stringWithFormat:@"Following %@",self.title] message:nil delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil];

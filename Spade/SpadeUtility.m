@@ -245,19 +245,20 @@
     if (file) {
         [event setObject:file forKey:spadeEventImageFile];
     }
-    [self createEvent:event];
+    [self createEventActivity:event];
     
     [event saveEventually];
     
 
 }
 
-+(void)createEvent:(PFObject *)event
++(void)createEventActivity:(PFObject *)event
 {
     PFObject *eventCreated = [PFObject objectWithClassName:spadeClassActivity];
     [eventCreated setObject:[PFUser currentUser] forKey:spadeActivityFromUser]; // Se event user
     [eventCreated setObject:event forKey:spadeActivityToEvent];
     [eventCreated setObject:spadeActivityActionCreatedEvent forKey:spadeActivityAction];
+    [eventCreated setObject:[event objectForKey:spadeEventVenue] forKey:spadeActivityForVenue];
     
     [eventCreated saveEventually];
 
@@ -268,6 +269,7 @@
     PFObject *eventAttending = [PFObject objectWithClassName:spadeClassActivity];
     [eventAttending setObject:user forKey:spadeActivityFromUser];
     [eventAttending setObject:event forKey:spadeActivityToEvent];
+    [eventAttending setObject:[event objectForKey:spadeEventVenue] forKey:spadeActivityForVenue];
     [eventAttending setObject:spadeActivityActionAttendingEvent forKey:spadeActivityAction];
     
     [eventAttending saveEventually];
@@ -282,7 +284,12 @@
     [attendingEvent whereKey:spadeActivityFromUser equalTo:user];
     [attendingEvent whereKey:spadeActivityToEvent equalTo:event];
     
-    [[attendingEvent getFirstObject] deleteEventually];
+    [attendingEvent getFirstObjectInBackgroundWithBlock:^(PFObject *object, NSError *error){
+        if (object) {
+            [object deleteEventually];
+        }
+    
+    }];
 }
 
 /*+(NSArray *)crunchAttendeeActivities:(NSMutableArray *)arrayOfAttendingActivities

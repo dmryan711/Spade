@@ -32,12 +32,12 @@
     [super viewDidLoad];
     
 	// Do any additional setup after loading the view.
-    [self.logInView setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"skyline_7.png"]]];
-    [self.logInView setLogo:[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"logo.png"]]];
+    [self.logInView setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"LoginLogo2.png"]]];
+   [self.logInView setLogo:[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"logo.png"]]];
     
     // Set buttons appearance
-    [self.logInView.facebookButton setTitle:@"uck promoters" forState:UIControlStateNormal];
-    [self.logInView.facebookButton setTitle:@"uck promoters" forState:UIControlStateHighlighted];
+    //[self.logInView.facebookButton setTitle:@"un Times Ahead" forState:UIControlStateNormal];
+    [self.logInView.facebookButton setTitle:@"un Times Ahead" forState:UIControlStateHighlighted];
     
 }
 

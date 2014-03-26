@@ -35,7 +35,7 @@
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
     
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]initWithTitle:@"Directions" style:UIBarButtonItemStyleBordered target:self action:@selector(getDirectionsPressed)];
+    //self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]initWithTitle:@"Directions" style:UIBarButtonItemStyleBordered target:self action:@selector(getDirectionsPressed)];
     
     self.mapview.delegate  = self;
     self.locationManager.delegate  = self;
@@ -43,7 +43,7 @@
     [self.mapview setShowsUserLocation:YES];
     [self.mapview setShowsBuildings:YES];
     
-    [self processDestination];
+   // [self processDestination];
     
     self.locationManager = [[CLLocationManager alloc]init];
     
@@ -62,7 +62,7 @@
 - (void)mapView:(MKMapView *)mv didAddAnnotationViews:(NSArray *)views {
     MKCoordinateRegion region;
     region = MKCoordinateRegionMakeWithDistance(self.destinationPlaceMark.coordinate,1700,1700);
-    
+   
 
     
     [mv setRegion:region animated:YES];
@@ -77,7 +77,7 @@
     return  renderer;
 }
 
--(void)getDirectionsPressed{
+/*-(void)getDirectionsPressed{
     self.navigationItem.rightBarButtonItem.enabled = NO;
     
     MKMapItem *destination = [[MKMapItem alloc]initWithPlacemark:self.destinationPlaceMark];
@@ -105,15 +105,15 @@
     }];
     
   
-}
+}*/
 
 #pragma mark Location Manager Delegate
 -(void)locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray *)locations
 {
-    //if we pressed get directions call it again
+  /*  //if we pressed get directions call it again
     if (!self.navigationItem.rightBarButtonItem.isEnabled) {
         [self getDirectionsPressed];
-    }
+    }*/
 }
 
 

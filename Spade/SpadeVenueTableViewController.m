@@ -121,7 +121,7 @@
         [cell.venueImage setFile:[object objectForKey:spadeVenuePicture]];
         [cell.venueImage   loadInBackground];
     }else{
-        cell.venueImage.image = [UIImage imageNamed:@"AvatarPlaceHolder.png"];
+        cell.venueImage.image = [UIImage imageNamed:@"spade.png"];
     }
     cell.nameLabel.text = [object objectForKey:spadeVenueName];
     
@@ -249,6 +249,7 @@
         
     }else{
         NSError *error = [NSError errorWithDomain:@"Cell Title Not Matching Follow/Unfollow" code:1 userInfo:@{@"Title": [NSString stringWithFormat:@"Button Title: %@", cell.nameLabel.text ]}];
+        NSLog(@"Error %@",error);
         
     }
     

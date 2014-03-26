@@ -38,6 +38,7 @@ NSString * const spadeActivityToUser= @"toUser";
 NSString * const spadeActivityToVenue = @"toVenue";
 NSString * const spadeActivityToEvent = @"toEvent";
 NSString * const spadeActivityAction = @"action";
+NSString * const spadeActivityForVenue = @"forVenue";
 
 
 NSString * const spadeActivityActionFollowingVenue = @"Following Venue";
@@ -96,6 +97,12 @@ NSString * const spadeDevonFacebookId = @"15723417";
 //Event Placeholder Text
 NSString  * const spadeEventPlaceHolderWhereLabel = @"Press Here";
 NSString  * const spadeEventPlaceHolderWhenLabel = @"And Here";
+
+//Attendance Button
+NSString  * const spadeEventAttendanceButtonTitleAttend = @"Attend";
+NSString  * const spadeEventAttendanceButtonTitleUnattend = @"Unattend";
+
+
 
 
 

@@ -58,9 +58,9 @@ static SpadeCache *sharedCache = nil;
 {
     
     if ([self.cache objectForKey:spadeCache ]) {
-        NSLog(@"Major Diction Exists");
+       // NSLog(@"Major Diction Exists");
         if ([[self.cache objectForKey:spadeCache] objectForKey:spadeCacheVenues]) {
-            NSLog(@"Minor Diction Exists");
+           // NSLog(@"Minor Diction Exists");
             [[[self.cache objectForKey:spadeCache]objectForKey:spadeCacheVenues] addObject:followedVenue];
         }else{
             //Create Followed Venue Array
@@ -69,7 +69,7 @@ static SpadeCache *sharedCache = nil;
             [[self.cache objectForKey:spadeCache] addObject:followedVenueArray  forKey:spadeCacheVenues];
         }
     }else{
-        NSLog(@"Major Creation");
+       // NSLog(@"Major Creation");
         //Create User Dictionary
         NSMutableArray *followedVenueArray = [[NSMutableArray alloc]initWithObjects:followedVenue, nil];
         NSMutableDictionary *userDictionary = [[NSMutableDictionary alloc]initWithDictionary:@{spadeCacheVenues: followedVenueArray}];
@@ -77,7 +77,7 @@ static SpadeCache *sharedCache = nil;
     }
     
     //Log to Parse
-    [SpadeUtility user:[PFUser currentUser] followingVenue:followedVenue];
+    //[SpadeUtility user:[PFUser currentUser] followingVenue:followedVenue]; //DO NOT LOG TO PARSE WHEN INITIALLY SETTING CACHE, IF ITS BEING LOADED INTO CACHE INITIALLY, WE ALREADY HAVE IT IN PARSE
    
 }
 -(void)addAttendingEvent:(PFObject *)attendingEvent
@@ -98,7 +98,7 @@ static SpadeCache *sharedCache = nil;
     }
     
     //Log to Parse
-    [SpadeUtility user:[PFUser currentUser] attendingEvent:attendingEvent];
+    //[SpadeUtility user:[PFUser currentUser] attendingEvent:attendingEvent]; //DO NOT LOG TO PARSE WHEN INITIALLY SETTING CACHE, IF ITS BEING LOADED INTO CACHE INITIALLY, WE ALREADY HAVE IT IN PARSE
 
 }
 -(void)addFollowedUser:(PFUser *)followedUser
@@ -120,7 +120,7 @@ static SpadeCache *sharedCache = nil;
     }
     
     //Log to Parse
-    [SpadeUtility user:[PFUser currentUser] followingUser:followedUser];
+    //[SpadeUtility user:[PFUser currentUser] followingUser:followedUser]; //DO NOT LOG TO PARSE WHEN INITIALLY SETTING CACHE, IF ITS BEING LOADED INTO CACHE INITIALLY, WE ALREADY HAVE IT IN PARSE
     
 
 }

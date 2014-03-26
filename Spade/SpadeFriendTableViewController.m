@@ -51,9 +51,8 @@
 	// Do any additional setup after loading the view.
     self.title =  @"Friends";
     
-    /*self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc]initWithTitle:@"Follow All" style:UIBarButtonItemStylePlain target:self action:@selector(followAllSelected)];*/
     
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]initWithTitle:@"Done" style:UIBarButtonItemStylePlain target:self action:@selector(doneSelected)];
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]initWithTitle:@"Done" style:UIBarButtonItemStyleBordered target:self action:@selector(doneSelected)];
     
     
     if ([[[[[SpadeCache sharedCache]cache]objectForKey:spadeCache]objectForKey:spadeCacheUser]count] < MIN_FOLLOWER) {
@@ -136,7 +135,7 @@
         [cell.profileImageView setFile:[object objectForKey:spadeUserSmallProfilePic]];
         [cell.profileImageView loadInBackground];
     }else{
-        cell.profileImageView.image = [UIImage imageNamed:@"AvatarPlaceHolder.png"];
+        cell.profileImageView.image = [UIImage imageNamed:@"spade.png"];
     }
     
     
@@ -347,7 +346,7 @@
         [cell.followButton setTitle:spadeFollowButtonTitleFollow forState:UIControlStateNormal];
         
         //set cache to remove user from follow list
-        [[SpadeCache sharedCache]removeFollowedUser:cell.object];
+        [[SpadeCache sharedCache]removeFollowedUser:(PFUser *)cell.object];
     
     }else{
         NSError *error = [NSError errorWithDomain:@"Cell Title Not Matching Follow/UNfollow" code:1 userInfo:@{@"Title": [NSString stringWithFormat:@"Button Title: %@", cell.nameLabel.text ]}];

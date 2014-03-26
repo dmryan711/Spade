@@ -7,12 +7,15 @@
 //
 
 #import "SpadeEventDetailViewController.h"
+#import "SpadeVenueDetailViewController.h"
 #import "SpadeFriendDetailViewController.h"
 #import "SpadeChatViewController.h"
 #import "SpadeChatCell.h"
 #import "SpadeConstants.h"
 #import "SpadeUtility.h"
 #import "SpadeCache.h"
+#import "FUIButton.h"
+#import "UIColor+FlatUI.h"
 
 @interface SpadeEventDetailViewController ()
 
@@ -24,6 +27,10 @@
 @property (weak, nonatomic) IBOutlet UILabel *venueLabel;
 @property (weak, nonatomic) IBOutlet UILabel *whenLabel;
 @property (weak, nonatomic) IBOutlet UILabel *atLabel;
+@property (weak, nonatomic) IBOutlet FUIButton *attendanceButton;
+@property (weak, nonatomic) IBOutlet FUIButton *venueDetailButton;
+@property (weak, nonatomic) IBOutlet UILabel *timeLabel;
+
 
 @end
 
@@ -48,16 +55,39 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    [self.view addSubview:self.friendsTable];
+    
+    [self.view bringSubviewToFront:self.friendsTable];
+    
     //[self toggleChat];
 	// Do any additional setup after loading the view.
-    self.title = [self.object objectForKey:spadeEventName];
+    PFObject *event = [self.object objectForKey:spadeActivityToEvent];
+    PFObject *venue = [self.object objectForKey:spadeActivityForVenue];
+    
+    self.title = [event objectForKey:spadeEventName];
+    self.view.backgroundColor  = [UIColor cloudsColor];
+    
+    self.venueDetailButton.cornerRadius = 3;
+    self.venueDetailButton.buttonColor = [UIColor concreteColor];
+    self.venueDetailButton.shadowColor = [UIColor asbestosColor];
+    self.venueDetailButton.shadowHeight = 3;
+    self.venueDetailButton.titleLabel.font = [UIFont fontWithName:@"Lato-Bold" size:12];
+    [self.venueDetailButton setTitleColor:[UIColor cloudsColor] forState:UIControlStateNormal];
+    
+    self.attendanceButton.cornerRadius = 3;
+    self.attendanceButton.buttonColor = [UIColor amethystColor];
+    self.attendanceButton.shadowColor = [UIColor wisteriaColor];
+    self.attendanceButton.shadowHeight = 3;
+    self.attendanceButton.titleLabel.font = [UIFont fontWithName:@"Lato-Bold" size:12];
+    [self.attendanceButton setTitleColor:[UIColor cloudsColor] forState:UIControlStateNormal];
 
     
     //Set Query and Run
     self.friendsForEventQuery.cachePolicy = kPFCachePolicyCacheThenNetwork;
     [self.friendsForEventQuery whereKeyExists:spadeActivityToEvent];
     [self.friendsForEventQuery includeKey:spadeActivityFromUser];
-    [self.friendsForEventQuery whereKey:spadeActivityToEvent equalTo:self.object];
+    [self.friendsForEventQuery whereKey:spadeActivityToEvent equalTo:event];
     
     [self runFriendQueryAndReloadData];
     
@@ -70,10 +100,17 @@
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]initWithTitle:@"Chat" style:UIBarButtonItemStyleBordered target:self action:@selector(toggleChat)];
     
     //set labels
-    self.eventLabel.text = [self.object objectForKey:spadeEventName];
-    //self.venueLabel.text = [[self.object objectForKey:spadeEventVenue]objectForKey:spadeVenueName];
-    self.whenLabel.text = [self.object objectForKey:spadeEventWhen];
+   // NSLog(@"OBJECT %@",[[self.object objectForKey:@"Venue"]objectForKey:spadeVenueName]);
+    self.eventLabel.text = self.title;
+    self.venueLabel.text = [venue objectForKey:spadeVenueName];
+    self.whenLabel.text = [event objectForKey:spadeEventWhen];
+    self.timeLabel.text = [event objectForKey:spadeEventTime];
     
+    self.eventLabel.font = [UIFont fontWithName:@"Lato-Bold" size:14];
+    self.atLabel.font = [UIFont fontWithName:@"Lato-Regular" size:14];
+    self.venueLabel.font = [UIFont fontWithName:@"Lato-Bold" size:14];
+    self.whenLabel.font = [UIFont fontWithName:@"Lato-Bold" size:14];
+    self.timeLabel.font = [UIFont fontWithName:@"Lato-Bold" size:14];
 }
 
 
@@ -91,22 +128,38 @@
         static NSString *FriendCellIdentifier = @"FriendCell";
         
         PFUser *friend = [[self.friendData objectAtIndex:indexPath.row] objectForKey:spadeActivityFromUser];
-        
+    
+    
         SpadeFollowCell *cell = [tableView dequeueReusableCellWithIdentifier:FriendCellIdentifier];
         if (cell == nil) {
             cell = [[SpadeFollowCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:FriendCellIdentifier];
         }
-        
+    
+    [cell bringSubviewToFront:cell.followButton];
+        cell.backgroundColor = [UIColor cloudsColor];
+    
         cell.delegate = self;
         cell.object = friend;
+    cell.nameLabel.font = [UIFont fontWithName:@"Lato-Bold" size:12];
     
     
     
         
         if ([[[[[SpadeCache sharedCache]cache]objectForKey:spadeCache]objectForKey:spadeCacheUser] containsObject:friend]) {
             [cell.followButton setTitle:spadeFollowButtonTitleUnfollow forState:UIControlStateNormal];
+            cell.followButton.cornerRadius = 3;
+            cell.followButton.buttonColor = [UIColor concreteColor];
+            cell.followButton.shadowColor = [UIColor asbestosColor];
+            cell.followButton.shadowHeight = 3;
+            cell.followButton.titleLabel.font = [UIFont fontWithName:@"Lato-Bold" size:12];
+            [cell.followButton setTitleColor:[UIColor cloudsColor] forState:UIControlStateNormal];
         }else{
-            [cell.followButton setTitle:spadeFollowButtonTitleFollow forState:UIControlStateNormal];
+            cell.followButton.cornerRadius = 3;
+            cell.followButton.buttonColor = [UIColor amethystColor];
+            cell.followButton.shadowColor = [UIColor wisteriaColor];
+            cell.followButton.shadowHeight = 3;
+            cell.followButton.titleLabel.font = [UIFont fontWithName:@"Lato-Bold" size:12];
+            [cell.followButton setTitleColor:[UIColor cloudsColor] forState:UIControlStateNormal];
         }
         // Configure the cell
         cell.nameLabel.text = [friend objectForKey:spadeUserDisplayName];
@@ -121,15 +174,18 @@
         return cell;
 }
 
-- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
+-(UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
-    if (tableView == self.friendsTable) {
-        return @"Attendees";
-    }else{
+        UIView *tempView=[[UIView alloc]initWithFrame:CGRectMake(0,0,300,50)];
+        tempView.backgroundColor=[UIColor asbestosColor];
+        UILabel *tempLabel=[[UILabel alloc]initWithFrame:CGRectMake(0,-10,300,44)];
+        tempLabel.backgroundColor=[UIColor clearColor];
+        tempLabel.font = [UIFont fontWithName:@"Lato-Bold" size:16];
+    tempLabel.textColor = [UIColor cloudsColor];
+        tempLabel.text=@"                                          Attendees";
+        [tempView addSubview: tempLabel];
+        return tempView;
     
-        return @"";
-    }
-
 }
 
 
@@ -189,6 +245,7 @@
             [self.friendData addObjectsFromArray:objectsFound];
             [self.friendsTable reloadData];
             [self.friendTableRefreshControl endRefreshing];
+            
         }
     
     }];
@@ -241,10 +298,40 @@
 
 }
 
+#pragma mark Button Methods
+- (IBAction)venueButtonPressed:(UIButton *)sender {
+    //Go to the venue detail for this venue
+    UIStoryboard *mainStoryboard = [UIStoryboard storyboardWithName:@"Main"
+                                                             bundle: nil];
+    //Create Detail View
+    SpadeVenueDetailViewController  *venueDetail = [mainStoryboard   instantiateViewControllerWithIdentifier:@"venueDetailController"];
+    
+    venueDetail.venue = [self.object objectForKey:spadeActivityForVenue];
+    
+    [self.navigationController pushViewController:venueDetail animated:YES];
+
+    
+    
+}
+- (IBAction)attendanceButtonPressed:(UIButton *)sender {
+    if ([self.attendButton.titleLabel.text isEqualToString: spadeEventAttendanceButtonTitleAttend] ) {
+        [SpadeUtility user:[PFUser currentUser] attendingEvent:[self.object objectForKey: spadeActivityToEvent]];
+        [self.attendButton setTitle:spadeEventAttendanceButtonTitleUnattend forState:UIControlStateNormal];
+        
+    }else if ([self.attendButton.titleLabel.text isEqualToString: spadeEventAttendanceButtonTitleUnattend]){
+        [SpadeUtility user:[PFUser currentUser] unAttendingEvent:[self.object objectForKey: spadeActivityToEvent]];
+        [self.attendButton setTitle:spadeEventAttendanceButtonTitleAttend forState:UIControlStateNormal];
+
+    }
+    
+}
+
+
 
 #pragma mark SpadeFollowCell Delegate Methods
 -(void)followButtonWasPressedForCell:(SpadeFollowCell *)cell
 {
+    NSLog(@"followpressed");
     if ([cell.followButton.titleLabel.text isEqualToString:spadeFollowButtonTitleFollow]) {
         [cell.followButton setTitle:spadeFollowButtonTitleUnfollow forState:UIControlStateNormal];
         //set cache to follow user
@@ -262,9 +349,10 @@
         
     }else{
         NSError *error = [NSError errorWithDomain:@"Cell Title Not Matching Follow/UNfollow" code:1 userInfo:@{@"Title": [NSString stringWithFormat:@"Button Title: %@", cell.nameLabel.text ]}];
+        NSLog(@"Error %@",error);
+
         
     }
-    
     
 }
 

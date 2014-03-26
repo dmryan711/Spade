@@ -14,5 +14,6 @@
 @interface SpadeEventDetailViewController : UIViewController <SpadeFollowCellDelegate,UITableViewDataSource,UITableViewDelegate>
 
 @property (strong, nonatomic) PFObject *object;
+@property (weak, nonatomic) IBOutlet UIButton *attendButton;
 
 @end

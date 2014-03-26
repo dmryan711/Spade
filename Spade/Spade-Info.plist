@@ -19,8 +19,6 @@
 	</array>
 	<key>CFBundleExecutable</key>
 	<string>${EXECUTABLE_NAME}</string>
-	<key>UIViewControllerBasedStatusBarAppearance</key>
-	<false/>
 	<key>CFBundleIdentifier</key>
 	<string>com.SpadeNYC.${PRODUCT_NAME:rfc1034identifier}</string>
 	<key>CFBundleInfoDictionaryVersion</key>
@@ -56,6 +54,19 @@
 		<string>MKDirectionsModeStreetCar</string>
 		<string>MKDirectionsModeTaxi</string>
 	</array>
+	<key>UIAppFonts</key>
+	<array>
+		<string>Lato-Reglta.otf</string>
+		<string>Lato-Reg.otf</string>
+		<string>Lato-Liglta.otf</string>
+		<string>Lato-Lig.otf</string>
+		<string>Lato-Hailta.otf</string>
+		<string>Lato-Hai.otf</string>
+		<string>Lato-Bollta.otf</string>
+		<string>Lato-Bol.otf</string>
+		<string>Lato-Blalta.otf</string>
+		<string>Lato-Bla.otf</string>
+	</array>
 	<key>UIMainStoryboardFile</key>
 	<string>Main</string>
 	<key>UIRequiredDeviceCapabilities</key>
@@ -68,5 +79,7 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
+	<key>UIViewControllerBasedStatusBarAppearance</key>
+	<false/>
 </dict>
 </plist>

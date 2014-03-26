@@ -63,14 +63,28 @@
 
     [super viewDidLoad];
     //[self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:@"Cell"];
-    self.title = @"Night Feed";
-
-    [self.navigationController.navigationBar setTitleTextAttributes:@{NSForegroundColorAttributeName : [UIColor whiteColor]}];
-
     
-    [self.navigationController.navigationBar configureFlatNavigationBarWithColor:[UIColor blendedColorWithForegroundColor:[UIColor blackColor] backgroundColor:[UIColor wisteriaColor] percentBlend:.6]];
+    self.navigationController.navigationBar.translucent = NO;
+    [self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"spade_6.png"] forBarMetrics:UIBarMetricsDefault];
+    self.navigationController.navigationBar.barTintColor = [UIColor wisteriaColor];
+    //self.navigationController.navigationBar.backgroundColor = [UIColor wisteriaColor];
+
+   // [self.navigationController.navigationBar setTitleTextAttributes:@{NSForegroundColorAttributeName : [UIColor whiteColor]}];
     
-    [[UINavigationBar appearance] setTintColor:[UIColor whiteColor]];
+   /* NSDictionary *textAttributes = [NSDictionary dictionaryWithObjectsAndKeys:
+                                    [UIColor whiteColor],NSForegroundColorAttributeName,
+                                    [UIColor wisteriaColor],NSBackgroundColorAttributeName,[UIFont fontWithName:@"Lato-Black" size:22],NSFontAttributeName, nil];
+    self.navigationController.navigationBar.titleTextAttributes = textAttributes;*/
+    
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]initWithTitle:@"☰" style:UIBarButtonItemStyleBordered target:self action:@selector(settingsPressed)];
+    
+    self.navigationItem.rightBarButtonItem.tintColor = [UIColor cloudsColor];
+    
+    [self.navigationItem.rightBarButtonItem setTitleTextAttributes:@{NSFontAttributeName: [UIFont fontWithName:@"Lato-Bold" size:24]} forState:UIControlStateNormal];
+    
+   /* [self.navigationController.navigationBar configureFlatNavigationBarWithColor:[UIColor blendedColorWithForegroundColor:[UIColor blackColor] backgroundColor:[UIColor wisteriaColor] percentBlend:.6]];*/
+    
+    //[[UINavigationBar appearance] setTintColor:[UIColor whiteColor]];
 
     if (![PFUser currentUser] ) { // No user logged in
         // Create the log in view controller
@@ -91,7 +105,8 @@
     self.query.cachePolicy = kPFCachePolicyCacheThenNetwork;
     [self.query includeKey:spadeActivityFromUser];
     [self.query includeKey:spadeActivityToEvent];
-    [self.query includeKey:spadeEventVenue];
+    [self.query includeKey:spadeActivityForVenue];
+    //[self.query includeKey:spadeEventVenue];
     [self.query includeKey:spadeVenueName];
     [self.query includeKey:spadeVenuePicture];
     [self.query orderByDescending:@"createdAt"];
@@ -108,10 +123,10 @@
     self.tableRefresh = [[UIRefreshControl alloc]init];
     [self.tableRefresh addTarget:self action:@selector(runQueryAndReloadData) forControlEvents:UIControlEventValueChanged];
     [self.tableView addSubview:self.tableRefresh];
-
-    self.navigationItem.rightBarButtonItem =[[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemAction target:self action:@selector(settingsPressed)];
     
-    self.navigationItem.rightBarButtonItem.tintColor = [UIColor cloudsColor];
+    
+    
+    
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
  
@@ -119,6 +134,8 @@
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
     
     //self.tableView.backgroundView = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"leather.png"]];
+    
+   
 }
 
 
@@ -196,14 +213,17 @@
         
         // Configure the cell
 
+        feedCell.backgroundColor = [UIColor cloudsColor];
+        feedCell.actionLabel.font = [UIFont fontWithName:@"Lato-Regular" size:10];
+        feedCell.userNameLabel.font  = [UIFont fontWithName:@"Lato-Black" size:10];
+        feedCell.venueNameLabel.font  = [UIFont fontWithName:@"Lato-Black" size:10];
         
         NSUInteger newIndex = (indexPath.row /2);
         
         
         PFUser *user = [[self.objects objectAtIndex:newIndex] objectForKey:spadeActivityFromUser];
         PFObject *event = [[self.objects objectAtIndex:newIndex]objectForKey:spadeActivityToEvent];
-
-        //PFObject *venue = [event objectForKey:spadeEventVenue];
+        PFObject *venue = [[self.objects objectAtIndex:newIndex]objectForKey:spadeActivityForVenue];
         NSString *action = [[self.objects objectAtIndex:newIndex] objectForKey:spadeActivityAction];
         
         //PFObject *event = [object objectForKey:spadeActivityToEvent];
@@ -213,14 +233,14 @@
             [feedCell.userImageView setFile:[user objectForKey:spadeUserSmallProfilePic]];
             [feedCell.userImageView loadInBackground];
         }else{
-            feedCell.userImageView.image = [UIImage imageNamed:@"AvatarPlaceholder.png"];
+            feedCell.userImageView.image = [UIImage imageNamed:@"spade.png"];
         }
         if ([event objectForKey:spadeEventImageFile]) {
             [feedCell.eventImageView setFile:[event objectForKey:spadeEventImageFile]];
             [feedCell.eventImageView loadInBackground];
         }
         else{
-            feedCell.eventImageView.image = [UIImage imageNamed:@"AvatarPlaceholder.png"];
+            feedCell.eventImageView.image = [UIImage imageNamed:@"spade.png"];
             
         }
     
@@ -229,21 +249,25 @@
             if ([[self.objects objectAtIndex:newIndex]objectForKey:@"otherUserCount"]) {
                 NSNumber *otherCount = [[self.objects objectAtIndex:newIndex]objectForKey:@"otherUserCount"];
                 if ([otherCount isEqualToNumber:[NSNumber numberWithInt:1]]) {
-                    feedCell.actionLabel.text = [NSString stringWithFormat:@"%@ and %@ other friend\n is attending\n%@",[user objectForKey:spadeUserDisplayName], otherCount,[event objectForKey:spadeEventName]];
+                    feedCell.actionLabel.text = [NSString stringWithFormat:@"and %@ other friend\n\n is attending\n\n%@",otherCount,[event objectForKey:spadeEventName]];
                 }else{
-                    feedCell.actionLabel.text = [NSString stringWithFormat:@"%@ and %@ other friends\n are attending\n%@",[user objectForKey:spadeUserDisplayName], otherCount,[event objectForKey:spadeEventName]];
+                    feedCell.actionLabel.text = [NSString stringWithFormat:@"and %@ other friends\n are attending\n%@", otherCount,[event objectForKey:spadeEventName]];
                 }
             }else{
-                feedCell.actionLabel.text = [NSString stringWithFormat:@"%@\nis attending\n%@",[user objectForKey:spadeUserDisplayName],[event objectForKey:spadeEventName]] ;
+                feedCell.actionLabel.text = [NSString stringWithFormat:@"☰  is attending\n\n%@",[event objectForKey:spadeEventName]];
             }
             
             
             
         }else if ([action isEqualToString:spadeActivityActionCreatedEvent]){
-            feedCell.actionLabel.text = @"Created";
-            feedCell.actionLabel.text = [NSString stringWithFormat:@"%@\n created the event\n%@",[user objectForKey:spadeUserDisplayName],[event objectForKey:spadeEventName]] ;
+           // feedCell.actionLabel.text = @"Created";
+            feedCell.actionLabel.text = [NSString stringWithFormat:@"created the event\n\n%@",[event objectForKey:spadeEventName]] ;
             
         }
+    
+        feedCell.userNameLabel.text = [user objectForKey:spadeUserDisplayName];
+        feedCell.venueNameLabel.text = [venue objectForKey:spadeVenueName];
+        
         return feedCell;
 
     }
@@ -325,6 +349,12 @@
             [self.objects addObjectsFromArray:[self crunchUpdates:(NSMutableArray *)objectsFound]];
             [self.tableView reloadData];
             [self.tableRefresh endRefreshing];
+            
+           // NSLog(@"Objects Uncrunched Here     %@",objectsFound);
+
+            
+           // NSLog(@"Objects Here     %@",self.objects);
+
             
         }
         
@@ -460,7 +490,7 @@
 {
     NSUInteger newIndex = (indexPath.row /2);
     
-    PFObject *event = [[self.objects objectAtIndex:newIndex]objectForKey:spadeActivityToEvent];
+    PFObject *eventActivity = [self.objects objectAtIndex:newIndex];
     
     
     UIStoryboard *mainStoryboard = [UIStoryboard storyboardWithName:@"Main"
@@ -468,7 +498,7 @@
     //Create Detail View
     SpadeEventDetailViewController *eventDetailViewController = [mainStoryboard   instantiateViewControllerWithIdentifier:@"eventDetailController"];
     
-    eventDetailViewController.object = event;
+    eventDetailViewController.object = eventActivity;
     
     [self.navigationController pushViewController:eventDetailViewController animated:YES];
 
