@@ -9,6 +9,7 @@
 #import "SpadeCache.h"
 #import "SpadeConstants.h"
 #import "SpadeVenueFollowCell.h"
+#import "UIColor+FlatUI.h"
 
 @implementation SpadeVenueFollowCell
 
@@ -22,6 +23,20 @@
     return self;
 }
 
+-(void)awakeFromNib
+{
+    self.nameLabel.font = [UIFont fontWithName:@"Copperplate" size:16];
+    self.addressLabel.font  = [UIFont fontWithName:@"Copperplate-Light" size:12];
+    self.followButton.cornerRadius = 3;
+    self.followButton.titleLabel.font = [UIFont fontWithName:@"Copperplate-Bold" size:14];
+    self.followButton.buttonColor = [UIColor wisteriaColor];
+    self.followButton.shadowColor = [UIColor amethystColor];
+    self.followButton.shadowHeight = 3;
+    [self.followButton setTitleColor:[UIColor cloudsColor] forState:UIControlStateNormal];
+    [self.followButton setTitleColor:[UIColor amethystColor] forState:UIControlStateHighlighted];
+    
+
+}
 
 /*- (void)setFrame:(CGRect)frame {
     frame.origin.x += 20;

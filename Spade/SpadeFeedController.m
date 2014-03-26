@@ -66,7 +66,8 @@
     
     self.navigationController.navigationBar.translucent = NO;
     [self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"spade_6.png"] forBarMetrics:UIBarMetricsDefault];
-    self.navigationController.navigationBar.barTintColor = [UIColor wisteriaColor];
+    self.navigationController.navigationBar.barTintColor = [UIColor blendedColorWithForegroundColor:[UIColor blackColor] backgroundColor:[UIColor wisteriaColor] percentBlend:.6];
+    
     //self.navigationController.navigationBar.backgroundColor = [UIColor wisteriaColor];
 
    // [self.navigationController.navigationBar setTitleTextAttributes:@{NSForegroundColorAttributeName : [UIColor whiteColor]}];

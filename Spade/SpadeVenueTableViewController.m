@@ -46,11 +46,11 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
-    self.title =  @"Venues";
-    
-    
-    [self.navigationController.navigationBar setTitleTextAttributes:@{NSForegroundColorAttributeName : [UIColor whiteColor]}];
-
+    self.title = @"Venues";
+    NSDictionary *textAttributes = [NSDictionary dictionaryWithObjectsAndKeys:
+     [UIColor whiteColor],NSForegroundColorAttributeName,
+     [UIColor wisteriaColor],NSBackgroundColorAttributeName,[UIFont fontWithName:@"Copperplate" size:26],NSFontAttributeName, nil];
+     self.navigationController.navigationBar.titleTextAttributes = textAttributes;
     
     [self.navigationController.navigationBar configureFlatNavigationBarWithColor:[UIColor blendedColorWithForegroundColor:[UIColor blackColor] backgroundColor:[UIColor wisteriaColor] percentBlend:.6]];
     
@@ -117,15 +117,8 @@
         [cell.followButton setTitle:spadeFollowButtonTitleFollow forState:UIControlStateNormal];
         
     }
-    if ([object objectForKey:spadeVenuePicture]) {
-        [cell.venueImage setFile:[object objectForKey:spadeVenuePicture]];
-        [cell.venueImage   loadInBackground];
-    }else{
-        cell.venueImage.image = [UIImage imageNamed:@"spade.png"];
-    }
+
     cell.nameLabel.text = [object objectForKey:spadeVenueName];
-    
-    //cell.categoryLabel.text = [object objectForKey:spadeVenueCategory];
     cell.addressLabel.text  = [object objectForKey:spadeVenueAddress];
     
     return cell;
