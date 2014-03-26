@@ -8,6 +8,7 @@
 
 #import "SpadeFollowCell.h"
 #import "SpadeConstants.h"
+#import "UIColor+FlatUI.h"
 
 @interface SpadeFollowCell ()
 
@@ -31,8 +32,15 @@
 
 -(void)awakeFromNib
 {
-    //self.backgroundColor = [UIColor blackColor];
-
+    self.nameLabel.font = [UIFont fontWithName:@"Copperplate" size:16];
+    self.dateAndTimeLabel.font  = [UIFont fontWithName:@"Copperplate-Light" size:12];
+    self.followButton.cornerRadius = 3;
+    self.followButton.titleLabel.font = [UIFont fontWithName:@"Copperplate-Bold" size:14];
+    self.followButton.buttonColor = [UIColor wisteriaColor];
+    self.followButton.shadowColor = [UIColor amethystColor];
+    self.followButton.shadowHeight = 3;
+    [self.followButton setTitleColor:[UIColor cloudsColor] forState:UIControlStateNormal];
+    [self.followButton setTitleColor:[UIColor amethystColor] forState:UIControlStateHighlighted];
 }
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated
 {

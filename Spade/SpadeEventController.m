@@ -86,6 +86,7 @@
     
     self.navigationItem.leftBarButtonItem.tintColor = [UIColor cloudsColor];
     self.eventSegmentController.tintColor = [UIColor cloudsColor];
+    [self.eventSegmentController setTitleTextAttributes:@{NSFontAttributeName: [UIFont fontWithName:@"Copperplate" size:12]} forState:UIControlStateNormal];
 
 }
 
@@ -155,12 +156,8 @@
         
         PFObject *activityObject = [self.myEvents objectAtIndex:indexPath.row];
         cell.eventNameLabel.text = [[activityObject objectForKey:spadeActivityToEvent] objectForKey:spadeEventName];
-        if ([[activityObject objectForKey:spadeActivityToEvent]objectForKey:spadeEventImageFile]){
-            cell.eventImage.file =[[activityObject objectForKey:spadeActivityToEvent]objectForKey:spadeEventImageFile];
-            [cell.eventImage loadInBackground];
-        }else{
-            cell.eventImage.image = [UIImage imageNamed:@"spade.png"];
-        }
+        cell.dateAndTimeLabel.text = [NSString stringWithFormat:@"%@ @ %@",[[activityObject objectForKey:spadeActivityToEvent]objectForKey:spadeEventWhen],[[activityObject objectForKey:spadeActivityToEvent]objectForKey:spadeEventTime]];
+
         
         return cell;
         
@@ -175,14 +172,7 @@
         
         PFObject *activityLog = [self.followedEvents objectAtIndex:indexPath.row];
         cell.nameLabel.text =  [[activityLog objectForKey:spadeActivityToEvent]objectForKey:spadeEventName];
-        
-        if ([[activityLog objectForKey:spadeActivityToEvent]objectForKey:spadeEventImageFile]){
-            cell.profileImageView.file =[[activityLog objectForKey:spadeActivityToEvent]objectForKey:spadeEventImageFile];
-            [cell.profileImageView loadInBackground];
-        }else{
-            cell.profileImageView.image = [UIImage imageNamed:@"spade.png"];
-        }
-
+        cell.dateAndTimeLabel.text = [NSString stringWithFormat:@"%@ @ %@",[[activityLog objectForKey:spadeActivityToEvent]objectForKey:spadeEventWhen],[[activityLog objectForKey:spadeActivityToEvent]objectForKey:spadeEventTime]];
 
         return cell;
     }
@@ -229,6 +219,11 @@
     
     }
     
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return 64;
 }
 
 

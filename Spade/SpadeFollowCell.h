@@ -20,6 +20,7 @@
 @property (weak, nonatomic) IBOutlet PFImageView *profileImageView;
 @property (strong, nonatomic) PFObject *object;
 @property (strong, nonatomic) PFUser *userObject;
+@property (weak, nonatomic) IBOutlet UILabel *dateAndTimeLabel;
 
 
 

@@ -11,7 +11,8 @@
 
 @interface SpadeMyEventsCell : UITableViewCell
 
-@property (weak,nonatomic) IBOutlet PFImageView *eventImage;
 @property (weak, nonatomic) IBOutlet UILabel *eventNameLabel;
+@property (weak, nonatomic) IBOutlet UILabel *dateAndTimeLabel;
+@property (weak, nonatomic) IBOutlet UILabel *attendeeCountLabel;
 
 @end
