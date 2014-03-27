@@ -30,6 +30,11 @@
 @property (strong, nonatomic) UIRefreshControl *myEventsTableRefreshControl;
 @property (weak, nonatomic) IBOutlet UITableView *myFollowedEventsTableView;
 @property (strong, nonatomic) UIRefreshControl *myFollowedEventsTableRefreshControl;
+@property (strong, nonatomic) NSMutableArray *searchedObjects;
+@property (strong, nonatomic) IBOutlet UISearchDisplayController *searchFollowedEvents;
+@property (strong, nonatomic) IBOutlet UISearchDisplayController *searchMyEvents;
+
+
 
 @end
 
@@ -44,6 +49,10 @@
     return self;
 }
 
+-(void)awakeFromNib
+{
+    if (!_searchedObjects) _searchedObjects = [[NSMutableArray alloc]init];
+}
 
 - (void)viewDidLoad
 {
@@ -131,8 +140,11 @@
 #pragma mark MY EVENTS SEGMENT
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
+   
     if (tableView == self.manageEventsTableView) {
         return [self.myEvents count];
+    }else if (tableView == self.searchDisplayController.searchResultsTableView){
+       return  [self.searchedObjects count];
     }else{
         return [self.followedEvents count];
     }
@@ -143,12 +155,15 @@
 // Cell gets various attributes set automatically based on table (separators) and data source (accessory views, editing controls)
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+
+
 {
+    NSLog(@"Called");
     static NSString *myEventsCellIdentifier = @"myEventsCell";
     static NSString *followedEventsCellIdentifier = @"followedEventsCell";
-    if (tableView == self.manageEventsTableView) {
+    if ([tableView isEqual: self.manageEventsTableView]) {
         
-    
+        NSLog(@"Managed TV");
         SpadeMyEventsCell *cell = [tableView dequeueReusableCellWithIdentifier:myEventsCellIdentifier];
         if (cell == nil) {
             cell = [[SpadeMyEventsCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:myEventsCellIdentifier];
@@ -162,8 +177,42 @@
         return cell;
         
         
-    }else{
+    }else if ([tableView isEqual:self.searchMyEvents.searchResultsTableView]){
         
+        NSLog(@"SC - Managed TV");
+        
+        SpadeMyEventsCell *cell = [self.manageEventsTableView dequeueReusableCellWithIdentifier:myEventsCellIdentifier];
+        if (cell == nil) {
+            cell = [[SpadeMyEventsCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:myEventsCellIdentifier];
+        }
+        
+        PFObject *activityObject = [self.searchedObjects objectAtIndex:indexPath.row];
+        cell.eventNameLabel.text = [[activityObject objectForKey:spadeActivityToEvent] objectForKey:spadeEventName];
+        cell.dateAndTimeLabel.text = [NSString stringWithFormat:@"%@ @ %@",[[activityObject objectForKey:spadeActivityToEvent]objectForKey:spadeEventWhen],[[activityObject objectForKey:spadeActivityToEvent]objectForKey:spadeEventTime]];
+        
+        
+        return cell;
+    
+    
+    }else if([tableView isEqual: self.searchFollowedEvents.searchResultsTableView]){
+        
+        NSLog(@"SC _FOLLOW TV");
+        
+        SpadeFollowCell *cell = [self.myFollowedEventsTableView dequeueReusableCellWithIdentifier:followedEventsCellIdentifier];
+        if (cell == nil) {
+            cell = [[SpadeFollowCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:followedEventsCellIdentifier];
+        }
+        
+        PFObject *activityLog = [self.searchedObjects objectAtIndex:indexPath.row];
+        cell.nameLabel.text =  [[activityLog objectForKey:spadeActivityToEvent]objectForKey:spadeEventName];
+        cell.dateAndTimeLabel.text = [NSString stringWithFormat:@"%@ @ %@",[[activityLog objectForKey:spadeActivityToEvent]objectForKey:spadeEventWhen],[[activityLog objectForKey:spadeActivityToEvent]objectForKey:spadeEventTime]];
+        
+        return cell;
+
+        
+    
+    }else{
+        NSLog(@"Follow TV");
         
         SpadeFollowCell *cell = [tableView dequeueReusableCellWithIdentifier:followedEventsCellIdentifier];
         if (cell == nil) {
@@ -204,7 +253,24 @@
         //UINavigationController *tempNav = [[UINavigationController alloc]initWithRootViewController:eventDetail];
         [self.navigationController pushViewController:eventDetail animated:YES];
         
-    }else{ //followedEventsTableView
+    }else if (tableView == self.searchDisplayController.searchResultsTableView){
+        //Create Detail View
+        
+        UIStoryboard *mainStoryboard = [UIStoryboard storyboardWithName:@"Main"
+                                                                 bundle: nil];
+        SpadeEventDetailViewController *eventDetail = [mainStoryboard   instantiateViewControllerWithIdentifier:@"eventDetailController"];
+        
+        
+        eventDetail.object = [self.searchedObjects objectAtIndex:indexPath.row];
+        [tableView cellForRowAtIndexPath:indexPath].selected = NO;
+        
+        //UINavigationController *tempNav = [[UINavigationController alloc]initWithRootViewController:eventDetail];
+        [self.navigationController pushViewController:eventDetail animated:YES];
+        
+    
+    }
+    
+    else{ //followedEventsTableView
         
         UIStoryboard *mainStoryboard = [UIStoryboard storyboardWithName:@"Main"
                                                                  bundle: nil];
@@ -289,6 +355,57 @@
 {
     [refreshControl endRefreshing];
 }
+
+
+#pragma mark Search Protocol
+
+- (BOOL)searchDisplayController:(UISearchDisplayController *)controller shouldReloadTableForSearchString:  (NSString *)searchString {
+    [self filterResults:searchString];
+    return YES;
+}
+
+- (void)filterResults:(NSString *)searchTerm {
+    [self.searchedObjects removeAllObjects];
+    
+    PFQuery *matchingQuery = [PFQuery queryWithClassName:spadeClassEvent];
+    [matchingQuery whereKey:spadeEventName containsString:searchTerm];
+    
+    if (self.eventSegmentController.selectedSegmentIndex == MY_EVENTS_SEGMENT) {
+        PFQuery *query = [PFQuery queryWithClassName:spadeClassActivity];
+        [query whereKeyExists:spadeActivityToEvent];
+        [query includeKey:spadeActivityToEvent];
+        [query whereKey:spadeActivityToEvent  matchesQuery:matchingQuery];
+        [query whereKey:spadeActivityFromUser equalTo:[PFUser currentUser]];
+        [query whereKey:spadeActivityAction equalTo:spadeActivityActionCreatedEvent];
+        [query orderByDescending:@"createdAt"];
+        //[query whereKey:spadeEventName containsString:searchTerm];
+        [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error){
+            [self.searchedObjects addObjectsFromArray:objects];
+            [self.searchMyEvents.searchResultsTableView reloadData];
+            NSLog(@"%@",self.searchedObjects);
+        }];
+        
+    }else{// if (self.eventSegmentController.selectedSegmentIndex == FOLLOWING_EVENTS){
+        PFQuery *query = [PFQuery queryWithClassName:spadeClassActivity];
+        [query includeKey:spadeActivityToEvent];
+        [query whereKeyExists:spadeActivityToEvent];
+        [query whereKey:spadeActivityToEvent matchesQuery:matchingQuery];
+        [query whereKey:spadeActivityFromUser equalTo:[PFUser currentUser]];
+        [query whereKey:spadeActivityAction equalTo:spadeActivityActionAttendingEvent];
+        [query orderByDescending:@"createdAt"];
+        [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error){
+            [self.searchedObjects addObjectsFromArray:objects];
+            [self.searchFollowedEvents.searchResultsTableView reloadData];
+            NSLog(@"FOLLOWED and SEARCHED OBJECT IN ARRAY%@",self.searchedObjects);
+        }];
+    
+    }
+    
+}
+
+
+
+
 
 
 @end

@@ -65,7 +65,7 @@
     PFObject *event = [self.object objectForKey:spadeActivityToEvent];
     PFObject *venue = [self.object objectForKey:spadeActivityForVenue];
     
-    self.title = [event objectForKey:spadeEventName];
+    //self.title = [event objectForKey:spadeEventName];
     self.view.backgroundColor  = [UIColor cloudsColor];
     
     self.venueDetailButton.cornerRadius = 3;

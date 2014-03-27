@@ -18,7 +18,6 @@
 @property (strong, nonatomic) NSMutableArray *friendObjects;
 @property (strong, nonatomic) NSMutableArray *searchedObjects;
 @property (strong, nonatomic) PFQuery *friendQuery;
-@property (strong, nonatomic) PFQuery *searchQuery;
 
 @property (strong, nonatomic)NSMutableArray *usersFollowed;
 @end
