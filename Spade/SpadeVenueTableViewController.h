@@ -9,6 +9,6 @@
 #import "SpadeVenueFollowCell.h"
 #import <Parse/Parse.h>
 
-@interface SpadeVenueTableViewController : PFQueryTableViewController <SpadeFollowCellDelegate>
+@interface SpadeVenueTableViewController : UITableViewController <SpadeFollowCellDelegate>
 
 @end

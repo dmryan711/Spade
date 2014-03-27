@@ -16,6 +16,12 @@
 
 @interface SpadeVenueTableViewController ()
 
+@property(strong,nonatomic)NSMutableArray *searchedObjects;
+@property(strong,nonatomic)NSMutableArray *venueObjects;
+
+@property (strong, nonatomic) PFQuery *searchQuery;
+@property (strong, nonatomic) PFQuery *venueQuery;
+
 @end
 
 @implementation SpadeVenueTableViewController
@@ -25,21 +31,16 @@
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         // Custom initialization
+        
     }
     return self;
 }
 
 -(void)awakeFromNib
 {
-    
-    self.parseClassName = spadeClassVenue;
-    self.textKey = @"Name";
-    self.pullToRefreshEnabled = YES;
-    self.paginationEnabled = NO;
-    self.objectsPerPage = 3;
-   // self.tableView.backgroundColor = [UIColor blackColor];
-    
-    
+
+    if (!_venueObjects) _venueObjects = [[NSMutableArray alloc] init];
+    if (!_searchedObjects) _searchedObjects = [[NSMutableArray alloc] init];
 
 }
 - (void)viewDidLoad
@@ -54,6 +55,13 @@
     
     [self.navigationController.navigationBar configureFlatNavigationBarWithColor:[UIColor blendedColorWithForegroundColor:[UIColor blackColor] backgroundColor:[UIColor wisteriaColor] percentBlend:.6]];
     
+    [self.tableView setContentOffset:CGPointMake(0,44) animated:YES];
+    
+    self.venueQuery = [PFQuery queryWithClassName:spadeClassVenue];
+    self.venueQuery.cachePolicy = kPFCachePolicyCacheThenNetwork;
+    [self.venueQuery orderByDescending:spadeVenueSpendLevel];
+    
+    [self runQueryandLoadData];
 
 }
 
@@ -64,66 +72,56 @@
 }
 
 
-#pragma mark - Parse
-
-- (void)objectsDidLoad:(NSError *)error {
-    [super objectsDidLoad:error];
-    
-    // This method is called every time objects are loaded from Parse via the PFQuery
-}
-
-- (void)objectsWillLoad {
-    [super objectsWillLoad];
-    
-    // This method is called before a PFQuery is fired to get more objects
-}
-
-
-// Override to customize what kind of query to perform on the class. The default is to query for
-// all objects ordered by createdAt descending.
-- (PFQuery *)queryForTable {
-    PFQuery *query = [PFQuery queryWithClassName:self.parseClassName];
-    [query includeKey:@"objectId"];
-    
-    // If no objects are loaded in memory, we look to the cache first to fill the table
-    // and then subsequently do a query against the network.
-    if ([self.objects count] == 0) {
-        query.cachePolicy = kPFCachePolicyCacheThenNetwork;
-    }
-    
-    [query orderByAscending:spadeVenueSpendLevel];
-    
-    return query;
-}
-
-
-
 // Override to customize the look of a cell representing an object. The default is to display
 // a UITableViewCellStyleDefault style cell with the label being the first key in the object.
-- (SpadeVenueFollowCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath object:(PFObject *)object {
+- (SpadeVenueFollowCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     static NSString *CellIdentifier = @"VenueCell";
     
-    SpadeVenueFollowCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+    SpadeVenueFollowCell *cell = [self.tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell == nil) {
         cell = [[SpadeVenueFollowCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier];
     }
     cell.delegate = self;
-    cell.object = object;
+    PFObject *object;
     
-    // Configure the cell
-    if ([[[[[SpadeCache sharedCache]cache]objectForKey:spadeCache]objectForKey:spadeCacheVenues] containsObject:object]) {
-        [cell.followButton setTitle:spadeFollowButtonTitleUnfollow forState:UIControlStateNormal];
-    }else{
-        [cell.followButton setTitle:spadeFollowButtonTitleFollow forState:UIControlStateNormal];
+    if (tableView == self.searchDisplayController.searchResultsTableView){
+        object = [self.searchedObjects objectAtIndex:indexPath.row];
         
+    }else{
+        
+        object = [self.venueObjects objectAtIndex:indexPath.row];
     }
-
-    cell.nameLabel.text = [object objectForKey:spadeVenueName];
-    cell.addressLabel.text  = [object objectForKey:spadeVenueAddress];
+        cell.object = object;
+        
+        if ([[[[[SpadeCache sharedCache]cache]objectForKey:spadeCache]objectForKey:spadeCacheVenues] containsObject:object]) {
+            [cell.followButton setTitle:spadeFollowButtonTitleUnfollow forState:UIControlStateNormal];
+        }else{
+            [cell.followButton setTitle:spadeFollowButtonTitleFollow forState:UIControlStateNormal];
+            
+        }
+        
+        cell.nameLabel.text = [object objectForKey:spadeVenueName];
+        cell.addressLabel.text  = [object objectForKey:spadeVenueAddress];
+        
+         return cell;
     
-    return cell;
 }
 
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    if (tableView == self.searchDisplayController.searchResultsTableView) {
+        return [self.searchedObjects count];
+        
+    } else {
+        return [self.venueObjects count];
+    }
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return 64;
+}
 
 /*
  // Override if you need to change the ordering of objects in the table.
@@ -197,27 +195,49 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    [super tableView:tableView didSelectRowAtIndexPath:indexPath];
-    if (indexPath.row < [self.objects count]) {
-        
-        //Set Object
-        PFObject *venueSelection = [self.objects objectAtIndex:indexPath.row];
-        UIStoryboard *mainStoryboard = [UIStoryboard storyboardWithName:@"Main"
-                                                                 bundle: nil];
-        //Create Detail View
-        SpadeVenueDetailViewController *venueDetail = [mainStoryboard   instantiateViewControllerWithIdentifier:@"venueDetailController"];
-
-        [venueDetail setVenue:venueSelection]; //Hand Off Vnue Object
-        
-        //Check Cache to see if user is following the venue already
-        
-        if ([[[[[SpadeCache sharedCache]cache]objectForKey:spadeCache]objectForKey:spadeCacheVenues] containsObject:venueSelection]) {
-            venueDetail.isFollowing = YES;
+    
+    if (tableView == self.searchDisplayController.searchResultsTableView){
+        if (indexPath.row < [self.searchedObjects count]) {
+            PFObject *venueSelection = [self.searchedObjects objectAtIndex:indexPath.row];
+            UIStoryboard *mainStoryboard = [UIStoryboard storyboardWithName:@"Main"
+                                                                     bundle: nil];
+            //Create Detail View
+            SpadeVenueDetailViewController *venueDetail = [mainStoryboard   instantiateViewControllerWithIdentifier:@"venueDetailController"];
+            
+            [venueDetail setVenue:venueSelection]; //Hand Off Vnue Object
+            
+            //Check Cache to see if user is following the venue already
+            
+            if ([[[[[SpadeCache sharedCache]cache]objectForKey:spadeCache]objectForKey:spadeCacheVenues] containsObject:venueSelection]) {
+                venueDetail.isFollowing = YES;
+            }
+            
+            //FIRE
+            [self.navigationController pushViewController:venueDetail animated:YES];
+            
         }
-        
-       //FIRE
-        [self.navigationController pushViewController:venueDetail animated:YES];
+    }else{
+        if (indexPath.row < [self.venueObjects count]) {
+            PFObject *venueSelection = [self.venueObjects objectAtIndex:indexPath.row];
+            UIStoryboard *mainStoryboard = [UIStoryboard storyboardWithName:@"Main"
+                                                                     bundle: nil];
+            //Create Detail View
+            SpadeVenueDetailViewController *venueDetail = [mainStoryboard   instantiateViewControllerWithIdentifier:@"venueDetailController"];
+            
+            [venueDetail setVenue:venueSelection]; //Hand Off Vnue Object
+            
+            //Check Cache to see if user is following the venue already
+            
+            if ([[[[[SpadeCache sharedCache]cache]objectForKey:spadeCache]objectForKey:spadeCacheVenues] containsObject:venueSelection]) {
+                venueDetail.isFollowing = YES;
+            }
+            
+            //FIRE
+            [self.navigationController pushViewController:venueDetail animated:YES];
+        }
     }
+    
+
 }
 
 
@@ -245,10 +265,48 @@
         NSLog(@"Error %@",error);
         
     }
-    
-
 
 }
+
+#pragma mark Search Protocol
+
+- (BOOL)searchDisplayController:(UISearchDisplayController *)controller shouldReloadTableForSearchString:  (NSString *)searchString {
+    [self filterResults:searchString];
+    return YES;
+}
+
+#pragma mark { }
+
+-(void)runQueryandLoadData
+{
+    
+    [self.venueQuery findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error){
+        [self.venueObjects removeAllObjects];
+        [self.venueObjects addObjectsFromArray:objects];
+        [self.tableView reloadData];
+    
+    }];
+    
+}
+
+
+- (void)filterResults:(NSString *)searchTerm {
+    [self.searchedObjects removeAllObjects];
+    
+    PFQuery *query = [PFQuery queryWithClassName: spadeClassVenue];
+    [query includeKey:@"objectId"];
+    [query whereKey:spadeVenueName containsString:searchTerm];
+    [query orderByDescending:spadeVenueSpendLevel];
+    
+   [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error){
+       [self.searchedObjects addObjectsFromArray:objects];
+       //self.searchDisplayController.searchResultsTableView
+       [self.searchDisplayController.searchResultsTableView reloadData];
+    }];
+    
+}
+
+
 
 
 @end

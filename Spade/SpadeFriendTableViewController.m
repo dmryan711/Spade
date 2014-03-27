@@ -15,6 +15,10 @@
 
 @interface SpadeFriendTableViewController ()
 
+@property (strong, nonatomic) NSMutableArray *friendObjects;
+@property (strong, nonatomic) NSMutableArray *searchedObjects;
+@property (strong, nonatomic) PFQuery *friendQuery;
+@property (strong, nonatomic) PFQuery *searchQuery;
 
 @property (strong, nonatomic)NSMutableArray *usersFollowed;
 @end
@@ -33,24 +37,13 @@
 
 -(void)awakeFromNib
 {
-    self.parseClassName = spadeClassUser;
-    self.textKey = @"Name";
-    self.pullToRefreshEnabled = YES;
-    self.paginationEnabled = NO;
-    //self.objectsPerPage = 3;
-    
-    
-    
-    
-    
-    
+    if (!_friendObjects) _friendObjects = [[NSMutableArray alloc]init];
+    if (!_searchedObjects) _searchedObjects = [[NSMutableArray alloc]init];
 }
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	// Do any additional setup after loading the view.
-    self.title =  @"Friends";
-    
+	// Do any additional setup after loading the view.    
     
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]initWithTitle:@"Done" style:UIBarButtonItemStyleBordered target:self action:@selector(doneSelected)];
     
@@ -59,6 +52,18 @@
         [self createAndDisplayFollowerAlert];
     
     }
+    
+    //Create Query
+    self.friendQuery = [PFQuery queryWithClassName:spadeClassUser];
+    [self.friendQuery whereKey:spadeUserFacebookId containedIn:[[PFUser currentUser]objectForKey:spadeUserFriends]]; //Facebook ID is in friends array
+    [self.friendQuery whereKey:spadeUserFacebookId notEqualTo:[[PFUser currentUser]objectForKey:spadeUserFacebookId]]; //Facebook ID is not user
+    self.friendQuery.cachePolicy = kPFCachePolicyCacheThenNetwork;
+    [self.friendQuery orderByAscending:spadeUserDisplayName];
+    
+    //Hide Search Bar
+    [self.tableView setContentOffset:CGPointMake(0,44) animated:YES];
+    
+    [self runQueryAndLoadData];
     
 }
 
@@ -69,77 +74,46 @@
 }
 
 
-#pragma mark - Parse
-
-- (void)objectsDidLoad:(NSError *)error {
-    [super objectsDidLoad:error];
-    
-    // This method is called every time objects are loaded from Parse via the PFQuery
-    
-}
-
-- (void)objectsWillLoad {
-    [super objectsWillLoad];
-    
-    // This method is called before a PFQuery is fired to get more objects
-}
-
-
-// Override to customize what kind of query to perform on the class. The default is to query for
-// all objects ordered by createdAt descending.
-- (PFQuery *)queryForTable {
-    PFQuery *query = [PFQuery queryWithClassName:self.parseClassName];
-    [query whereKey:spadeUserFacebookId containedIn:[[PFUser currentUser]objectForKey:spadeUserFriends]]; //Facebook ID is in friends array
-    [query whereKey:spadeUserFacebookId notEqualTo:[[PFUser currentUser]objectForKey:spadeUserFacebookId]]; //Facebook ID is not user
-    
-
-    // If no objects are loaded in memory, we look to the cache first to fill the table
-    // and then subsequently do a query against the network.
-    //if ([self.objects count] == 0) {
-        query.cachePolicy = kPFCachePolicyCacheThenNetwork;
-    //}
-    
-    [query orderByAscending:spadeUserDisplayName];
-
-    
-    return query;
-}
-
-
 
 // Override to customize the look of a cell representing an object. The default is to display
 // a UITableViewCellStyleDefault style cell with the label being the first key in the object.
-- (SpadeFollowCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath object:(PFObject *)object {
+- (SpadeFollowCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     static NSString *CellIdentifier = @"FriendCell";
     
-   SpadeFollowCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+   SpadeFollowCell *cell = [self.tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell == nil) {
         cell = [[SpadeFollowCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier];
     }
-    
+    PFObject *object;
     cell.delegate = self;
-   // cell.userObject = (PFUser *)object;
-    cell.object = object;
     
-    
-    
-    if ([[[[[SpadeCache sharedCache]cache]objectForKey:spadeCache]objectForKey:spadeCacheUser] containsObject:(PFUser *)object]) {
-        [cell.followButton setTitle:spadeFollowButtonTitleUnfollow forState:UIControlStateNormal];
+    if (tableView == self.searchDisplayController.searchResultsTableView) {
+        object = [self.searchedObjects objectAtIndex:indexPath.row];
+
     }else{
-        [cell.followButton setTitle:spadeFollowButtonTitleFollow forState:UIControlStateNormal];
+        object = [self.friendObjects objectAtIndex:indexPath.row];
+        
     }
-    // Configure the cell
-    cell.nameLabel.text = [object objectForKey:spadeUserDisplayName];
+        cell.object = object;
     
-    if ([object objectForKey:spadeUserSmallProfilePic]) {
-        [cell.profileImageView setFile:[object objectForKey:spadeUserSmallProfilePic]];
-        [cell.profileImageView loadInBackground];
-    }else{
-        cell.profileImageView.image = [UIImage imageNamed:@"spade.png"];
-    }
-    
-    
-    return cell;
+        if ([[[[[SpadeCache sharedCache]cache]objectForKey:spadeCache]objectForKey:spadeCacheUser] containsObject:(PFUser *)object]) {
+            [cell.followButton setTitle:spadeFollowButtonTitleUnfollow forState:UIControlStateNormal];
+        }else{
+            [cell.followButton setTitle:spadeFollowButtonTitleFollow forState:UIControlStateNormal];
+        }
+        // Configure the cell
+        cell.nameLabel.text = [object objectForKey:spadeUserDisplayName];
+        
+        if ([object objectForKey:spadeUserSmallProfilePic]) {
+            [cell.profileImageView setFile:[object objectForKey:spadeUserSmallProfilePic]];
+            [cell.profileImageView loadInBackground];
+        }else{
+            cell.profileImageView.image = [UIImage imageNamed:@"spade.png"];
+        }
+        
+        
+        return cell;
+
 }
 
 
@@ -170,6 +144,21 @@
  */
 
 #pragma mark - Table view data source
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    if (tableView == self.searchDisplayController.searchResultsTableView) {
+        return [self.searchedObjects count];
+        
+    } else {
+        return [self.friendObjects count];
+    }
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return 64;
+}
 
 /*
  // Override to support conditional editing of the table view.
@@ -240,6 +229,21 @@
     }
 }*/
 
+
+#pragma mark { }
+-(void)runQueryAndLoadData
+{
+    [self.friendQuery findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error){
+        if (!error) {
+            [self.friendObjects removeAllObjects];
+            [self.friendObjects addObjectsFromArray:objects];
+            
+            [self.tableView reloadData];
+        }
+    }];
+
+
+}
 
 #pragma mark Navigation Button Methods
 
@@ -358,8 +362,26 @@
 
 }
 
+#pragma mark Search Protocol
 
+- (BOOL)searchDisplayController:(UISearchDisplayController *)controller shouldReloadTableForSearchString:  (NSString *)searchString {
+    [self filterResults:searchString];
+    return YES;
+}
 
-
+- (void)filterResults:(NSString *)searchTerm {
+    [self.searchedObjects removeAllObjects];
+    
+    PFQuery *query = [PFQuery queryWithClassName: spadeClassUser];
+    [query includeKey:@"objectId"];
+    [query whereKey:spadeUserDisplayName containsString:searchTerm];
+    [query orderByDescending:spadeUserDisplayName];
+    
+    [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error){
+        [self.searchedObjects addObjectsFromArray:objects];
+        [self.searchDisplayController.searchResultsTableView reloadData];
+    }];
+    
+}
 
 @end
