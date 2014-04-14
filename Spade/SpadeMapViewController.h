@@ -10,9 +10,26 @@
 #import <MapKit/MapKit.h>
 #import  <CoreLocation/CoreLocation.h>
 
+@protocol SpadeMapViewControllerDelegate <NSObject>
+
+@optional
+- (void)movePanelUp;
+- (void)movePanelRight;
+
+@required
+- (void)movePanelToOriginalPosition;
+
+
+@end
+
 @interface SpadeMapViewController : UIViewController <MKMapViewDelegate, CLLocationManagerDelegate>
 @property (weak, nonatomic) IBOutlet MKMapView *mapview;
 @property (strong, nonatomic) NSString *address;
 @property (strong, nonatomic) CLLocationManager *locationManager;
+@property (strong, nonatomic) UIButton *leftButton;
+@property (strong,nonatomic) UIButton *bottomButton;
+
+@property (nonatomic, assign) id<SpadeMapViewControllerDelegate> delegate;
+
 
 @end

@@ -7,6 +7,7 @@
 //
 
 #import "SpadeMapViewController.h"
+#import "UIColor+FlatUI.h"
 
 //#define GOOGLE_API_KEY @"AIzaSyAttvyb7k5KKfUpD-TYZlGutUQNMWBovUY"
 
@@ -17,6 +18,7 @@
 @property (weak, nonatomic) MKPolyline *routeOverlay;
 @property (strong, nonatomic) MKRoute *currentRoute;
 
+
 @end
 
 @implementation SpadeMapViewController
@@ -26,8 +28,16 @@
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         // Custom initialization
+       _address = [[NSString alloc]init];
     }
     return self;
+}
+
+
+-(void)awakeFromNib
+{
+    if (!_address) _address = [[NSString alloc]init];
+
 }
 
 - (void)viewDidLoad
@@ -37,19 +47,35 @@
     
     //self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]initWithTitle:@"Directions" style:UIBarButtonItemStyleBordered target:self action:@selector(getDirectionsPressed)];
     
+    
+    
     self.mapview.delegate  = self;
     self.locationManager.delegate  = self;
     
     [self.mapview setShowsUserLocation:YES];
     [self.mapview setShowsBuildings:YES];
     
-   // [self processDestination];
-    
     self.locationManager = [[CLLocationManager alloc]init];
     
     [self.locationManager setDistanceFilter:kCLDistanceFilterNone];
     [self.locationManager setDesiredAccuracy:kCLLocationAccuracyBest];
     [self processDestination];
+    
+    
+    UIButton *leftBtn = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    leftBtn.frame = CGRectMake(-10, 380, 30, 50);
+    [leftBtn setTitle:@"☰" forState:UIControlStateNormal];
+    leftBtn.backgroundColor = [UIColor blackColor];
+    leftBtn.titleLabel.textColor = [UIColor amethystColor];
+    leftBtn.alpha = .6;
+    leftBtn.tag = 1;
+    [leftBtn.layer setCornerRadius:0.0f];
+    [leftBtn.layer setShadowOffset:CGSizeMake(2, 2)];
+    [leftBtn.layer setShadowColor:[UIColor whiteColor].CGColor];
+    [leftBtn.layer setShadowOpacity:0.8];
+    [leftBtn addTarget:self action:@selector(getDirectionsPressed) forControlEvents:UIControlEventTouchUpInside];
+    self.leftButton = leftBtn;
+    [self.view addSubview:self.leftButton];
 }
 
 - (void)didReceiveMemoryWarning
@@ -77,9 +103,9 @@
     return  renderer;
 }
 
-/*-(void)getDirectionsPressed{
-    self.navigationItem.rightBarButtonItem.enabled = NO;
+-(void)getDirectionsPressed{
     
+    NSLog(@"Directions Fired");
     MKMapItem *destination = [[MKMapItem alloc]initWithPlacemark:self.destinationPlaceMark];
     MKDirectionsRequest *directionsRequest = [[MKDirectionsRequest alloc]init];
     [directionsRequest setRequestsAlternateRoutes:YES];
@@ -87,6 +113,7 @@
     MKMapItem *source = [MKMapItem mapItemForCurrentLocation];
     [directionsRequest setSource:source];
     [directionsRequest setDestination:destination];
+    //directionsRequest.
     
     MKDirections *directions = [[MKDirections alloc]initWithRequest:directionsRequest];
     
@@ -97,15 +124,26 @@
             NSLog(@"Directions Error");
            // return;
         }else{
+            NSLog(@"Response From Apple API:%@",response);
+            NSLog(@"Route From Apple API:%@",response.description);
             _currentRoute = [response.routes firstObject];
+            NSLog(@"%@",_currentRoute.description);
             [self plotRoute:_currentRoute];
             [self includeAllPoints];
+            
+            for (MKRouteStep *step in _currentRoute.steps)
+            {
+                NSLog(@"%@: %f", step.instructions, step.distance);
+                
+            }
+            
+            
         }
     
     }];
     
   
-}*/
+}
 
 #pragma mark Location Manager Delegate
 -(void)locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray *)locations
@@ -120,7 +158,7 @@
 #pragma mark { }
 
 -(void)processDestination{
-    
+    NSLog(@"Adress in Mapis %@",self.address);
     CLGeocoder *geocoder = [[CLGeocoder alloc] init];
     [geocoder geocodeAddressString:self.address
                  completionHandler:^(NSArray* placemarks, NSError* error){
@@ -133,6 +171,8 @@
      ];
 
 }
+
+
 
 -(void)plotRoute:(MKRoute *)route
 {
@@ -179,6 +219,42 @@
     [self.mapview setRegion:scaledRegion animated:YES];
     
     
+}
+
+- (void)movePanelRight:(UIButton *)sender {
+    UIButton *button = sender;
+    switch (button.tag) {
+        case 0: {
+            [_delegate movePanelToOriginalPosition];
+            break;
+        }
+            
+        case 1: {
+            [_delegate movePanelRight];
+            break;
+        }
+            
+        default:
+            break;
+    }
+}
+
+- (void)movePanelUp:(UIButton *)sender {
+    UIButton *button = sender;
+    switch (button.tag) {
+        case 0: {
+            [_delegate movePanelToOriginalPosition];
+            break;
+        }
+            
+        case 1: {
+            [_delegate movePanelUp];
+            break;
+        }
+            
+        default:
+            break;
+    }
 }
 
 @end

@@ -11,7 +11,9 @@
 #import "SpadeUtility.h"
 #import "SpadeConstants.h"
 #import "SpadeCache.h"
+#import "UIColor+FlatUI.h"
 #import "SpadeFeedController.h"
+#import "UINavigationBar+FlatUI.h"
 
 @interface SpadeFriendTableViewController ()
 
@@ -42,13 +44,22 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	// Do any additional setup after loading the view.    
+	// Do any additional setup after loading the view.
+    NSDictionary *textAttributes = [NSDictionary dictionaryWithObjectsAndKeys:
+                                    [UIColor whiteColor],NSForegroundColorAttributeName,
+                                    [UIColor wisteriaColor],NSBackgroundColorAttributeName,[UIFont fontWithName:@"Copperplate" size:26],NSFontAttributeName, nil];
+    self.navigationController.navigationBar.titleTextAttributes = textAttributes;
+    
+    [self.navigationController.navigationBar configureFlatNavigationBarWithColor:[UIColor blendedColorWithForegroundColor:[UIColor blackColor] backgroundColor:[UIColor wisteriaColor] percentBlend:.6]];
     
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]initWithTitle:@"Done" style:UIBarButtonItemStyleBordered target:self action:@selector(doneSelected)];
     
+    self.navigationItem.rightBarButtonItem.tintColor = [UIColor cloudsColor];
+    [self.navigationItem.rightBarButtonItem setTitleTextAttributes:@{NSFontAttributeName: [UIFont fontWithName:@"Copperplate-Bold" size:14]} forState:UIControlStateNormal];
+    
     
     if ([[[[[SpadeCache sharedCache]cache]objectForKey:spadeCache]objectForKey:spadeCacheUser]count] < MIN_FOLLOWER) {
-        [self createAndDisplayFollowerAlert];
+       // [self createAndDisplayFollowerAlert];
     
     }
     
@@ -61,6 +72,9 @@
     
     //Hide Search Bar
     [self.tableView setContentOffset:CGPointMake(0,44) animated:YES];
+    
+    self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
+    self.tableView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"dark_exa.png"]];
     
     [self runQueryAndLoadData];
     
@@ -251,7 +265,7 @@
     
     if ([[[[[SpadeCache  sharedCache]cache]objectForKey:spadeCache]objectForKey:spadeCacheUser]count]  >= MIN_FOLLOWER) {
         //Unset Login Flag
-        if ([[NSUserDefaults standardUserDefaults]boolForKey:spadeFirstLoginFlag]) {
+        if ([[NSUserDefaults standardUserDefaults]boolForKey:isFirstLogin]) {
             //[[NSUserDefaults standardUserDefaults]setBool:NO forKey:spadeFirstLoginFlag];
         }
         

@@ -14,6 +14,8 @@
 #import "SpadeNameCell.h"
 #import "SpadeConstants.h"
 #import <MobileCoreServices/MobileCoreServices.h>
+#import "FUIAlertView.h"
+#import "UIColor+FlatUI.h"
 @interface SpadeEventCreationViewController ()
 
 @property int numberOFVenueRows;
@@ -53,6 +55,8 @@
 {
     [super viewDidLoad];
     
+    self.navigationController.navigationBar.barTintColor = [UIColor blendedColorWithForegroundColor:[UIColor blackColor] backgroundColor:[UIColor wisteriaColor] percentBlend:.6];
+    
     self.numberOFVenueRows = 1;
     self.numberOfPhotoRows = 1;
     self.numberOfDateRows  = 1;
@@ -69,9 +73,12 @@
 
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc]initWithTitle:@"Cancel" style:UIBarButtonItemStyleDone target:self action:@selector(dismissView)];
     
+     [self.navigationItem.leftBarButtonItem setTitleTextAttributes:@{NSFontAttributeName: [UIFont fontWithName:@"Copperplate-Bold" size:14]} forState:UIControlStateNormal];
+    
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]initWithTitle:@"Save" style:UIBarButtonItemStyleBordered target:self action:@selector(savePressed)];
     
-
+     [self.navigationItem.rightBarButtonItem setTitleTextAttributes:@{NSFontAttributeName: [UIFont fontWithName:@"Copperplate-Bold" size:14]} forState:UIControlStateNormal];
+    
     
     
     // Uncomment the following line to preserve selection between presentations.
@@ -129,6 +136,7 @@
 
     if (indexPath.section == NAME_SECTION ) {
         self.nameCell = [tableView dequeueReusableCellWithIdentifier:NameCellIdentifier forIndexPath:indexPath];
+        
         return self.nameCell;
     
     }else if (indexPath.section == VENUE_SECTION){
@@ -150,6 +158,8 @@
         self.venueCell.label.text = @"Venue:";
         if (self.venuePickerSelection) {
             self.venueCell.value.text = [self.venuePickerSelection objectForKey:spadeVenueName];
+        }else{
+            self.venueCell.value.text = @"Enter Venue";
         }
         return self.venueCell;
         
@@ -161,14 +171,16 @@
             SpadeEventCell *cell = [[SpadeEventCell alloc]initWithFrame:CGRectMake(0, 0, 320, 100)];
             [cell addSubview:self.datePicker];
             return cell;
-            
         }
+        
         self.dateCell = [tableView dequeueReusableCellWithIdentifier:LabelCellIdentifier forIndexPath:indexPath];
         self.dateCell.label.text = @"Date:";
+        self.dateCell.value.text = @"Enter Date";
         return self.dateCell;
         
     }else if (indexPath.section == TIME_SETION){
         if (indexPath.row > 0) {
+            
             self.timePicker = [[UIDatePicker alloc]initWithFrame:CGRectMake(0,0,320,100)];
             self.timePicker.minimumDate = [NSDate date];
             self.timePicker.datePickerMode = UIDatePickerModeTime;
@@ -179,6 +191,7 @@
 
         self.timeCell = [tableView dequeueReusableCellWithIdentifier:LabelCellIdentifier forIndexPath:indexPath];
         self.timeCell.label.text = @"Time:";
+        self.timeCell.value.text = @"Enter Time";
         return self.timeCell;
     
     
@@ -191,7 +204,7 @@
     
 }
 
-- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
+/*- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
     if (section == NAME_SECTION) {
         return @"Enter a Name";
@@ -205,7 +218,7 @@
     }else{ //if (section == PHOTO_SECTION){
         return @"Upload a Photo (Optional)";
     }
-}
+}*/
 
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     
@@ -219,6 +232,20 @@
         
     }
 }
+
+/*-(UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
+ {
+     UIView *tempView=[[UIView alloc]initWithFrame:CGRectMake(0,0,300,50)];
+     tempView.backgroundColor=[UIColor asbestosColor];
+     UILabel *tempLabel=[[UILabel alloc]initWithFrame:CGRectMake(0,-10,300,44)];
+     tempLabel.backgroundColor=[UIColor clearColor];
+     tempLabel.font = [UIFont fontWithName:@"Lato-Bold" size:16];
+     tempLabel.textColor = [UIColor cloudsColor];
+     tempLabel.text=@"                                          Attendees";
+     [tempView addSubview: tempLabel];
+     return tempView;
+ 
+ }*/
 
 #pragma mark Spade Photo Delegate
 -(void)uploadPhotoButtonPressed
@@ -286,7 +313,21 @@
         
         //Dismiss Image Picker & Show ALert
         [self dismissViewControllerAnimated:YES completion:^(void) {
-            UIAlertView *didNotSelectImage = [[UIAlertView alloc]initWithTitle:@"Pictures Only!" message:@"The image you have selected is not a picture" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil];
+            FUIAlertView *didNotSelectImage = [[FUIAlertView alloc]initWithTitle:@"Pictures Only!" message:@"The image you have selected is not a picture" delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil];
+            
+            didNotSelectImage.defaultButtonColor = [UIColor amethystColor];
+            didNotSelectImage.defaultButtonShadowColor = [UIColor wisteriaColor];
+            didNotSelectImage.defaultButtonShadowHeight = 6.0f;
+            didNotSelectImage.defaultButtonCornerRadius = 6.0f;
+            didNotSelectImage.defaultButtonTitleColor = [UIColor cloudsColor];
+            didNotSelectImage.alertContainer.backgroundColor = [UIColor clearColor];
+            didNotSelectImage.backgroundOverlay.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:0.9];
+            didNotSelectImage.defaultButtonFont = [UIFont fontWithName:@"Copperplate" size:20];
+            didNotSelectImage.messageLabel.font = [UIFont fontWithName:@"Copperplate-Bold" size:15];
+            didNotSelectImage.titleLabel.font = [UIFont fontWithName:@"Copperplate-Bold" size:20];
+            didNotSelectImage.messageLabel.textColor = [UIColor cloudsColor];
+            didNotSelectImage.titleLabel.textColor = [UIColor cloudsColor];
+
             [didNotSelectImage show];
             
         }];
@@ -484,14 +525,29 @@
 
 -(void)createAndDisplayMediaSourceAlert
 {
-    UIAlertView *mediaTypeNotAvailable = [[UIAlertView alloc]initWithTitle:@"Sorry" message:@"The Media Type you have selected is not available!" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil];
+    FUIAlertView *mediaTypeNotAvailable = [[FUIAlertView alloc]initWithTitle:@"Sorry" message:@"The Media Type you have selected is not available!" delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil];
+    
+    
+    mediaTypeNotAvailable.defaultButtonColor = [UIColor amethystColor];
+    mediaTypeNotAvailable.defaultButtonShadowColor = [UIColor wisteriaColor];
+    mediaTypeNotAvailable.defaultButtonShadowHeight = 6.0f;
+    mediaTypeNotAvailable.defaultButtonCornerRadius = 6.0f;
+    mediaTypeNotAvailable.defaultButtonTitleColor = [UIColor cloudsColor];
+    mediaTypeNotAvailable.alertContainer.backgroundColor = [UIColor clearColor];
+    mediaTypeNotAvailable.backgroundOverlay.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:0.9];
+    mediaTypeNotAvailable.defaultButtonFont = [UIFont fontWithName:@"Copperplate" size:20];
+    mediaTypeNotAvailable.messageLabel.font = [UIFont fontWithName:@"Copperplate-Bold" size:15];
+    mediaTypeNotAvailable.titleLabel.font = [UIFont fontWithName:@"Copperplate-Bold" size:20];
+    mediaTypeNotAvailable.messageLabel.textColor = [UIColor cloudsColor];
+    mediaTypeNotAvailable.titleLabel.textColor = [UIColor cloudsColor];
+    
     [mediaTypeNotAvailable show];
     
 }
 
 -(void)dismissView
 {
-    [self.navigationController dismissViewControllerAnimated:self completion:nil];
+    [self.navigationController dismissViewControllerAnimated:YES completion:nil];
 }
 
 -(void)savePressed
@@ -510,7 +566,23 @@
 
 -(void)createNotEnoughInformationAlert
 {
-    UIAlertView *notEnoughInformationAlert = [[UIAlertView alloc]initWithTitle:@"Not Enough Information" message:@"Your Event needs:\n a NAME\n a WHERE\n and a WHEN\n The image is optional, but first appearences are everything.\n Let that sink in..." delegate:nil cancelButtonTitle:@"Roger That" otherButtonTitles: nil];
+    FUIAlertView *notEnoughInformationAlert = [[FUIAlertView alloc]initWithTitle:@"Not Enough Information" message:@"Your Event needs:\n a NAME\n a WHERE\n and a WHEN\n The image is optional, but first appearences are everything.\n Let that sink in..." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
+    
+    
+    notEnoughInformationAlert.defaultButtonColor = [UIColor amethystColor];
+    notEnoughInformationAlert.defaultButtonShadowColor = [UIColor wisteriaColor];
+    notEnoughInformationAlert.defaultButtonShadowHeight = 6.0f;
+    notEnoughInformationAlert.defaultButtonCornerRadius = 6.0f;
+    notEnoughInformationAlert.defaultButtonTitleColor = [UIColor cloudsColor];
+    notEnoughInformationAlert.alertContainer.backgroundColor = [UIColor clearColor];
+    notEnoughInformationAlert.backgroundOverlay.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:0.9];
+    notEnoughInformationAlert.defaultButtonFont = [UIFont fontWithName:@"Copperplate" size:20];
+    notEnoughInformationAlert.messageLabel.font = [UIFont fontWithName:@"Copperplate-Bold" size:15];
+    notEnoughInformationAlert.titleLabel.font = [UIFont fontWithName:@"Copperplate-Bold" size:20];
+    notEnoughInformationAlert.messageLabel.textColor = [UIColor cloudsColor];
+    notEnoughInformationAlert.titleLabel.textColor = [UIColor cloudsColor];
+
+    
     [notEnoughInformationAlert show];
 }
 

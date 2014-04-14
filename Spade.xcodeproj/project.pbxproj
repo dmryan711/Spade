@@ -8,6 +8,15 @@
 
 /* Begin PBXBuildFile section */
 		9112354218569F170092253B /* SpadeEventController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9112354118569F170092253B /* SpadeEventController.m */; };
+		91175E0B18E5288A002BA37A /* Center-Tab@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 91175E0918E5288A002BA37A /* Center-Tab@2x.png */; };
+		91175E0C18E5288A002BA37A /* Center-Tab.png in Resources */ = {isa = PBXBuildFile; fileRef = 91175E0A18E5288A002BA37A /* Center-Tab.png */; };
+		91175E0F18E52C96002BA37A /* tabBarBackGround.png in Resources */ = {isa = PBXBuildFile; fileRef = 91175E0D18E52C96002BA37A /* tabBarBackGround.png */; };
+		91175E1018E52C96002BA37A /* tabBarBackGround@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 91175E0E18E52C96002BA37A /* tabBarBackGround@2x.png */; };
+		91175E1718E531DA002BA37A /* tabBarBackGround_V2.png in Resources */ = {isa = PBXBuildFile; fileRef = 91175E1518E531DA002BA37A /* tabBarBackGround_V2.png */; };
+		91175E1818E531DA002BA37A /* tabBarBackGround_V2@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 91175E1618E531DA002BA37A /* tabBarBackGround_V2@2x.png */; };
+		91175E1B18E533E8002BA37A /* tabBarSelected.png in Resources */ = {isa = PBXBuildFile; fileRef = 91175E1918E533E8002BA37A /* tabBarSelected.png */; };
+		91175E1C18E533E8002BA37A /* tabBarSelected@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 91175E1A18E533E8002BA37A /* tabBarSelected@2x.png */; };
+		91175E1F18E537E1002BA37A /* SpadeMapSlideViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 91175E1E18E537E1002BA37A /* SpadeMapSlideViewController.m */; };
 		911B8F6718820BC900BCED88 /* SpadeNameCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 911B8F6618820BC900BCED88 /* SpadeNameCell.m */; };
 		9120610B184A62E700E3DA0C /* SpadeUtility.m in Sources */ = {isa = PBXBuildFile; fileRef = 9120610A184A62E700E3DA0C /* SpadeUtility.m */; };
 		91221336185C407300BA29E8 /* SpadeVenueTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 91221335185C407300BA29E8 /* SpadeVenueTableViewController.m */; };
@@ -55,10 +64,13 @@
 		9141E88618407A5000A5DE15 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9141E86818407A5000A5DE15 /* UIKit.framework */; };
 		9141E88E18407A5000A5DE15 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 9141E88C18407A5000A5DE15 /* InfoPlist.strings */; };
 		9141E89018407A5000A5DE15 /* SpadeTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 9141E88F18407A5000A5DE15 /* SpadeTests.m */; };
+		9158421218E86932009F1BE8 /* iCarousel.m in Sources */ = {isa = PBXBuildFile; fileRef = 9158421118E86932009F1BE8 /* iCarousel.m */; };
 		915BEDAE1857DB5A00FCA17A /* UIImage+ResizeAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 915BEDA91857DB5A00FCA17A /* UIImage+ResizeAdditions.m */; };
 		915BEDAF1857DB5A00FCA17A /* UIImage+AlphaAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 915BEDAB1857DB5A00FCA17A /* UIImage+AlphaAdditions.m */; };
 		915BEDB01857DB5A00FCA17A /* UIImage+RoundedCornerAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 915BEDAD1857DB5A00FCA17A /* UIImage+RoundedCornerAdditions.m */; };
 		91632CF01857CFE000FB276E /* SpadeProfileController.m in Sources */ = {isa = PBXBuildFile; fileRef = 91632CEF1857CFE000FB276E /* SpadeProfileController.m */; };
+		917CE60618FB7EAB0076D5A1 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 917CE60518FB7EAB0076D5A1 /* MessageUI.framework */; };
+		917FA75418E3C7BA009EDEF2 /* SpadeMainSlideViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 917FA75318E3C7BA009EDEF2 /* SpadeMainSlideViewController.m */; };
 		9188E52F184EE7FD00C72151 /* SpadeFeedController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9188E52E184EE7FD00C72151 /* SpadeFeedController.m */; };
 		9196A8CF1868D60700513082 /* default_venue_Image.jpeg in Resources */ = {isa = PBXBuildFile; fileRef = 9196A8CE1868D60700513082 /* default_venue_Image.jpeg */; };
 		9196A8D11868D61300513082 /* skyline_7@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9196A8D01868D61300513082 /* skyline_7@2x.png */; };
@@ -93,6 +105,7 @@
 		91AB44C718E1C2B500B78719 /* spade_3.png in Resources */ = {isa = PBXBuildFile; fileRef = 91AB44C518E1C2B500B78719 /* spade_3.png */; };
 		91AB44CA18E1C3F800B78719 /* spade_4@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 91AB44C818E1C3F800B78719 /* spade_4@2x.png */; };
 		91AB44CB18E1C3F800B78719 /* spade_4.png in Resources */ = {isa = PBXBuildFile; fileRef = 91AB44C918E1C3F800B78719 /* spade_4.png */; };
+		91B271E618E4C51F00B7C839 /* party_night-wide_3@2x.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 91B271E518E4C51F00B7C839 /* party_night-wide_3@2x.jpg */; };
 		91D2220C188DAA7100750688 /* SpadeMyEventsCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 91D2220B188DAA7100750688 /* SpadeMyEventsCell.m */; };
 		91D2220E188DB75F00750688 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 91D2220D188DB75F00750688 /* MapKit.framework */; };
 		91D22211188DB95200750688 /* SpadeMapViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 91D22210188DB95200750688 /* SpadeMapViewController.m */; };
@@ -108,6 +121,11 @@
 		91D9D6471842F783005BD0BC /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 91D9D6461842F783005BD0BC /* SystemConfiguration.framework */; };
 		91D9D64A1843021D005BD0BC /* SpadeLoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 91D9D6491843021D005BD0BC /* SpadeLoginViewController.m */; };
 		91D9D65518432156005BD0BC /* FacebookSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 91D9D65418432156005BD0BC /* FacebookSDK.framework */; };
+		91E5006E18F8C77F004BD33D /* dark_exa_@2X.png in Resources */ = {isa = PBXBuildFile; fileRef = 91E5006C18F8C77F004BD33D /* dark_exa_@2X.png */; };
+		91E5006F18F8C77F004BD33D /* dark_exa.png in Resources */ = {isa = PBXBuildFile; fileRef = 91E5006D18F8C77F004BD33D /* dark_exa.png */; };
+		91E5007218F8CA1E004BD33D /* SpadeInviteCodeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 91E5007118F8CA1E004BD33D /* SpadeInviteCodeViewController.m */; };
+		91E5007518F8CBFD004BD33D /* argyle_@2X.png in Resources */ = {isa = PBXBuildFile; fileRef = 91E5007318F8CBFD004BD33D /* argyle_@2X.png */; };
+		91E5007618F8CBFD004BD33D /* argyle.png in Resources */ = {isa = PBXBuildFile; fileRef = 91E5007418F8CBFD004BD33D /* argyle.png */; };
 		91E962B418862743007D1BDE /* SpadePhotoCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 91E962B318862743007D1BDE /* SpadePhotoCell.m */; };
 		91F74AA8187CF72600F322BC /* SpadeChatViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 91F74AA7187CF72600F322BC /* SpadeChatViewController.m */; };
 		91F74AAB187D0A8900F322BC /* SpadeEventCreationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 91F74AAA187D0A8900F322BC /* SpadeEventCreationViewController.m */; };
@@ -129,6 +147,16 @@
 /* Begin PBXFileReference section */
 		9112354018569F170092253B /* SpadeEventController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SpadeEventController.h; sourceTree = "<group>"; };
 		9112354118569F170092253B /* SpadeEventController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SpadeEventController.m; sourceTree = "<group>"; };
+		91175E0918E5288A002BA37A /* Center-Tab@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Center-Tab@2x.png"; sourceTree = "<group>"; };
+		91175E0A18E5288A002BA37A /* Center-Tab.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Center-Tab.png"; sourceTree = "<group>"; };
+		91175E0D18E52C96002BA37A /* tabBarBackGround.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = tabBarBackGround.png; sourceTree = "<group>"; };
+		91175E0E18E52C96002BA37A /* tabBarBackGround@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "tabBarBackGround@2x.png"; sourceTree = "<group>"; };
+		91175E1518E531DA002BA37A /* tabBarBackGround_V2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = tabBarBackGround_V2.png; sourceTree = "<group>"; };
+		91175E1618E531DA002BA37A /* tabBarBackGround_V2@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "tabBarBackGround_V2@2x.png"; sourceTree = "<group>"; };
+		91175E1918E533E8002BA37A /* tabBarSelected.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = tabBarSelected.png; sourceTree = "<group>"; };
+		91175E1A18E533E8002BA37A /* tabBarSelected@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "tabBarSelected@2x.png"; sourceTree = "<group>"; };
+		91175E1D18E537E1002BA37A /* SpadeMapSlideViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SpadeMapSlideViewController.h; sourceTree = "<group>"; };
+		91175E1E18E537E1002BA37A /* SpadeMapSlideViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SpadeMapSlideViewController.m; sourceTree = "<group>"; };
 		911B8F6518820BC900BCED88 /* SpadeNameCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SpadeNameCell.h; sourceTree = "<group>"; };
 		911B8F6618820BC900BCED88 /* SpadeNameCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SpadeNameCell.m; sourceTree = "<group>"; };
 		91206109184A62E700E3DA0C /* SpadeUtility.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SpadeUtility.h; sourceTree = "<group>"; };
@@ -204,6 +232,8 @@
 		9141E88B18407A5000A5DE15 /* SpadeTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "SpadeTests-Info.plist"; sourceTree = "<group>"; };
 		9141E88D18407A5000A5DE15 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		9141E88F18407A5000A5DE15 /* SpadeTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SpadeTests.m; sourceTree = "<group>"; };
+		9158421018E86932009F1BE8 /* iCarousel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iCarousel.h; sourceTree = "<group>"; };
+		9158421118E86932009F1BE8 /* iCarousel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = iCarousel.m; sourceTree = "<group>"; };
 		915BEDA81857DB5A00FCA17A /* UIImage+ResizeAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "UIImage+ResizeAdditions.h"; path = "../../../Downloads/ParsePlatform-Anypic-cd02eb4/Anypic-iOS/Anypic/UIImage+ResizeAdditions.h"; sourceTree = "<group>"; };
 		915BEDA91857DB5A00FCA17A /* UIImage+ResizeAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UIImage+ResizeAdditions.m"; path = "../../../Downloads/ParsePlatform-Anypic-cd02eb4/Anypic-iOS/Anypic/UIImage+ResizeAdditions.m"; sourceTree = "<group>"; };
 		915BEDAA1857DB5A00FCA17A /* UIImage+AlphaAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "UIImage+AlphaAdditions.h"; path = "../../../Downloads/ParsePlatform-Anypic-cd02eb4/Anypic-iOS/Anypic/UIImage+AlphaAdditions.h"; sourceTree = "<group>"; };
@@ -212,6 +242,9 @@
 		915BEDAD1857DB5A00FCA17A /* UIImage+RoundedCornerAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UIImage+RoundedCornerAdditions.m"; path = "../../../Downloads/ParsePlatform-Anypic-cd02eb4/Anypic-iOS/Anypic/UIImage+RoundedCornerAdditions.m"; sourceTree = "<group>"; };
 		91632CEE1857CFE000FB276E /* SpadeProfileController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SpadeProfileController.h; sourceTree = "<group>"; };
 		91632CEF1857CFE000FB276E /* SpadeProfileController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SpadeProfileController.m; sourceTree = "<group>"; };
+		917CE60518FB7EAB0076D5A1 /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
+		917FA75218E3C7BA009EDEF2 /* SpadeMainSlideViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SpadeMainSlideViewController.h; sourceTree = "<group>"; };
+		917FA75318E3C7BA009EDEF2 /* SpadeMainSlideViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SpadeMainSlideViewController.m; sourceTree = "<group>"; };
 		9188E52D184EE7FD00C72151 /* SpadeFeedController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SpadeFeedController.h; sourceTree = "<group>"; };
 		9188E52E184EE7FD00C72151 /* SpadeFeedController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SpadeFeedController.m; sourceTree = "<group>"; };
 		9196A8CE1868D60700513082 /* default_venue_Image.jpeg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = default_venue_Image.jpeg; path = ../../../../Dropbox/Spade/default_venue_Image.jpeg; sourceTree = "<group>"; };
@@ -258,6 +291,7 @@
 		91AB44C518E1C2B500B78719 /* spade_3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = spade_3.png; sourceTree = "<group>"; };
 		91AB44C818E1C3F800B78719 /* spade_4@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "spade_4@2x.png"; sourceTree = "<group>"; };
 		91AB44C918E1C3F800B78719 /* spade_4.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = spade_4.png; sourceTree = "<group>"; };
+		91B271E518E4C51F00B7C839 /* party_night-wide_3@2x.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "party_night-wide_3@2x.jpg"; sourceTree = "<group>"; };
 		91D2220A188DAA7100750688 /* SpadeMyEventsCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SpadeMyEventsCell.h; sourceTree = "<group>"; };
 		91D2220B188DAA7100750688 /* SpadeMyEventsCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SpadeMyEventsCell.m; sourceTree = "<group>"; };
 		91D2220D188DB75F00750688 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
@@ -277,6 +311,12 @@
 		91D9D6481843021D005BD0BC /* SpadeLoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SpadeLoginViewController.h; sourceTree = "<group>"; };
 		91D9D6491843021D005BD0BC /* SpadeLoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SpadeLoginViewController.m; sourceTree = "<group>"; };
 		91D9D65418432156005BD0BC /* FacebookSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FacebookSDK.framework; path = "../../../Downloads/ParsePlatform-LoginAndSignUpTutorial-0710943/FacebookSDK.framework"; sourceTree = "<group>"; };
+		91E5006C18F8C77F004BD33D /* dark_exa_@2X.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "dark_exa_@2X.png"; path = "../../../../Downloads/dark_exa/dark_exa_@2X.png"; sourceTree = "<group>"; };
+		91E5006D18F8C77F004BD33D /* dark_exa.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = dark_exa.png; path = ../../../../Downloads/dark_exa/dark_exa.png; sourceTree = "<group>"; };
+		91E5007018F8CA1E004BD33D /* SpadeInviteCodeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SpadeInviteCodeViewController.h; sourceTree = "<group>"; };
+		91E5007118F8CA1E004BD33D /* SpadeInviteCodeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SpadeInviteCodeViewController.m; sourceTree = "<group>"; };
+		91E5007318F8CBFD004BD33D /* argyle_@2X.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "argyle_@2X.png"; sourceTree = "<group>"; };
+		91E5007418F8CBFD004BD33D /* argyle.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = argyle.png; sourceTree = "<group>"; };
 		91E962B218862743007D1BDE /* SpadePhotoCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SpadePhotoCell.h; sourceTree = "<group>"; };
 		91E962B318862743007D1BDE /* SpadePhotoCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SpadePhotoCell.m; sourceTree = "<group>"; };
 		91F74AA6187CF72600F322BC /* SpadeChatViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SpadeChatViewController.h; sourceTree = "<group>"; };
@@ -295,6 +335,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				917CE60618FB7EAB0076D5A1 /* MessageUI.framework in Frameworks */,
 				91D2220E188DB75F00750688 /* MapKit.framework in Frameworks */,
 				91FF259B1859791600FA923A /* CoreFoundation.framework in Frameworks */,
 				91D9D6471842F783005BD0BC /* SystemConfiguration.framework in Frameworks */,
@@ -329,6 +370,8 @@
 		9112353C18569C830092253B /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				9158421018E86932009F1BE8 /* iCarousel.h */,
+				9158421118E86932009F1BE8 /* iCarousel.m */,
 				9196A8DD186C903200513082 /* SpadeConstants.h */,
 				9196A8DE186C903200513082 /* SpadeConstants.m */,
 				9196A8D41868D90900513082 /* SpadeCache.h */,
@@ -372,6 +415,12 @@
 				91F74AAA187D0A8900F322BC /* SpadeEventCreationViewController.m */,
 				91D2220F188DB95200750688 /* SpadeMapViewController.h */,
 				91D22210188DB95200750688 /* SpadeMapViewController.m */,
+				917FA75218E3C7BA009EDEF2 /* SpadeMainSlideViewController.h */,
+				917FA75318E3C7BA009EDEF2 /* SpadeMainSlideViewController.m */,
+				91175E1D18E537E1002BA37A /* SpadeMapSlideViewController.h */,
+				91175E1E18E537E1002BA37A /* SpadeMapSlideViewController.m */,
+				91E5007018F8CA1E004BD33D /* SpadeInviteCodeViewController.h */,
+				91E5007118F8CA1E004BD33D /* SpadeInviteCodeViewController.m */,
 			);
 			name = Controllers;
 			sourceTree = "<group>";
@@ -473,6 +522,7 @@
 		9141E86318407A5000A5DE15 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				917CE60518FB7EAB0076D5A1 /* MessageUI.framework */,
 				91D2220D188DB75F00750688 /* MapKit.framework */,
 				91FF259A1859791600FA923A /* CoreFoundation.framework */,
 				91D9D65418432156005BD0BC /* FacebookSDK.framework */,
@@ -571,6 +621,19 @@
 		91D9D64B184317CE005BD0BC /* Assets */ = {
 			isa = PBXGroup;
 			children = (
+				91E5007318F8CBFD004BD33D /* argyle_@2X.png */,
+				91E5007418F8CBFD004BD33D /* argyle.png */,
+				91E5006C18F8C77F004BD33D /* dark_exa_@2X.png */,
+				91E5006D18F8C77F004BD33D /* dark_exa.png */,
+				91175E1918E533E8002BA37A /* tabBarSelected.png */,
+				91175E1A18E533E8002BA37A /* tabBarSelected@2x.png */,
+				91175E1518E531DA002BA37A /* tabBarBackGround_V2.png */,
+				91175E1618E531DA002BA37A /* tabBarBackGround_V2@2x.png */,
+				91175E0D18E52C96002BA37A /* tabBarBackGround.png */,
+				91175E0E18E52C96002BA37A /* tabBarBackGround@2x.png */,
+				91175E0918E5288A002BA37A /* Center-Tab@2x.png */,
+				91175E0A18E5288A002BA37A /* Center-Tab.png */,
+				91B271E518E4C51F00B7C839 /* party_night-wide_3@2x.jpg */,
 				912452A418E2912F0071CE3B /* LoginLogo2.png */,
 				912452A218E28D8B0071CE3B /* Test.png */,
 				9124529C18E28CE80071CE3B /* Defaulttttt.png */,
@@ -693,7 +756,10 @@
 				9124528918E244340071CE3B /* spade_5.png in Resources */,
 				91AB44B718E091EC00B78719 /* Lato-BolIta.otf in Resources */,
 				91AB44B818E091EC00B78719 /* Lato-Hai.otf in Resources */,
+				91175E0C18E5288A002BA37A /* Center-Tab.png in Resources */,
 				91AB44CA18E1C3F800B78719 /* spade_4@2x.png in Resources */,
+				91175E1C18E533E8002BA37A /* tabBarSelected@2x.png in Resources */,
+				91175E0B18E5288A002BA37A /* Center-Tab@2x.png in Resources */,
 				91AB44B918E091EC00B78719 /* Lato-HaiIta.otf in Resources */,
 				91AB44C218E1B8CC00B78719 /* spade_2@2x.gif in Resources */,
 				91AB44BA18E091EC00B78719 /* Lato-Lig.otf in Resources */,
@@ -701,25 +767,35 @@
 				91AB44BB18E091EC00B78719 /* Lato-LigIta.otf in Resources */,
 				91AB44C618E1C2B500B78719 /* spade_3@2x.png in Resources */,
 				91AB44CB18E1C3F800B78719 /* spade_4.png in Resources */,
+				91175E1B18E533E8002BA37A /* tabBarSelected.png in Resources */,
 				912452AD18E2985D0071CE3B /* Spade-Icon.png in Resources */,
 				91AB44BC18E091EC00B78719 /* Lato-Reg.otf in Resources */,
 				91AB44BD18E091EC00B78719 /* Lato-RegIta.otf in Resources */,
 				9196A8D11868D61300513082 /* skyline_7@2x.png in Resources */,
 				91AB44C718E1C2B500B78719 /* spade_3.png in Resources */,
+				91B271E618E4C51F00B7C839 /* party_night-wide_3@2x.jpg in Resources */,
 				9196A8CF1868D60700513082 /* default_venue_Image.jpeg in Resources */,
 				913DE259187B5CE000CDBCE7 /* leather.png in Resources */,
 				9196A8E5186D2E0400513082 /* AvatarPlaceholder.png in Resources */,
+				91175E0F18E52C96002BA37A /* tabBarBackGround.png in Resources */,
 				9196A8D31868D61B00513082 /* skyline@2x.png in Resources */,
+				91E5006E18F8C77F004BD33D /* dark_exa_@2X.png in Resources */,
 				91AB44C318E1B8CC00B78719 /* spade_2.gif in Resources */,
 				9141E87D18407A5000A5DE15 /* Images.xcassets in Resources */,
 				913DE25A187B5CE000CDBCE7 /* nicubunu_Card_symbols_Spade.jpeg in Resources */,
+				91E5006F18F8C77F004BD33D /* dark_exa.png in Resources */,
 				912452A318E28D8B0071CE3B /* Test.png in Resources */,
 				9124529818E287720071CE3B /* spade_6@2x.png in Resources */,
+				91175E1018E52C96002BA37A /* tabBarBackGround@2x.png in Resources */,
 				9124528818E244340071CE3B /* spade_5@2x.png in Resources */,
 				9141E86F18407A5000A5DE15 /* InfoPlist.strings in Resources */,
 				9141E87818407A5000A5DE15 /* Main.storyboard in Resources */,
 				9196A8E6186D2E0400513082 /* AvatarPlaceholder@2x.png in Resources */,
+				91175E1718E531DA002BA37A /* tabBarBackGround_V2.png in Resources */,
 				9124529F18E28CE80071CE3B /* Defaulttttt.png in Resources */,
+				91175E1818E531DA002BA37A /* tabBarBackGround_V2@2x.png in Resources */,
+				91E5007618F8CBFD004BD33D /* argyle.png in Resources */,
+				91E5007518F8CBFD004BD33D /* argyle_@2X.png in Resources */,
 				912452A018E28CE80071CE3B /* Defaultttttt@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -742,12 +818,14 @@
 				9133C15218A2E4E600730B9E /* UINavigationBar+FlatUI.m in Sources */,
 				9133C14F18A2E4E600730B9E /* UIColor+FlatUI.m in Sources */,
 				9133C15418A2E4E600730B9E /* UIProgressView+FlatUI.m in Sources */,
+				9158421218E86932009F1BE8 /* iCarousel.m in Sources */,
 				9133C14718A2E4E600730B9E /* FUIAlertView.m in Sources */,
 				915BEDB01857DB5A00FCA17A /* UIImage+RoundedCornerAdditions.m in Sources */,
 				9112354218569F170092253B /* SpadeEventController.m in Sources */,
 				9133C15918A2E4E600730B9E /* UIToolbar+FlatUI.m in Sources */,
 				9133C15018A2E4E600730B9E /* UIFont+FlatUI.m in Sources */,
 				919DC3C418775E57007E8BC0 /* SpadeFeedCell.m in Sources */,
+				91175E1F18E537E1002BA37A /* SpadeMapSlideViewController.m in Sources */,
 				9196A8D9186A919F00513082 /* SpadeEditProfileViewController.m in Sources */,
 				9133C14E18A2E4E600730B9E /* UIBarButtonItem+FlatUI.m in Sources */,
 				915BEDAE1857DB5A00FCA17A /* UIImage+ResizeAdditions.m in Sources */,
@@ -755,9 +833,11 @@
 				9133C14918A2E4E600730B9E /* FUICellBackgroundView.m in Sources */,
 				9133C15618A2E4E600730B9E /* UIStepper+FlatUI.m in Sources */,
 				91D2220C188DAA7100750688 /* SpadeMyEventsCell.m in Sources */,
+				91E5007218F8CA1E004BD33D /* SpadeInviteCodeViewController.m in Sources */,
 				9196A8E2186D29F500513082 /* SpadeFollowCell.m in Sources */,
 				9133C14D18A2E4E600730B9E /* FUITextField.m in Sources */,
 				9196A8DF186C903200513082 /* SpadeConstants.m in Sources */,
+				917FA75418E3C7BA009EDEF2 /* SpadeMainSlideViewController.m in Sources */,
 				9133C15318A2E4E600730B9E /* UIPopoverController+FlatUI.m in Sources */,
 				91F74AB4187E304200F322BC /* SpadeEventVenueCell.m in Sources */,
 				9133C14A18A2E4E600730B9E /* FUIPopoverBackgroundView.m in Sources */,

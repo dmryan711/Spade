@@ -18,7 +18,7 @@
 
 @property(strong,nonatomic)NSMutableArray *searchedObjects;
 @property(strong,nonatomic)NSMutableArray *venueObjects;
-
+@property (strong, nonatomic) UIRefreshControl *refreshControl;
 @property (strong, nonatomic) PFQuery *searchQuery;
 @property (strong, nonatomic) PFQuery *venueQuery;
 
@@ -47,6 +47,13 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
+    
+    //Set Refresh Controls
+    self.refreshControl = [[UIRefreshControl alloc]init];
+    [self.refreshControl addTarget:self action:@selector(runQueryandLoadData ) forControlEvents:UIControlEventValueChanged];
+    [self.tableView addSubview:self.refreshControl];
+    
+    
     self.title = @"Venues";
     NSDictionary *textAttributes = [NSDictionary dictionaryWithObjectsAndKeys:
      [UIColor whiteColor],NSForegroundColorAttributeName,
@@ -54,6 +61,8 @@
      self.navigationController.navigationBar.titleTextAttributes = textAttributes;
     
     [self.navigationController.navigationBar configureFlatNavigationBarWithColor:[UIColor blendedColorWithForegroundColor:[UIColor blackColor] backgroundColor:[UIColor wisteriaColor] percentBlend:.6]];
+    
+    
     
     [self.tableView setContentOffset:CGPointMake(0,44) animated:YES];
     
@@ -283,6 +292,7 @@
     [self.venueQuery findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error){
         [self.venueObjects removeAllObjects];
         [self.venueObjects addObjectsFromArray:objects];
+        [self.refreshControl endRefreshing];
         [self.tableView reloadData];
     
     }];

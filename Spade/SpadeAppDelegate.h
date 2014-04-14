@@ -21,7 +21,10 @@
 
 
 -(void)presentLoginView;
+-(void)presentInviteCodeView;
 -(void)presentFriendsViewController;
 -(void)logOutUser;
+-(void)setInviteCodeController;
+-(void)setMainControllers;
 
 @end

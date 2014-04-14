@@ -17,6 +17,9 @@
 #import "SpadeEventDetailViewController.h"
 #import "UINavigationBar+FlatUI.h"
 #import "UIColor+FlatUI.h"
+#import "SpadeAppDelegate.h"
+#import "SpadeMainSlideViewController.h"
+#define APPLICATION_DELEGATE (SpadeAppDelegate *)[[UIApplication sharedApplication] delegate]
 
 
 @interface SpadeEventController ()
@@ -31,8 +34,7 @@
 @property (weak, nonatomic) IBOutlet UITableView *myFollowedEventsTableView;
 @property (strong, nonatomic) UIRefreshControl *myFollowedEventsTableRefreshControl;
 @property (strong, nonatomic) NSMutableArray *searchedObjects;
-@property (strong, nonatomic) IBOutlet UISearchDisplayController *searchFollowedEvents;
-@property (strong, nonatomic) IBOutlet UISearchDisplayController *searchMyEvents;
+
 
 
 
@@ -56,6 +58,8 @@
 
 - (void)viewDidLoad
 {
+    
+
     [super viewDidLoad];
     [self.navigationController.navigationBar configureFlatNavigationBarWithColor:[UIColor blendedColorWithForegroundColor:[UIColor blackColor] backgroundColor:[UIColor wisteriaColor] percentBlend:.6]];
     
@@ -73,23 +77,26 @@
     [self.myFollowedEventsTableRefreshControl addTarget:self action:@selector(runMyFollowedEventQueryAndReloadData) forControlEvents:UIControlEventValueChanged];
     [self.myFollowedEventsTableView addSubview:self.myFollowedEventsTableRefreshControl];
     
-    self.myEventsQuery = [PFQuery queryWithClassName:spadeClassActivity];
-    self.myEventsQuery.cachePolicy = kPFCachePolicyCacheThenNetwork;
-    [self.myEventsQuery whereKeyExists:spadeActivityToEvent];
-    [self.myEventsQuery includeKey:spadeActivityToEvent];
-    [self.myEventsQuery whereKey:spadeActivityFromUser equalTo:[PFUser currentUser]];
-    [self.myEventsQuery whereKey:spadeActivityAction equalTo:spadeActivityActionCreatedEvent];
-    [self.myEventsQuery orderByDescending:@"createdAt"];
-    [self runMyEventQueryAndReloadData];
+    if ([PFUser currentUser]) {
+        
+        self.myEventsQuery = [PFQuery queryWithClassName:spadeClassActivity];
+        self.myEventsQuery.cachePolicy = kPFCachePolicyCacheThenNetwork;
+        [self.myEventsQuery whereKeyExists:spadeActivityToEvent];
+        [self.myEventsQuery includeKey:spadeActivityToEvent];
+        [self.myEventsQuery whereKey:spadeActivityFromUser equalTo:[PFUser currentUser]];
+        [self.myEventsQuery whereKey:spadeActivityAction equalTo:spadeActivityActionCreatedEvent];
+        [self.myEventsQuery orderByDescending:@"createdAt"];
+        [self runMyEventQueryAndReloadData];
     
-    self.followedEventsQuery = [PFQuery queryWithClassName:spadeClassActivity];
-    self.followedEventsQuery.cachePolicy = kPFCachePolicyCacheThenNetwork;
-    [self.followedEventsQuery includeKey:spadeActivityToEvent];
-    [self.followedEventsQuery whereKeyExists:spadeActivityToEvent];
-    [self.followedEventsQuery whereKey:spadeActivityFromUser equalTo:[PFUser currentUser]];
-    [self.followedEventsQuery whereKey:spadeActivityAction equalTo:spadeActivityActionAttendingEvent];
-    [self.followedEventsQuery orderByDescending:@"createdAt"];
-    [self runMyFollowedEventQueryAndReloadData];
+        self.followedEventsQuery = [PFQuery queryWithClassName:spadeClassActivity];
+        self.followedEventsQuery.cachePolicy = kPFCachePolicyCacheThenNetwork;
+        [self.followedEventsQuery includeKey:spadeActivityToEvent];
+        [self.followedEventsQuery whereKeyExists:spadeActivityToEvent];
+        [self.followedEventsQuery whereKey:spadeActivityFromUser equalTo:[PFUser currentUser]];
+        [self.followedEventsQuery whereKey:spadeActivityAction equalTo:spadeActivityActionAttendingEvent];
+        [self.followedEventsQuery orderByDescending:@"createdAt"];
+        [self runMyFollowedEventQueryAndReloadData];
+    }
     
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(presentCreateEventViewController)];
     
@@ -158,12 +165,10 @@
 
 
 {
-    NSLog(@"Called");
     static NSString *myEventsCellIdentifier = @"myEventsCell";
     static NSString *followedEventsCellIdentifier = @"followedEventsCell";
     if ([tableView isEqual: self.manageEventsTableView]) {
         
-        NSLog(@"Managed TV");
         SpadeMyEventsCell *cell = [tableView dequeueReusableCellWithIdentifier:myEventsCellIdentifier];
         if (cell == nil) {
             cell = [[SpadeMyEventsCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:myEventsCellIdentifier];
@@ -177,42 +182,8 @@
         return cell;
         
         
-    }else if ([tableView isEqual:self.searchMyEvents.searchResultsTableView]){
-        
-        NSLog(@"SC - Managed TV");
-        
-        SpadeMyEventsCell *cell = [self.manageEventsTableView dequeueReusableCellWithIdentifier:myEventsCellIdentifier];
-        if (cell == nil) {
-            cell = [[SpadeMyEventsCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:myEventsCellIdentifier];
-        }
-        
-        PFObject *activityObject = [self.searchedObjects objectAtIndex:indexPath.row];
-        cell.eventNameLabel.text = [[activityObject objectForKey:spadeActivityToEvent] objectForKey:spadeEventName];
-        cell.dateAndTimeLabel.text = [NSString stringWithFormat:@"%@ @ %@",[[activityObject objectForKey:spadeActivityToEvent]objectForKey:spadeEventWhen],[[activityObject objectForKey:spadeActivityToEvent]objectForKey:spadeEventTime]];
-        
-        
-        return cell;
-    
-    
-    }else if([tableView isEqual: self.searchFollowedEvents.searchResultsTableView]){
-        
-        NSLog(@"SC _FOLLOW TV");
-        
-        SpadeFollowCell *cell = [self.myFollowedEventsTableView dequeueReusableCellWithIdentifier:followedEventsCellIdentifier];
-        if (cell == nil) {
-            cell = [[SpadeFollowCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:followedEventsCellIdentifier];
-        }
-        
-        PFObject *activityLog = [self.searchedObjects objectAtIndex:indexPath.row];
-        cell.nameLabel.text =  [[activityLog objectForKey:spadeActivityToEvent]objectForKey:spadeEventName];
-        cell.dateAndTimeLabel.text = [NSString stringWithFormat:@"%@ @ %@",[[activityLog objectForKey:spadeActivityToEvent]objectForKey:spadeEventWhen],[[activityLog objectForKey:spadeActivityToEvent]objectForKey:spadeEventTime]];
-        
-        return cell;
-
-        
     
     }else{
-        NSLog(@"Follow TV");
         
         SpadeFollowCell *cell = [tableView dequeueReusableCellWithIdentifier:followedEventsCellIdentifier];
         if (cell == nil) {
@@ -303,9 +274,12 @@
     //Create Detail View
     SpadeEventCreationViewController *createEvent = [mainStoryboard   instantiateViewControllerWithIdentifier:@"CreateEventViewController"];
     
+    
+    
     UINavigationController *tempNav = [[UINavigationController alloc]initWithRootViewController:createEvent];
-    tempNav.navigationBar.tintColor = [UIColor purpleColor];
+    tempNav.navigationBar.tintColor = [UIColor whiteColor];
     tempNav.navigationBar.translucent  = NO;
+    [tempNav.navigationBar setTitleTextAttributes:@{NSFontAttributeName: [UIFont fontWithName:@"Copperplate-Bold" size:16]}];
     [self presentViewController:tempNav animated:YES completion:nil];
 }
 
@@ -359,12 +333,12 @@
 
 #pragma mark Search Protocol
 
-- (BOOL)searchDisplayController:(UISearchDisplayController *)controller shouldReloadTableForSearchString:  (NSString *)searchString {
+/*- (BOOL)searchDisplayController:(UISearchDisplayController *)controller shouldReloadTableForSearchString:  (NSString *)searchString {
     [self filterResults:searchString];
     return YES;
-}
+}*/
 
-- (void)filterResults:(NSString *)searchTerm {
+/*- (void)filterResults:(NSString *)searchTerm {
     [self.searchedObjects removeAllObjects];
     
     PFQuery *matchingQuery = [PFQuery queryWithClassName:spadeClassEvent];
@@ -401,7 +375,7 @@
     
     }
     
-}
+}*/
 
 
 

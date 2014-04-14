@@ -7,6 +7,7 @@
 //
 
 #import "SpadeAppDelegate.h"
+#import "SpadeInviteCodeViewController.h"
 #import "SpadeUtility.h"
 #import "SpadeLoginViewController.h"
 #import <Parse/Parse.h>
@@ -18,9 +19,15 @@
 #import "UITabBar+FlatUI.h"
 #import "UIColor+FlatUI.h"
 
+#define LEFT_VIEWCONTROLLER 0
+#define MIDDLE_VC 1
+#define FEED_CONTROLLER 0
+#define AMOUNT_OF_REFERALS 2
+
 @interface SpadeAppDelegate ()
 
 @property (strong,nonatomic) UITabBarController *tabBarController;
+@property (strong,nonatomic) UINavigationController *feedController;
 @property (strong,nonatomic) NSMutableData *data;
 @property (strong, nonatomic) NSCache *cache;
 
@@ -31,14 +38,14 @@
 @implementation SpadeAppDelegate
 
 #pragma mark Application Delegate Methods
-#define MIDDLE_VC 1
+
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     // Override point for customization after application launch.
     
     //Initially Set Flag to NO
-    [[NSUserDefaults standardUserDefaults] registerDefaults:@{spadePicFLag:@NO, spadeNameFlag:@NO, spadeFirstLoginFlag:@NO}];
+    [[NSUserDefaults standardUserDefaults] registerDefaults:@{spadePicFLag:@NO, spadeNameFlag:@NO, isFirstLogin:@YES,areEnoughFriendsFollowed:@NO}];
 
                                                                  
     /*****   PARSE APPLICATION *******/
@@ -55,19 +62,23 @@
     UIStoryboard *mainStoryboard = [UIStoryboard storyboardWithName:@"Main"
                                                              bundle: nil];
     
-    
     //Getting a Reference to the UITabBarController & setting the delegate
     self.tabBarController = [mainStoryboard instantiateInitialViewController];
     self.tabBarController.delegate = self;
     
-    //Configure the tab bar
-    [self.tabBarController.tabBar configureFlatTabBarWithColor:[UIColor blackColor] selectedColor:[UIColor blendedColorWithForegroundColor:[UIColor blackColor] backgroundColor:[UIColor wisteriaColor] percentBlend:.6]];
     
-    [self.tabBarController setSelectedIndex:MIDDLE_VC];
+    [self.tabBarController.tabBar setBackgroundImage:[UIImage imageNamed:@"tabBarBackGround.png"]];
+    [self.tabBarController.tabBar setSelectionIndicatorImage:[UIImage imageNamed:@"tabBarSelected.png"]];
+    
+   
     
     
-    
-    //[[UIView appearance] setTintColor:[UIColor whiteColor]];
+    if ([[NSUserDefaults standardUserDefaults] boolForKey:isFirstLogin]){
+        
+        [self setInviteCodeController];
+    }else{
+        [self setMainControllers];
+    }
 
 
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
@@ -75,8 +86,9 @@
     [self.window makeKeyAndVisible];
     
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
+    
 
-
+    //Fonts
     for (NSString* family in [UIFont familyNames])
     {
         NSLog(@"%@", family);
@@ -87,6 +99,7 @@
         }
     }
     
+   
     
     return YES;
 }
@@ -147,7 +160,7 @@
 
 
 #pragma mark Spade Login Delegate Methods
-#define LEFT_VIEWCONTROLLER 0
+
 // Sent to the delegate when a PFUser is logged in.
 - (void)logInViewController:(PFLogInViewController *)logInController didLogInUser:(PFUser *)user {
     
@@ -192,6 +205,8 @@
         
     }];
     
+    
+    
     //Request User Information
     [request startWithCompletionHandler:^(FBRequestConnection *connection, id result, NSError *error){
         if (!error) {
@@ -219,6 +234,18 @@
             [user setObject:birthday forKey:spadeUserBirthday];
             [user setObject:age forKey:spadeUserAge];;
             [user setObject:faceBookID forKey:spadeUserFacebookId];
+            
+            //Create Referals if user is new
+            if ([[NSUserDefaults standardUserDefaults] boolForKey:isFirstLogin]){
+                //Create X Referrals for User
+                for (int i = 0; i < AMOUNT_OF_REFERALS; i++) {
+                    PFObject *referralForUser = [PFObject objectWithClassName:spadeInviteCodeClass];
+                    [referralForUser setObject:[PFUser currentUser] forKey:belongsTo];
+                    [referralForUser setObject:@NO forKey:inviteCodeWasUsed];
+                    [referralForUser saveEventually];
+                }
+                [[NSUserDefaults standardUserDefaults]setBool:NO forKey:isFirstLogin];
+            }
            
             
             if (![[NSUserDefaults standardUserDefaults]boolForKey:spadePicFLag]) { //User Did not Change Picture
@@ -239,6 +266,7 @@
             //Save to Parse
             [user saveInBackgroundWithBlock:^(BOOL succeeded , NSError *error){
                 if (succeeded) {
+                    [[[self.feedController viewControllers]objectAtIndex:FEED_CONTROLLER]runQueryAndReloadData];
                     
                    /* //Follow the Spade Team
                     PFQuery *querySpadeTeam = [PFQuery queryWithClassName:spadeClassUser];
@@ -321,6 +349,21 @@
     SpadeFriendTableViewController *friendListViewController = [mainStoryboard   instantiateViewControllerWithIdentifier:@"findFriendView"];
     
     [[self.tabBarController.viewControllers objectAtIndex:LEFT_VIEWCONTROLLER] presentViewController:friendListViewController animated:YES completion:NULL];
+
+}
+
+
+-(void)presentInviteCodeView
+{
+    // Present Friend List
+    UIStoryboard *mainStoryboard = [UIStoryboard storyboardWithName:@"Main"
+                                                             bundle: nil];
+    //Create Detail View
+    SpadeInviteCodeViewController *inviteCodeController = [mainStoryboard   instantiateViewControllerWithIdentifier:@"InviteCode"];
+    
+    [[self.tabBarController.viewControllers objectAtIndex:LEFT_VIEWCONTROLLER] presentViewController:inviteCodeController animated:YES completion:NULL];
+
+
 
 }
 
@@ -413,7 +456,23 @@
 }
 
 
+-(void)setInviteCodeController
+{
+    UIStoryboard *mainStoryboard = [UIStoryboard storyboardWithName:@"Main"
+                                                             bundle: nil];
+    [self.tabBarController setViewControllers:@[[mainStoryboard instantiateViewControllerWithIdentifier:@"InviteCode"]]];
+    [self.tabBarController setSelectedIndex:MIDDLE_VC];
 
+}
 
+-(void)setMainControllers
+{
+    UIStoryboard *mainStoryboard = [UIStoryboard storyboardWithName:@"Main"
+                                                             bundle: nil];
+    self.feedController = [mainStoryboard instantiateViewControllerWithIdentifier:@"feedNav"];
+    self.tabBarController.tabBar.hidden = NO;
 
+    [self.tabBarController setViewControllers:@[ [mainStoryboard instantiateViewControllerWithIdentifier:@"eventNav"],self.feedController , [mainStoryboard instantiateViewControllerWithIdentifier:@"venueNav"]]];
+    [self.tabBarController setSelectedIndex:MIDDLE_VC];
+}
 @end

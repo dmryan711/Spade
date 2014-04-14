@@ -11,6 +11,8 @@
 #import "SpadeUtility.h"
 #import "UIImage+ResizeAdditions.h"
 
+#define METERS_TO_MILES 0.000621371
+
 @implementation SpadeUtility : NSObject 
 
 +(NSInteger)age:(NSDate *)dateOfBirth {
@@ -290,6 +292,13 @@
         }
     
     }];
+}
+
++(long double)milesFromMeters:(long double)meters
+{
+    NSLog(@"Amount of Miles from Metere: %Lf", meters * METERS_TO_MILES);
+    return meters * METERS_TO_MILES;
+    
 }
 
 /*+(NSArray *)crunchAttendeeActivities:(NSMutableArray *)arrayOfAttendingActivities

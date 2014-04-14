@@ -41,6 +41,7 @@
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         // Custom initialization
+        
     }
     return self;
 }
@@ -48,17 +49,21 @@
 
 -(void)awakeFromNib
 {
-    self.friendsForEventQuery = [PFQuery queryWithClassName:spadeClassActivity];
-    
+    //self.friendsForEventQuery = [PFQuery queryWithClassName:spadeClassActivity];
 }
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     
-    [self.view addSubview:self.friendsTable];
+    // Kills Swipe Navigation
+    if ([self.navigationController respondsToSelector:@selector(interactivePopGestureRecognizer)]) {
+        self.navigationController.interactivePopGestureRecognizer.enabled = NO;
+    }
     
-    [self.view bringSubviewToFront:self.friendsTable];
+    //[self.view addSubview:self.friendsTable];
+    
+    //[self.view bringSubviewToFront:self.friendsTable];
     
     //[self toggleChat];
 	// Do any additional setup after loading the view.
@@ -66,7 +71,7 @@
     PFObject *venue = [self.object objectForKey:spadeActivityForVenue];
     
     //self.title = [event objectForKey:spadeEventName];
-    self.view.backgroundColor  = [UIColor cloudsColor];
+    self.view.backgroundColor  = [UIColor blackColor];
     
     self.venueDetailButton.cornerRadius = 3;
     self.venueDetailButton.buttonColor = [UIColor concreteColor];
@@ -84,7 +89,7 @@
 
     
     //Set Query and Run
-    self.friendsForEventQuery.cachePolicy = kPFCachePolicyCacheThenNetwork;
+    /*self.friendsForEventQuery.cachePolicy = kPFCachePolicyCacheThenNetwork;
     [self.friendsForEventQuery whereKeyExists:spadeActivityToEvent];
     [self.friendsForEventQuery includeKey:spadeActivityFromUser];
     [self.friendsForEventQuery whereKey:spadeActivityToEvent equalTo:event];
@@ -95,7 +100,7 @@
     
     self.friendTableRefreshControl = [[UIRefreshControl alloc]init];
     [self.friendTableRefreshControl addTarget:self action:@selector(runFriendQueryAndReloadData) forControlEvents:UIControlEventValueChanged];
-    [self.friendsTable addSubview:self.friendTableRefreshControl];
+    [self.friendsTable addSubview:self.friendTableRefreshControl];*/
    
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]initWithTitle:@"Chat" style:UIBarButtonItemStyleBordered target:self action:@selector(toggleChat)];
     
@@ -111,6 +116,52 @@
     self.venueLabel.font = [UIFont fontWithName:@"Lato-Bold" size:14];
     self.whenLabel.font = [UIFont fontWithName:@"Lato-Bold" size:14];
     self.timeLabel.font = [UIFont fontWithName:@"Lato-Bold" size:14];
+    
+    self.eventLabel.textColor = [UIColor whiteColor];
+    self.atLabel.textColor = [UIColor whiteColor];
+    self.venueLabel.textColor = [UIColor whiteColor];
+    self.whenLabel.textColor = [UIColor whiteColor];
+    self.timeLabel.textColor = [UIColor whiteColor];
+    
+    
+    
+    //if venue club,lounge,bar  statement to dictate image
+    UIImageView *imageView = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"party_night-wide_3.jpg"]];
+    
+    [self.view addSubview:imageView];
+    [self.view sendSubviewToBack:imageView];
+    
+    UIButton *leftBtn = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    leftBtn.frame = CGRectMake(-10, 380, 30, 50);
+    [leftBtn setTitle:@"☰" forState:UIControlStateNormal];
+    leftBtn.backgroundColor = [UIColor cloudsColor];
+    leftBtn.titleLabel.textColor = [UIColor amethystColor];
+    leftBtn.alpha = .6;
+    leftBtn.tag = 1;
+    [leftBtn.layer setCornerRadius:0.0f];
+    [leftBtn.layer setShadowOffset:CGSizeMake(2, 2)];
+    [leftBtn.layer setShadowColor:[UIColor whiteColor].CGColor];
+    [leftBtn.layer setShadowOpacity:0.8];
+    [leftBtn addTarget:self action:@selector(movePanelRight:) forControlEvents:UIControlEventTouchUpInside];
+    self.leftButton = leftBtn;
+    [self.view addSubview:self.leftButton];
+    
+    UIButton *rightBtn = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    rightBtn.frame = CGRectMake(300, 380, 30, 50);
+    [rightBtn setTitle:@"☰" forState:UIControlStateNormal];
+    rightBtn.backgroundColor = [UIColor cloudsColor];
+    rightBtn.alpha = .6;
+    rightBtn.tag = 1;
+    [rightBtn.layer setCornerRadius:0.0f];
+    [rightBtn.layer setShadowOffset:CGSizeMake(-2, 2)];
+    [rightBtn.layer setShadowColor:[UIColor whiteColor].CGColor];
+    [rightBtn.layer setShadowOpacity:0.8];
+    [rightBtn addTarget:self action:@selector(movePanelLeft:) forControlEvents:UIControlEventTouchUpInside];
+    self.rightButton = rightBtn;
+    [self.view addSubview:self.rightButton];
+    
+    [self.view bringSubviewToFront:self.rightButton];
+
 }
 
 
@@ -122,7 +173,7 @@
 }
 
 
-#pragma mark TableView Data Source
+/*#pragma mark TableView Data Source
 - (SpadeFollowCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
         static NSString *FriendCellIdentifier = @"FriendCell";
@@ -172,9 +223,9 @@
         }
         
         return cell;
-}
+}*/
 
--(UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
+/*-(UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
         UIView *tempView=[[UIView alloc]initWithFrame:CGRectMake(0,0,300,50)];
         tempView.backgroundColor=[UIColor asbestosColor];
@@ -186,7 +237,7 @@
         [tempView addSubview: tempLabel];
         return tempView;
     
-}
+}*/
 
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -354,6 +405,41 @@
         
     }
     
+}
+- (void)movePanelRight:(UIButton *)sender {
+    UIButton *button = sender;
+    switch (button.tag) {
+        case 0: {
+            [_delegate movePanelToOriginalPosition];
+            break;
+        }
+            
+        case 1: {
+            [_delegate movePanelRight];
+            break;
+        }
+            
+        default:
+            break;
+    }
+}
+- (void)movePanelLeft:(UIButton *)sender {
+    UIButton *button = sender;
+    switch (button.tag) {
+        case 0: {
+            [_delegate movePanelToOriginalPosition];
+            break;
+        }
+            
+        case 1: {
+            [_delegate movePanelLeft];
+            break;
+        }
+            
+        default:
+            break;
+    }
+
 }
 
 

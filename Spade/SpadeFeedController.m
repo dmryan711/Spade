@@ -19,6 +19,7 @@
 #import "UINavigationBar+FlatUI.h"
 #import "UIColor+FlatUI.h"
 #import "UIFont+FlatUI.h"
+#import "SpadeMainSlideViewController.h"
 
 @interface SpadeFeedController ()
 @property (strong,nonatomic) NSMutableArray *objects;
@@ -81,7 +82,7 @@
     
     self.navigationItem.rightBarButtonItem.tintColor = [UIColor cloudsColor];
     
-    [self.navigationItem.rightBarButtonItem setTitleTextAttributes:@{NSFontAttributeName: [UIFont fontWithName:@"Lato-Bold" size:24]} forState:UIControlStateNormal];
+    [self.navigationItem.rightBarButtonItem setTitleTextAttributes:@{NSFontAttributeName: [UIFont fontWithName:@"Copperplate-Bold" size:24]} forState:UIControlStateNormal];
     
    /* [self.navigationController.navigationBar configureFlatNavigationBarWithColor:[UIColor blendedColorWithForegroundColor:[UIColor blackColor] backgroundColor:[UIColor wisteriaColor] percentBlend:.6]];*/
     
@@ -90,9 +91,9 @@
     if (![PFUser currentUser] ) { // No user logged in
         // Create the log in view controller
         [APPLICATION_DELEGATE presentLoginView];
-    }else if ([[NSUserDefaults standardUserDefaults]boolForKey:spadeFirstLoginFlag]) {
+    }else if (![[NSUserDefaults standardUserDefaults]boolForKey:areEnoughFriendsFollowed]) {
         
-        //[[NSUserDefaults standardUserDefaults]setBool:NO forKey:spadeFirstLoginFlag];
+        //[[NSUserDefaults standardUserDefaults] forKey:spadeFirstLoginFlag];
         // Present Friend List
         
         
@@ -112,13 +113,10 @@
     [self.query includeKey:spadeVenuePicture];
     [self.query orderByDescending:@"createdAt"];
     
+    if ([PFUser currentUser]) {
     
-    PFQuery *myfriends = [PFQuery queryWithClassName:spadeClassUser];
-    [myfriends whereKey:spadeUserFacebookId containedIn:[[PFUser currentUser]objectForKey:spadeUserFriends]];
-    myfriends.cachePolicy = kPFCachePolicyCacheThenNetwork;
-    [self.query whereKey:spadeActivityFromUser matchesQuery:myfriends];
-    
-    [self runQueryAndReloadData];
+        [self runQueryAndReloadData];
+    }
     
     //Add Refresh Control
     self.tableRefresh = [[UIRefreshControl alloc]init];
@@ -134,7 +132,7 @@
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
     
-    //self.tableView.backgroundView = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"leather.png"]];
+    self.tableView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"dark_exa.png"]];
     
    
 }
@@ -218,6 +216,10 @@
         feedCell.actionLabel.font = [UIFont fontWithName:@"Lato-Regular" size:10];
         feedCell.userNameLabel.font  = [UIFont fontWithName:@"Lato-Black" size:10];
         feedCell.venueNameLabel.font  = [UIFont fontWithName:@"Lato-Black" size:10];
+        
+        [feedCell.layer setShadowOffset:CGSizeMake(-5, 5)];
+        [feedCell.layer setShadowColor:[UIColor blueColor].CGColor];
+        [feedCell.layer setShadowOpacity:0.8];
         
         NSUInteger newIndex = (indexPath.row /2);
         
@@ -341,6 +343,11 @@
 
 -(void)runQueryAndReloadData
 {
+    PFQuery *myfriends = [PFQuery queryWithClassName:spadeClassUser];
+    [myfriends whereKey:spadeUserFacebookId containedIn:[[PFUser currentUser]objectForKey:spadeUserFriends]];
+    myfriends.cachePolicy = kPFCachePolicyCacheThenNetwork;
+    [self.query whereKey:spadeActivityFromUser matchesQuery:myfriends];
+    
     if (!_objects) _objects = [[NSMutableArray alloc]init];
     
     [self.query findObjectsInBackgroundWithBlock:^(NSArray *objectsFound, NSError *error){
@@ -431,6 +438,7 @@
     SpadeFriendTableViewController *friendListViewController = [mainStoryboard   instantiateViewControllerWithIdentifier:@"findFriendView"];
     
     UINavigationController *tempNav = [[UINavigationController alloc]initWithRootViewController:friendListViewController];
+
     [self presentViewController:tempNav animated:YES completion:nil];
     
 }
@@ -497,11 +505,17 @@
     UIStoryboard *mainStoryboard = [UIStoryboard storyboardWithName:@"Main"
                                                              bundle: nil];
     //Create Detail View
-    SpadeEventDetailViewController *eventDetailViewController = [mainStoryboard   instantiateViewControllerWithIdentifier:@"eventDetailController"];
+   /* SpadeEventDetailViewController *eventDetailViewController = [mainStoryboard   instantiateViewControllerWithIdentifier:@"eventDetailController"];*/
     
-    eventDetailViewController.object = eventActivity;
+   // eventDetailViewController.object = eventActivity;
     
-    [self.navigationController pushViewController:eventDetailViewController animated:YES];
+    SpadeMainSlideViewController *main = [mainStoryboard   instantiateViewControllerWithIdentifier:@"mainSlide"];
+    NSLog(@"ACTIVITY FEED:%@",eventActivity);
+ 
+    
+    main.object = eventActivity;
+    
+    [self.navigationController pushViewController:main animated:YES];
 
     
 

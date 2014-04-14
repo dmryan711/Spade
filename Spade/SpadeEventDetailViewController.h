@@ -10,10 +10,26 @@
 #import "SpadeFollowCell.h"
 #import <Parse/Parse.h>
 
+@protocol SpadeEventDetailControllerDelegate <NSObject>
 
-@interface SpadeEventDetailViewController : UIViewController <SpadeFollowCellDelegate,UITableViewDataSource,UITableViewDelegate>
+@optional
+- (void)movePanelLeft;
+- (void)movePanelRight;
 
+@required
+- (void)movePanelToOriginalPosition;
+
+
+@end
+
+@interface SpadeEventDetailViewController : UIViewController <SpadeFollowCellDelegate>
+
+@property (weak, nonatomic)  UIButton *leftButton;
+@property (weak, nonatomic)  UIButton *rightButton;
 @property (strong, nonatomic) PFObject *object;
 @property (weak, nonatomic) IBOutlet UIButton *attendButton;
+
+@property (nonatomic, assign) id<SpadeEventDetailControllerDelegate> delegate;
+
 
 @end

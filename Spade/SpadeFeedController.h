@@ -12,6 +12,6 @@
 
 @interface SpadeFeedController : UITableViewController <UIActionSheetDelegate>
 
-
+-(void)runQueryAndReloadData;
 
 @end

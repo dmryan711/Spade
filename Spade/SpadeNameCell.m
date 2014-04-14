@@ -23,6 +23,7 @@
 {
     self.nameEntry.keyboardAppearance = UIKeyboardAppearanceDark;
     self.nameLabel.hidden = YES;
+
 }
 
 /*

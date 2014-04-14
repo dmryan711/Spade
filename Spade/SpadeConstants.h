@@ -10,9 +10,15 @@
 
 @interface SpadeConstants : NSObject
 
+extern NSString * const objectId;
+
+
 extern NSString * const spadePicFLag;
 extern NSString * const spadeNameFlag;
-extern NSString * const spadeFirstLoginFlag;
+extern NSString * const areEnoughFriendsFollowed ;
+extern NSString * const isFirstLogin;
+
+
 
 //User Class
 extern NSString * const spadeClassUser;
@@ -69,6 +75,14 @@ extern NSString * const spadeClassChat;
 extern NSString * const spadeChatFromUser;
 extern NSString * const spadeChatforEvent;
 extern NSString * const spadeChatMessage;
+
+//Invite Code Class
+extern NSString * const spadeInviteCodeClass;
+extern NSString * const inviteCodeWasUsed;
+extern NSString * const belongsTo;
+extern NSString * const usedBy;
+
+
 
 //Cache Constants
 extern NSString * const spadeCache;

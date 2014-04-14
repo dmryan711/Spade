@@ -10,10 +10,14 @@
 
 @implementation SpadeConstants
 
+NSString * const objectId = @"objectId";
+
 
 NSString * const spadePicFLag = @"picChangedFlag";
 NSString * const spadeNameFlag = @"nameChangedFlag";
-NSString * const spadeFirstLoginFlag = @"firstLgoinFlag";
+NSString * const areEnoughFriendsFollowed = @"areEnoughFriendsFollowed";
+NSString * const isFirstLogin = @"isFirstLogin";
+
 
 //User Class
 NSString * const spadeClassUser = @"_User";
@@ -72,6 +76,11 @@ NSString * const spadeChatFromUser = @"fromUser";
 NSString * const spadeChatforEvent = @"forEvent";
 NSString * const spadeChatMessage = @"message";
 
+//Invite Code Class
+NSString * const spadeInviteCodeClass = @"InviteCode";
+NSString * const inviteCodeWasUsed = @"wasUsed";
+NSString * const belongsTo = @"belongsTo";
+NSString * const usedBy = @"usedBy";
 
 //Cache Constants
 NSString * const spadeCache = @"user";
@@ -101,6 +110,8 @@ NSString  * const spadeEventPlaceHolderWhenLabel = @"And Here";
 //Attendance Button
 NSString  * const spadeEventAttendanceButtonTitleAttend = @"Attend";
 NSString  * const spadeEventAttendanceButtonTitleUnattend = @"Unattend";
+
+
 
 
 
