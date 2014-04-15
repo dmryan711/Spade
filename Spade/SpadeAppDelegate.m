@@ -6,6 +6,7 @@
 //  Copyright (c) 2013 Devon Ryan. All rights reserved.
 //
 
+#import <GoogleMaps/GoogleMaps.h>
 #import "SpadeAppDelegate.h"
 #import "SpadeInviteCodeViewController.h"
 #import "SpadeUtility.h"
@@ -23,6 +24,8 @@
 #define MIDDLE_VC 1
 #define FEED_CONTROLLER 0
 #define AMOUNT_OF_REFERALS 2
+
+#define GOOGLE_API_KEY @"AIzaSyCR-VUyP05mZowGrUyzlD0qzVPOH2UbKaE"
 
 @interface SpadeAppDelegate ()
 
@@ -47,6 +50,7 @@
     //Initially Set Flag to NO
     [[NSUserDefaults standardUserDefaults] registerDefaults:@{spadePicFLag:@NO, spadeNameFlag:@NO, isFirstLogin:@YES,areEnoughFriendsFollowed:@NO}];
 
+     [GMSServices provideAPIKey:GOOGLE_API_KEY];
                                                                  
     /*****   PARSE APPLICATION *******/
     [Parse setApplicationId:@"XQODiEaHhQUZWP8WdgcD6FAtQLP0XV33hrDtwgJD"
@@ -89,7 +93,7 @@
     
 
     //Fonts
-    for (NSString* family in [UIFont familyNames])
+    /*for (NSString* family in [UIFont familyNames])
     {
         NSLog(@"%@", family);
         
@@ -97,7 +101,7 @@
         {
             NSLog(@"  %@", name);
         }
-    }
+    }*/
     
    
     
@@ -238,12 +242,13 @@
             //Create Referals if user is new
             if ([[NSUserDefaults standardUserDefaults] boolForKey:isFirstLogin]){
                 //Create X Referrals for User
-                for (int i = 0; i < AMOUNT_OF_REFERALS; i++) {
+                
                     PFObject *referralForUser = [PFObject objectWithClassName:spadeInviteCodeClass];
                     [referralForUser setObject:[PFUser currentUser] forKey:belongsTo];
-                    [referralForUser setObject:@NO forKey:inviteCodeWasUsed];
+                    [referralForUser setObject:[NSNumber numberWithInt:AMOUNT_OF_REFERALS] forKey:totalUses];
+                    [referralForUser setObject:[NSNumber numberWithInt:0] forKey:amountUsed];
                     [referralForUser saveEventually];
-                }
+                
                 [[NSUserDefaults standardUserDefaults]setBool:NO forKey:isFirstLogin];
             }
            

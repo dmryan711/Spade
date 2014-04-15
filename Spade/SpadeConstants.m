@@ -78,9 +78,9 @@ NSString * const spadeChatMessage = @"message";
 
 //Invite Code Class
 NSString * const spadeInviteCodeClass = @"InviteCode";
-NSString * const inviteCodeWasUsed = @"wasUsed";
 NSString * const belongsTo = @"belongsTo";
-NSString * const usedBy = @"usedBy";
+NSString * const totalUses = @"totalUses";
+NSString * const amountUsed =@"amountUsed";
 
 //Cache Constants
 NSString * const spadeCache = @"user";

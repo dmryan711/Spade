@@ -78,9 +78,9 @@ extern NSString * const spadeChatMessage;
 
 //Invite Code Class
 extern NSString * const spadeInviteCodeClass;
-extern NSString * const inviteCodeWasUsed;
 extern NSString * const belongsTo;
-extern NSString * const usedBy;
+extern NSString * const totalUses;
+extern NSString * const amountUsed;
 
 
 

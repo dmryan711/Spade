@@ -11,6 +11,7 @@
 #import "SpadeUtility.h"
 #import "SpadeProfileController.h"
 #import "SpadeConstants.h"
+#import "UIColor+FlatUI.h"
 
 
 @interface SpadeEditProfileViewController ()
@@ -54,6 +55,13 @@
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc]initWithTitle:@"Cancel" style:UIBarButtonItemStyleBordered target:self action:@selector(cancelPressed)];
     self.navigationItem.rightBarButtonItem =[[UIBarButtonItem alloc]initWithTitle:@"Done" style:UIBarButtonItemStyleBordered target:self action:@selector(donePressed)];
     
+    self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"dark_exa.png"]];
+    self.userNameTextField.font = [UIFont fontWithName:@"Copperplate" size:16];
+    self.userNameTextField.keyboardAppearance = UIKeyboardAppearanceDark;
+    self.userNameTextField.backgroundColor = [UIColor silverColor];
+    self.userNameTextField.layer.cornerRadius = 3;
+
+    
     //Bypassing Linker issue When the storyboarding class is loaded at runtime, the PF[.*]Class is referenced using a string. The linker doesn't analyze code functionality, so it doesn't know that the class is used. Since no other source files references that class, the linker optimizes it out of existence when making the executable
     [PFImageView class];
     self.imageLoad.hidden = YES;
@@ -65,6 +73,15 @@
     
     self.userNameTextField.delegate = self;
     self.userNameTextField.text = self.userNameForEdit;
+    
+    //Round corners
+    
+    [self.profileEditImageView.layer setMasksToBounds:YES];
+    [self.profileEditImageView.layer setCornerRadius:10.0];
+    
+    //Set border
+    [self.profileEditImageView.layer setBorderWidth:2];
+    [self.profileEditImageView.layer setBorderColor:[[UIColor whiteColor] CGColor]];
     
     
     CGAffineTransform leftWobble = CGAffineTransformRotate(CGAffineTransformIdentity, RADIANS(-5.0));
@@ -178,6 +195,7 @@
                 [self.profileEditImageView setFile:self.profileFileForEdit];
                 [self.profileEditImageView loadInBackground];
                 
+                
                 //Process & Upload to Parse
                 [SpadeUtility processProfilePictureData:UIImageJPEGRepresentation([info objectForKey:UIImagePickerControllerOriginalImage],0.5)];
             }
@@ -214,12 +232,35 @@
 -(void)donePressed
 {
     if ([self.userNameTextField isFirstResponder]) {
-        self.userNameForEdit = self.userNameTextField.text;
-        [self.userNameTextField resignFirstResponder];
+        if (self.userNameTextField.text.length > 0) {
+            self.userNameForEdit = self.userNameTextField.text;
+            [self.userNameTextField resignFirstResponder];
+            [self passEditsBackToParent];
+            [SpadeUtility processUserName:self.userNameForEdit forUser:[PFUser currentUser]];
+            [self.navigationController popViewControllerAnimated:YES];
+        }else{
+            //Display Name Criteria Alert
+            FUIAlertView *nameCriteriaAlert = [[FUIAlertView alloc]initWithTitle:@"No Name?" message:@"Hey There!\n Please include a name.\n We need to call you something :)" delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles: nil];
+            nameCriteriaAlert.defaultButtonColor = [UIColor amethystColor];
+            nameCriteriaAlert.defaultButtonShadowColor = [UIColor wisteriaColor];
+            nameCriteriaAlert.defaultButtonShadowHeight = 6.0f;
+            nameCriteriaAlert.defaultButtonCornerRadius = 6.0f;
+            nameCriteriaAlert.defaultButtonTitleColor = [UIColor cloudsColor];
+            nameCriteriaAlert.alertContainer.backgroundColor = [UIColor clearColor];
+            nameCriteriaAlert.backgroundOverlay.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:0.9];
+            nameCriteriaAlert.defaultButtonFont = [UIFont fontWithName:@"Copperplate" size:20];
+            nameCriteriaAlert.messageLabel.font = [UIFont fontWithName:@"Copperplate-Bold" size:15];
+            nameCriteriaAlert.titleLabel.font = [UIFont fontWithName:@"Copperplate-Bold" size:20];
+            nameCriteriaAlert.messageLabel.textColor = [UIColor cloudsColor];
+            nameCriteriaAlert.titleLabel.textColor = [UIColor cloudsColor];
+            [nameCriteriaAlert show];
+
+            
+        }
+    }else{
+        [self.navigationController popViewControllerAnimated:YES];
     }
-    [self passEditsBackToParent];
-    [SpadeUtility processUserName:self.userNameForEdit forUser:[PFUser currentUser]];
-    [self.navigationController popViewControllerAnimated:YES];
+    
 }
 
 

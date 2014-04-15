@@ -331,17 +331,8 @@
                     <view key="view" contentMode="scaleToFill" id="iKK-yh-AuK">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <subviews>
-                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="QcJ-EP-c1W">
-                                <rect key="frame" x="-5" y="0.0" width="325" height="568"/>
-                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                            </mapView>
-                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
-                    <connections>
-                        <outlet property="mapview" destination="QcJ-EP-c1W" id="Pbw-DP-MXA"/>
-                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="1g3-Le-Qwc" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -1224,7 +1215,7 @@
                                 <rect key="frame" x="91" y="131" width="142" height="129"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="16"/>
-                                <state key="normal" title="EDIT">
+                                <state key="normal">
                                     <color key="titleColor" red="1" green="0.086766967969999997" blue="0.18367502229999999" alpha="1" colorSpace="calibratedRGB"/>
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>

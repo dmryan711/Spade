@@ -10,6 +10,7 @@
 
 @implementation SpadeEventVenueCell
 
+
 - (id)initWithFrame:(CGRect)frame
 {
     self = [super initWithFrame:frame];
@@ -29,3 +30,5 @@
 */
 
 @end
+
+

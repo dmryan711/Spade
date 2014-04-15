@@ -206,9 +206,8 @@
         //Create Detail View
         SpadeMapViewController *mapViewController = [mainStoryboard   instantiateViewControllerWithIdentifier:@"mapViewController"];
         
-        NSLog(@"Venue Address: %@", [self.venue objectForKey:spadeVenueAddress]);
         
-        mapViewController.address = [self.venue objectForKey:spadeVenueAddress];
+        mapViewController.venue = self.venue;
         
         //FIRE
         [self.navigationController pushViewController:mapViewController animated:YES];
@@ -290,7 +289,7 @@
     
     //Create Map View
     SpadeMapViewController *mapViewController = [mainStoryboard   instantiateViewControllerWithIdentifier:@"mapViewController"];
-    mapViewController.address = [self.venue objectForKey:spadeVenueAddress];
+    mapViewController.venue = self.venue;
     
     //Create Mainslide View
     SpadeMapSlideViewController *mapSlideViewController = [mainStoryboard   instantiateViewControllerWithIdentifier:@"mapSlide"];

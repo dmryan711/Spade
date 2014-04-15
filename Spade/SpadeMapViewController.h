@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <Parse/Parse.h>
 #import <MapKit/MapKit.h>
 #import  <CoreLocation/CoreLocation.h>
 
@@ -22,9 +23,8 @@
 
 @end
 
-@interface SpadeMapViewController : UIViewController <MKMapViewDelegate, CLLocationManagerDelegate>
-@property (weak, nonatomic) IBOutlet MKMapView *mapview;
-@property (strong, nonatomic) NSString *address;
+@interface SpadeMapViewController : UIViewController <CLLocationManagerDelegate>
+@property (strong, nonatomic) PFObject *venue;
 @property (strong, nonatomic) CLLocationManager *locationManager;
 @property (strong, nonatomic) UIButton *leftButton;
 @property (strong,nonatomic) UIButton *bottomButton;

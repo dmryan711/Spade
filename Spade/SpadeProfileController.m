@@ -15,6 +15,7 @@
 #import "UIColor+FlatUI.h"
 #import "FUIButton.h"
 
+#define AMOUNT_OF_REFERRALS 3
 
 @interface SpadeProfileController ()
 //@property (weak, nonatomic) IBOutlet PFImageView *profileImage;
@@ -84,23 +85,7 @@
     
     //Set border
     [self.profileImage.layer setBorderWidth:2];
-    [self.profileImage.layer setBorderColor:[[UIColor wisteriaColor] CGColor]];
-
-
-    
-    //Fetch Referral Codes
-    PFQuery *fetchReferralCodes = [PFQuery queryWithClassName:spadeInviteCodeClass];
-    [fetchReferralCodes whereKey:belongsTo equalTo:[PFUser currentUser]];
-    [fetchReferralCodes findObjectsInBackgroundWithBlock:^(NSArray *codes, NSError *error){
-        if (!error ) {
-            if (codes && codes.count > 0) {
-                //Codes Found
-                
-            }
-        }
-    }];
-    
-
+    [self.profileImage.layer setBorderColor:[[UIColor whiteColor] CGColor]];
 }
 
 -(void)viewWillAppear:(BOOL)animated
@@ -207,12 +192,20 @@
 - (IBAction)referralOnePressed:(id)sender {
     PFQuery *fetchReferrals =[PFQuery queryWithClassName:spadeInviteCodeClass];
     [fetchReferrals whereKey:belongsTo equalTo:[PFUser currentUser]];
-    [fetchReferrals whereKey:inviteCodeWasUsed equalTo:@NO];
+    [fetchReferrals whereKey:amountUsed lessThan:[NSNumber numberWithInt:AMOUNT_OF_REFERRALS]];
     
     [fetchReferrals findObjectsInBackgroundWithBlock:^(NSArray *codes, NSError *error){
         if (!error) {
             if (codes && codes.count > 0) {
-                self.referralCodeAlert = [[FUIAlertView alloc]initWithTitle:@"Referal Codes" message:[NSString stringWithFormat:@"You have %lu Referral Codes Left.\n We recommened using referrals for friends that you will interact with on Spade.\n That is all, Party On.", (unsigned long)codes.count] delegate:self cancelButtonTitle:@"Send Via Text" otherButtonTitles:@"Send Via Email",nil];
+                int amountOfUsesLeft = [[[codes objectAtIndex:0]objectForKey:totalUses] intValue] -  [[[codes objectAtIndex:0]objectForKey:amountUsed] intValue];
+                
+                if (amountOfUsesLeft == 1) {
+                    self.referralCodeAlert = [[FUIAlertView alloc]initWithTitle:@"Referal Codes" message:[NSString stringWithFormat:@"You have %i Referral left.\n We recommened using referrals for friends that you will interact with on Spade.\n That is all, Party On.", amountOfUsesLeft] delegate:self cancelButtonTitle:@"Send Via Text" otherButtonTitles:@"Send Via Email",nil];
+                }else{
+                     self.referralCodeAlert = [[FUIAlertView alloc]initWithTitle:@"Referal Codes" message:[NSString stringWithFormat:@"You have %i Referrals left.\n We recommened using referrals for friends that you will interact with on Spade.\n That is all, Party On.", amountOfUsesLeft] delegate:self cancelButtonTitle:@"Send Via Text" otherButtonTitles:@"Send Via Email",nil];
+                }
+                
+               
                 self.referralCodeAlert.defaultButtonColor = [UIColor amethystColor];
                 self.referralCodeAlert.defaultButtonShadowColor = [UIColor wisteriaColor];
                 self.referralCodeAlert.defaultButtonShadowHeight = 6.0f;

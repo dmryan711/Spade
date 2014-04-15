@@ -7,6 +7,8 @@
 //
 
 #import <Parse/Parse.h>
+#import "SpadePresentTransistion.h"
+#import "SpadeDismissTransistion.h"
 #import "SpadeConstants.h"
 #import "SpadeEventController.h"
 #import "SpadeConstants.h"
@@ -34,7 +36,7 @@
 @property (weak, nonatomic) IBOutlet UITableView *myFollowedEventsTableView;
 @property (strong, nonatomic) UIRefreshControl *myFollowedEventsTableRefreshControl;
 @property (strong, nonatomic) NSMutableArray *searchedObjects;
-
+@property (strong, nonatomic) UINavigationController *tempNavForEventCreation;
 
 
 
@@ -62,6 +64,7 @@
 
     [super viewDidLoad];
     [self.navigationController.navigationBar configureFlatNavigationBarWithColor:[UIColor blendedColorWithForegroundColor:[UIColor blackColor] backgroundColor:[UIColor wisteriaColor] percentBlend:.6]];
+
     
     // Do any additional setup after loading the view.
      self.manageEventsTableView.hidden = NO;
@@ -271,16 +274,19 @@
 {
     UIStoryboard *mainStoryboard = [UIStoryboard storyboardWithName:@"Main"
                                                              bundle: nil];
-    //Create Detail View
-    SpadeEventCreationViewController *createEvent = [mainStoryboard   instantiateViewControllerWithIdentifier:@"CreateEventViewController"];
+    SpadeEventCreationViewController *createEventController = [mainStoryboard   instantiateViewControllerWithIdentifier:@"CreateEventViewController"];
+    
+  
     
     
     
-    UINavigationController *tempNav = [[UINavigationController alloc]initWithRootViewController:createEvent];
-    tempNav.navigationBar.tintColor = [UIColor whiteColor];
-    tempNav.navigationBar.translucent  = NO;
-    [tempNav.navigationBar setTitleTextAttributes:@{NSFontAttributeName: [UIFont fontWithName:@"Copperplate-Bold" size:16]}];
-    [self presentViewController:tempNav animated:YES completion:nil];
+    self.tempNavForEventCreation  = [[UINavigationController alloc]initWithRootViewController:createEventController];
+    self.tempNavForEventCreation.navigationBar.tintColor = [UIColor whiteColor];
+    self.tempNavForEventCreation.navigationBar.translucent  = NO;
+    self.tempNavForEventCreation.transitioningDelegate = self;
+    self.tempNavForEventCreation.modalPresentationStyle =UIModalPresentationCustom;
+    [self.tempNavForEventCreation.navigationBar setTitleTextAttributes:@{NSFontAttributeName: [UIFont fontWithName:@"Copperplate-Bold" size:16]}];
+    [self presentViewController:self.tempNavForEventCreation animated:YES completion:nil];
 }
 
 -(void)runMyEventQueryAndReloadData
@@ -377,9 +383,16 @@
     
 }*/
 
+- (id <UIViewControllerAnimatedTransitioning>)animationControllerForPresentedController:(UIViewController *)presented presentingController:(UIViewController *)presenting sourceController:(UIViewController *)source
+{
+    return [[SpadePresentTransistion alloc]init];
 
+}
 
-
+- (id<UIViewControllerAnimatedTransitioning>)animationControllerForDismissedController:(UIViewController *)dismissed
+{
+    return [[SpadeDismissTransistion alloc] init];
+}
 
 
 @end

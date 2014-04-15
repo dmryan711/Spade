@@ -13,6 +13,7 @@
 #import <Parse/Parse.h>
 #import "SpadeAppDelegate.h"
 #import <QuartzCore/QuartzCore.h>
+#import "FUIAlertView.h"
 
 #define MIDDLE_VC 1
 #define APPLICATION_DELEGATE (SpadeAppDelegate *)[[UIApplication sharedApplication] delegate]
@@ -21,6 +22,7 @@
 @interface SpadeInviteCodeViewController () <UITextFieldDelegate>
 @property (weak, nonatomic) IBOutlet UITextField *textField;
 @property (weak, nonatomic) IBOutlet UILabel *subTitleLabel;
+@property (strong, nonatomic) FUIAlertView *codeUsedUpAlert;
 @property (weak, nonatomic) IBOutlet FUIButton *submitButton;
 @property (strong, nonatomic) NSArray *subTitles;
 
@@ -176,14 +178,14 @@
     
     [UIView animateWithDuration:.1 animations:^(void){
          direction =  directionStatic;
-        NSLog(@"%i",direction);
+        //NSLog(@"%i",direction);
         self.textField.transform= CGAffineTransformMakeTranslation(5 * direction, 0);
       
         //[UIView commitAnimations];
     } completion:^(BOOL finished)
      {
           shakes = shakeStatic;
-         NSLog(@"Completed");
+         //NSLog(@"Completed");
          if(shakes >= 6)
          {
              self.textField.transform = CGAffineTransformIdentity;
@@ -194,7 +196,7 @@
          
         shakeStatic++;
         directionStatic =  direction* -1;
-         NSLog(@"SHakes: %i  Dir: %i", shakeStatic,directionStatic);
+        // NSLog(@"SHakes: %i  Dir: %i", shakeStatic,directionStatic);
          [self shakeTextField];
      }];
     
@@ -215,12 +217,11 @@
         
         [lookUpInviteCodeEntered getObjectInBackgroundWithId:self.textField.text block:^(PFObject *object , NSError *error){
             if (!error) {
-                if ([[object objectForKey:inviteCodeWasUsed] isEqual:@NO]) {
+                if ([object objectForKey:amountUsed] < [object objectForKey:totalUses]) {
                     NSLog(@"Invite Code Success");
                     
-                    // Set Invite Code to used
-                    [object setObject:@YES forKey:inviteCodeWasUsed];
-                    [object setObject:[PFUser currentUser] forKey:usedBy];
+                    // Increment Invite Code uses
+                    [object incrementKey:amountUsed];
                     [object saveEventually];
                     
                     [APPLICATION_DELEGATE setMainControllers];
@@ -231,6 +232,10 @@
                     NSLog(@"Invite Code Was Used");
                     //shake textfield
                     [self shakeTextField];
+                    [self fadeTextFieldColor];
+                     
+                    //Display Code Used Up Alert
+                    
                 }
             }else{
                 NSLog(@"No Invite Code Found");

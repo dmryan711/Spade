@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface SpadeEventController : UIViewController < UIAlertViewDelegate, UIActionSheetDelegate>
+@interface SpadeEventController : UIViewController < UIAlertViewDelegate, UIActionSheetDelegate, UIViewControllerTransitioningDelegate>
 
 
 

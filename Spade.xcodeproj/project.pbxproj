@@ -68,7 +68,21 @@
 		915BEDAE1857DB5A00FCA17A /* UIImage+ResizeAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 915BEDA91857DB5A00FCA17A /* UIImage+ResizeAdditions.m */; };
 		915BEDAF1857DB5A00FCA17A /* UIImage+AlphaAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 915BEDAB1857DB5A00FCA17A /* UIImage+AlphaAdditions.m */; };
 		915BEDB01857DB5A00FCA17A /* UIImage+RoundedCornerAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 915BEDAD1857DB5A00FCA17A /* UIImage+RoundedCornerAdditions.m */; };
+		915E9CC518FD8D0C001E3BB7 /* SpadePresentTransistion.m in Sources */ = {isa = PBXBuildFile; fileRef = 915E9CC418FD8D0C001E3BB7 /* SpadePresentTransistion.m */; };
+		915E9CC818FDA0D0001E3BB7 /* SpadeDismissTransistion.m in Sources */ = {isa = PBXBuildFile; fileRef = 915E9CC718FDA0D0001E3BB7 /* SpadeDismissTransistion.m */; };
 		91632CF01857CFE000FB276E /* SpadeProfileController.m in Sources */ = {isa = PBXBuildFile; fileRef = 91632CEF1857CFE000FB276E /* SpadeProfileController.m */; };
+		9173F22018FC98FC00AD52C9 /* NSString+URLEncoding.m in Sources */ = {isa = PBXBuildFile; fileRef = 9173F21F18FC98FC00AD52C9 /* NSString+URLEncoding.m */; };
+		9173F22218FCA40E00AD52C9 /* GoogleMaps.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9173F22118FCA40E00AD52C9 /* GoogleMaps.framework */; };
+		9173F22418FCA55900AD52C9 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9173F22318FCA55900AD52C9 /* AVFoundation.framework */; };
+		9173F22618FCA56700AD52C9 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9173F22518FCA56700AD52C9 /* CoreData.framework */; };
+		9173F22818FCA57700AD52C9 /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9173F22718FCA57700AD52C9 /* CoreText.framework */; };
+		9173F22A18FCA57E00AD52C9 /* GLKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9173F22918FCA57E00AD52C9 /* GLKit.framework */; };
+		9173F22C18FCA58800AD52C9 /* ImageIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9173F22B18FCA58800AD52C9 /* ImageIO.framework */; };
+		9173F22E18FCA59800AD52C9 /* libc++.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 9173F22D18FCA59800AD52C9 /* libc++.dylib */; };
+		9173F23018FCA5AA00AD52C9 /* libicucore.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 9173F22F18FCA5AA00AD52C9 /* libicucore.dylib */; };
+		9173F23218FCA5B800AD52C9 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 9173F23118FCA5B800AD52C9 /* libz.dylib */; };
+		9173F23418FCA5C500AD52C9 /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9173F23318FCA5C500AD52C9 /* OpenGLES.framework */; };
+		9173F23618FCAAB600AD52C9 /* GoogleMaps.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 9173F23518FCAAB600AD52C9 /* GoogleMaps.bundle */; };
 		917CE60618FB7EAB0076D5A1 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 917CE60518FB7EAB0076D5A1 /* MessageUI.framework */; };
 		917FA75418E3C7BA009EDEF2 /* SpadeMainSlideViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 917FA75318E3C7BA009EDEF2 /* SpadeMainSlideViewController.m */; };
 		9188E52F184EE7FD00C72151 /* SpadeFeedController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9188E52E184EE7FD00C72151 /* SpadeFeedController.m */; };
@@ -240,8 +254,25 @@
 		915BEDAB1857DB5A00FCA17A /* UIImage+AlphaAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UIImage+AlphaAdditions.m"; path = "../../../Downloads/ParsePlatform-Anypic-cd02eb4/Anypic-iOS/Anypic/UIImage+AlphaAdditions.m"; sourceTree = "<group>"; };
 		915BEDAC1857DB5A00FCA17A /* UIImage+RoundedCornerAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "UIImage+RoundedCornerAdditions.h"; path = "../../../Downloads/ParsePlatform-Anypic-cd02eb4/Anypic-iOS/Anypic/UIImage+RoundedCornerAdditions.h"; sourceTree = "<group>"; };
 		915BEDAD1857DB5A00FCA17A /* UIImage+RoundedCornerAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UIImage+RoundedCornerAdditions.m"; path = "../../../Downloads/ParsePlatform-Anypic-cd02eb4/Anypic-iOS/Anypic/UIImage+RoundedCornerAdditions.m"; sourceTree = "<group>"; };
+		915E9CC318FD8D0C001E3BB7 /* SpadePresentTransistion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SpadePresentTransistion.h; sourceTree = "<group>"; };
+		915E9CC418FD8D0C001E3BB7 /* SpadePresentTransistion.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SpadePresentTransistion.m; sourceTree = "<group>"; };
+		915E9CC618FDA0D0001E3BB7 /* SpadeDismissTransistion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SpadeDismissTransistion.h; sourceTree = "<group>"; };
+		915E9CC718FDA0D0001E3BB7 /* SpadeDismissTransistion.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SpadeDismissTransistion.m; sourceTree = "<group>"; };
 		91632CEE1857CFE000FB276E /* SpadeProfileController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SpadeProfileController.h; sourceTree = "<group>"; };
 		91632CEF1857CFE000FB276E /* SpadeProfileController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SpadeProfileController.m; sourceTree = "<group>"; };
+		9173F21E18FC98FC00AD52C9 /* NSString+URLEncoding.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+URLEncoding.h"; sourceTree = "<group>"; };
+		9173F21F18FC98FC00AD52C9 /* NSString+URLEncoding.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+URLEncoding.m"; sourceTree = "<group>"; };
+		9173F22118FCA40E00AD52C9 /* GoogleMaps.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = GoogleMaps.framework; sourceTree = "<group>"; };
+		9173F22318FCA55900AD52C9 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
+		9173F22518FCA56700AD52C9 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
+		9173F22718FCA57700AD52C9 /* CoreText.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreText.framework; path = System/Library/Frameworks/CoreText.framework; sourceTree = SDKROOT; };
+		9173F22918FCA57E00AD52C9 /* GLKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLKit.framework; path = System/Library/Frameworks/GLKit.framework; sourceTree = SDKROOT; };
+		9173F22B18FCA58800AD52C9 /* ImageIO.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ImageIO.framework; path = System/Library/Frameworks/ImageIO.framework; sourceTree = SDKROOT; };
+		9173F22D18FCA59800AD52C9 /* libc++.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libc++.dylib"; path = "usr/lib/libc++.dylib"; sourceTree = SDKROOT; };
+		9173F22F18FCA5AA00AD52C9 /* libicucore.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libicucore.dylib; path = usr/lib/libicucore.dylib; sourceTree = SDKROOT; };
+		9173F23118FCA5B800AD52C9 /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
+		9173F23318FCA5C500AD52C9 /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
+		9173F23518FCAAB600AD52C9 /* GoogleMaps.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = GoogleMaps.bundle; sourceTree = "<group>"; };
 		917CE60518FB7EAB0076D5A1 /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
 		917FA75218E3C7BA009EDEF2 /* SpadeMainSlideViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SpadeMainSlideViewController.h; sourceTree = "<group>"; };
 		917FA75318E3C7BA009EDEF2 /* SpadeMainSlideViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SpadeMainSlideViewController.m; sourceTree = "<group>"; };
@@ -335,12 +366,21 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				91D9D6411842F766005BD0BC /* QuartzCore.framework in Frameworks */,
+				9173F23418FCA5C500AD52C9 /* OpenGLES.framework in Frameworks */,
+				9173F23218FCA5B800AD52C9 /* libz.dylib in Frameworks */,
+				9173F23018FCA5AA00AD52C9 /* libicucore.dylib in Frameworks */,
+				9173F22E18FCA59800AD52C9 /* libc++.dylib in Frameworks */,
+				9173F22C18FCA58800AD52C9 /* ImageIO.framework in Frameworks */,
+				9173F22A18FCA57E00AD52C9 /* GLKit.framework in Frameworks */,
+				9173F22818FCA57700AD52C9 /* CoreText.framework in Frameworks */,
+				9173F22618FCA56700AD52C9 /* CoreData.framework in Frameworks */,
+				9173F22418FCA55900AD52C9 /* AVFoundation.framework in Frameworks */,
 				917CE60618FB7EAB0076D5A1 /* MessageUI.framework in Frameworks */,
 				91D2220E188DB75F00750688 /* MapKit.framework in Frameworks */,
 				91FF259B1859791600FA923A /* CoreFoundation.framework in Frameworks */,
 				91D9D6471842F783005BD0BC /* SystemConfiguration.framework in Frameworks */,
 				91D9D6431842F771005BD0BC /* Security.framework in Frameworks */,
-				91D9D6411842F766005BD0BC /* QuartzCore.framework in Frameworks */,
 				91D9D63F1842F75E005BD0BC /* MobileCoreServices.framework in Frameworks */,
 				91D9D63D1842F755005BD0BC /* libz.1.1.3.dylib in Frameworks */,
 				91D9D63B1842F749005BD0BC /* CoreLocation.framework in Frameworks */,
@@ -349,6 +389,7 @@
 				91D9D6371842F72A005BD0BC /* AudioToolbox.framework in Frameworks */,
 				9141E86918407A5000A5DE15 /* UIKit.framework in Frameworks */,
 				91D9D6351842F643005BD0BC /* Parse.framework in Frameworks */,
+				9173F22218FCA40E00AD52C9 /* GoogleMaps.framework in Frameworks */,
 				9141E86518407A5000A5DE15 /* Foundation.framework in Frameworks */,
 				91D9D65518432156005BD0BC /* FacebookSDK.framework in Frameworks */,
 			);
@@ -380,6 +421,8 @@
 				91D8574E18AB0F6400615874 /* SpadeCacherTest.m */,
 				91206109184A62E700E3DA0C /* SpadeUtility.h */,
 				9120610A184A62E700E3DA0C /* SpadeUtility.m */,
+				9173F21E18FC98FC00AD52C9 /* NSString+URLEncoding.h */,
+				9173F21F18FC98FC00AD52C9 /* NSString+URLEncoding.m */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -522,6 +565,17 @@
 		9141E86318407A5000A5DE15 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				9173F23518FCAAB600AD52C9 /* GoogleMaps.bundle */,
+				9173F23318FCA5C500AD52C9 /* OpenGLES.framework */,
+				9173F23118FCA5B800AD52C9 /* libz.dylib */,
+				9173F22F18FCA5AA00AD52C9 /* libicucore.dylib */,
+				9173F22D18FCA59800AD52C9 /* libc++.dylib */,
+				9173F22B18FCA58800AD52C9 /* ImageIO.framework */,
+				9173F22918FCA57E00AD52C9 /* GLKit.framework */,
+				9173F22718FCA57700AD52C9 /* CoreText.framework */,
+				9173F22518FCA56700AD52C9 /* CoreData.framework */,
+				9173F22318FCA55900AD52C9 /* AVFoundation.framework */,
+				9173F22118FCA40E00AD52C9 /* GoogleMaps.framework */,
 				917CE60518FB7EAB0076D5A1 /* MessageUI.framework */,
 				91D2220D188DB75F00750688 /* MapKit.framework */,
 				91FF259A1859791600FA923A /* CoreFoundation.framework */,
@@ -546,6 +600,7 @@
 		9141E86A18407A5000A5DE15 /* Spade */ = {
 			isa = PBXGroup;
 			children = (
+				915E9CC218FD8CE0001E3BB7 /* Transistions */,
 				9141E87318407A5000A5DE15 /* SpadeAppDelegate.h */,
 				9141E87418407A5000A5DE15 /* SpadeAppDelegate.m */,
 				9112353F18569D700092253B /* View */,
@@ -599,6 +654,17 @@
 				915BEDAD1857DB5A00FCA17A /* UIImage+RoundedCornerAdditions.m */,
 			);
 			name = Uitility;
+			sourceTree = "<group>";
+		};
+		915E9CC218FD8CE0001E3BB7 /* Transistions */ = {
+			isa = PBXGroup;
+			children = (
+				915E9CC318FD8D0C001E3BB7 /* SpadePresentTransistion.h */,
+				915E9CC418FD8D0C001E3BB7 /* SpadePresentTransistion.m */,
+				915E9CC618FDA0D0001E3BB7 /* SpadeDismissTransistion.h */,
+				915E9CC718FDA0D0001E3BB7 /* SpadeDismissTransistion.m */,
+			);
+			name = Transistions;
 			sourceTree = "<group>";
 		};
 		91AB44A918E091BA00B78719 /* OTF */ = {
@@ -731,6 +797,39 @@
 			knownRegions = (
 				en,
 				Base,
+				ar,
+				ca,
+				cs,
+				da,
+				de,
+				el,
+				en_GB,
+				es,
+				fi,
+				fr,
+				he,
+				hr,
+				hu,
+				id,
+				it,
+				ja,
+				ko,
+				ms,
+				nl,
+				no,
+				pl,
+				pt,
+				pt_PT,
+				ro,
+				ru,
+				sk,
+				sv,
+				th,
+				tr,
+				uk,
+				vi,
+				zh_CN,
+				zh_TW,
 			);
 			mainGroup = 9141E85818407A5000A5DE15;
 			productRefGroup = 9141E86218407A5000A5DE15 /* Products */;
@@ -757,6 +856,7 @@
 				91AB44B718E091EC00B78719 /* Lato-BolIta.otf in Resources */,
 				91AB44B818E091EC00B78719 /* Lato-Hai.otf in Resources */,
 				91175E0C18E5288A002BA37A /* Center-Tab.png in Resources */,
+				9173F23618FCAAB600AD52C9 /* GoogleMaps.bundle in Resources */,
 				91AB44CA18E1C3F800B78719 /* spade_4@2x.png in Resources */,
 				91175E1C18E533E8002BA37A /* tabBarSelected@2x.png in Resources */,
 				91175E0B18E5288A002BA37A /* Center-Tab@2x.png in Resources */,
@@ -826,12 +926,14 @@
 				9133C15018A2E4E600730B9E /* UIFont+FlatUI.m in Sources */,
 				919DC3C418775E57007E8BC0 /* SpadeFeedCell.m in Sources */,
 				91175E1F18E537E1002BA37A /* SpadeMapSlideViewController.m in Sources */,
+				915E9CC818FDA0D0001E3BB7 /* SpadeDismissTransistion.m in Sources */,
 				9196A8D9186A919F00513082 /* SpadeEditProfileViewController.m in Sources */,
 				9133C14E18A2E4E600730B9E /* UIBarButtonItem+FlatUI.m in Sources */,
 				915BEDAE1857DB5A00FCA17A /* UIImage+ResizeAdditions.m in Sources */,
 				91632CF01857CFE000FB276E /* SpadeProfileController.m in Sources */,
 				9133C14918A2E4E600730B9E /* FUICellBackgroundView.m in Sources */,
 				9133C15618A2E4E600730B9E /* UIStepper+FlatUI.m in Sources */,
+				915E9CC518FD8D0C001E3BB7 /* SpadePresentTransistion.m in Sources */,
 				91D2220C188DAA7100750688 /* SpadeMyEventsCell.m in Sources */,
 				91E5007218F8CA1E004BD33D /* SpadeInviteCodeViewController.m in Sources */,
 				9196A8E2186D29F500513082 /* SpadeFollowCell.m in Sources */,
@@ -869,6 +971,7 @@
 				9133C14C18A2E4E600730B9E /* FUISwitch.m in Sources */,
 				9133C14B18A2E4E600730B9E /* FUISegmentedControl.m in Sources */,
 				919DC3CC1879FA73007E8BC0 /* SpadeChatCell.m in Sources */,
+				9173F22018FC98FC00AD52C9 /* NSString+URLEncoding.m in Sources */,
 				9133C14818A2E4E600730B9E /* FUIButton.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -954,6 +1057,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				ONLY_ACTIVE_ARCH = YES;
+				OTHER_LDFLAGS = "";
 				SDKROOT = iphoneos;
 			};
 			name = Debug;
@@ -986,6 +1090,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				OTHER_LDFLAGS = "";
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
 			};
@@ -1002,11 +1107,12 @@
 					"$(inherited)",
 					/Users/dryan/Downloads,
 					"/Users/dryan/Downloads/ParsePlatform-LoginAndSignUpTutorial-0710943",
+					"$(PROJECT_DIR)",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Spade/Spade-Prefix.pch";
 				INFOPLIST_FILE = "Spade/Spade-Info.plist";
-				OTHER_LDFLAGS = "";
+				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				WRAPPER_EXTENSION = app;
@@ -1024,11 +1130,12 @@
 					"$(inherited)",
 					/Users/dryan/Downloads,
 					"/Users/dryan/Downloads/ParsePlatform-LoginAndSignUpTutorial-0710943",
+					"$(PROJECT_DIR)",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Spade/Spade-Prefix.pch";
 				INFOPLIST_FILE = "Spade/Spade-Info.plist";
-				OTHER_LDFLAGS = "";
+				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				WRAPPER_EXTENSION = app;
