@@ -52,24 +52,6 @@
             </objects>
             <point key="canvasLocation" x="-258" y="-669"/>
         </scene>
-        <!--Spade Hold Screen View Controller-->
-        <scene sceneID="fBf-e8-Gli">
-            <objects>
-                <viewController storyboardIdentifier="holdScreen" id="S8a-Q3-HYu" customClass="SpadeHoldScreenViewController" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="wID-KQ-g7a"/>
-                        <viewControllerLayoutGuide type="bottom" id="clI-4b-mRe"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="94g-GQ-HQA">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
-                    </view>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="KL6-US-F7U" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="-241" y="37"/>
-        </scene>
         <!--Tab Bar Controller-->
         <scene sceneID="Fnc-Ij-fyw">
             <objects>
@@ -974,6 +956,34 @@
                 </tapGestureRecognizer>
             </objects>
             <point key="canvasLocation" x="1957" y="171"/>
+        </scene>
+        <!--User Menu Table View Controller-->
+        <scene sceneID="lBY-Of-5ku">
+            <objects>
+                <tableViewController storyboardIdentifier="menuTable" id="1YM-he-BdX" customClass="UserMenuTableViewController" sceneMemberID="viewController">
+                    <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="eXv-HF-n4V">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <prototypes>
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="UserMenuCell" id="goP-AH-7tJ">
+                                <rect key="frame" x="0.0" y="22" width="320" height="44"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="goP-AH-7tJ" id="Z33-9j-EXO">
+                                    <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                </tableViewCellContentView>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="1YM-he-BdX" id="Y4a-rj-uWG"/>
+                            <outlet property="delegate" destination="1YM-he-BdX" id="od8-h1-2Cv"/>
+                        </connections>
+                    </tableView>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="nZJ-tw-R7d" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1024" y="-1584"/>
         </scene>
         <!--Spade Main Slide View Controller-->
         <scene sceneID="Zrt-Tp-N8r">

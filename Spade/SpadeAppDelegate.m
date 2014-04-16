@@ -19,13 +19,15 @@
 #import "SpadeFriendTableViewController.h"
 #import "UITabBar+FlatUI.h"
 #import "UIColor+FlatUI.h"
+#import "SpadeContainerViewController.h"
+#import "UserMenuTableViewController.h"
 
 #define LEFT_VIEWCONTROLLER 0
 #define MIDDLE_VC 1
 #define FEED_CONTROLLER 0
 #define AMOUNT_OF_REFERALS 2
-
 #define GOOGLE_API_KEY @"AIzaSyCR-VUyP05mZowGrUyzlD0qzVPOH2UbKaE"
+#define STORYBOARD   [UIStoryboard storyboardWithName:@"Main" bundle: nil]
 
 @interface SpadeAppDelegate ()
 
@@ -41,15 +43,17 @@
 @implementation SpadeAppDelegate
 
 #pragma mark Application Delegate Methods
-
-
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     // Override point for customization after application launch.
     
-    //Initially Set Flag to NO
+    //Bundle ID
+    NSLog(@"Bundle ID: %@",[[NSBundle mainBundle] bundleIdentifier]);
+    
+    //Set User Defaults
     [[NSUserDefaults standardUserDefaults] registerDefaults:@{spadePicFLag:@NO, spadeNameFlag:@NO, isFirstLogin:@YES,areEnoughFriendsFollowed:@NO}];
-
+    
+    /***** INITIALIZE GOOGLE *****/
      [GMSServices provideAPIKey:GOOGLE_API_KEY];
                                                                  
     /*****   PARSE APPLICATION *******/
@@ -59,40 +63,32 @@
     /***** PARSE ANALYTICS *****/
     [PFAnalytics trackAppOpenedWithLaunchOptions:launchOptions];
     
+    /***** INITIALIZE FACEBOOK *****/
     [PFFacebookUtils initializeFacebook];
     
-    NSLog(@"Bundle ID: %@",[[NSBundle mainBundle] bundleIdentifier]);
     
-    UIStoryboard *mainStoryboard = [UIStoryboard storyboardWithName:@"Main"
-                                                             bundle: nil];
-    
-    //Getting a Reference to the UITabBarController & setting the delegate
-    self.tabBarController = [mainStoryboard instantiateInitialViewController];
+    //Set up the Tab Bar Controller
+    self.tabBarController = [STORYBOARD instantiateInitialViewController];
     self.tabBarController.delegate = self;
+    self.tabBarController.tabBar.backgroundImage = [UIImage imageNamed:@"tabBarBackGround.png"];
+    self.tabBarController.tabBar.selectionIndicatorImage = [UIImage imageNamed:@"tabBarSelected.png"];
     
-    
-    [self.tabBarController.tabBar setBackgroundImage:[UIImage imageNamed:@"tabBarBackGround.png"]];
-    [self.tabBarController.tabBar setSelectionIndicatorImage:[UIImage imageNamed:@"tabBarSelected.png"]];
-    
-   
-    
-    
+    //Load Main Set of View Controllers or Load Invite Controller into Tab Bar
     if ([[NSUserDefaults standardUserDefaults] boolForKey:isFirstLogin]){
-        
         [self setInviteCodeController];
     }else{
         [self setMainControllers];
     }
 
-
+    //Set Up App
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-    [self.window setRootViewController:self.tabBarController];
+    self.window.rootViewController = self.tabBarController;
     [self.window makeKeyAndVisible];
     
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
     
 
-    //Fonts
+    //Log Fonts
     /*for (NSString* family in [UIFont familyNames])
     {
         NSLog(@"%@", family);
@@ -103,15 +99,8 @@
         }
     }*/
     
-   
-    
     return YES;
 }
-
-
-
-
-
 
 - (void)applicationWillResignActive:(UIApplication *)application
 {
@@ -147,37 +136,34 @@
     return [PFFacebookUtils handleOpenURL:url];
 }
 
-- (BOOL)application:(UIApplication *)application openURL:(NSURL *)url
-  sourceApplication:(NSString *)sourceApplication annotation:(id)annotation {
+- (BOOL)application:(UIApplication *)application
+            openURL:(NSURL *)url
+  sourceApplication:(NSString *)sourceApplication
+         annotation:(id)annotation {
+    
     return [PFFacebookUtils handleOpenURL:url];
 }
 
 #pragma mark Tab Bar Controller Delegate Methods
 
--(void)tabBarController:(UITabBarController *)tabBarController didSelectViewController:(UIViewController *)viewController
+-(void)tabBarController:(UITabBarController *)tabBarController
+didSelectViewController:(UIViewController *)viewController
 {
-   
-
 }
 
-
-
-
-#pragma mark Spade Login Delegate Methods
-
+#pragma mark Login Delegate Methods
 // Sent to the delegate when a PFUser is logged in.
-- (void)logInViewController:(PFLogInViewController *)logInController didLogInUser:(PFUser *)user {
-    
-   
-    
+- (void)logInViewController:(PFLogInViewController *)logInController
+               didLogInUser:(PFUser *)user {
+
     //Get Rid of the Login View
     [[self.tabBarController.viewControllers objectAtIndex:LEFT_VIEWCONTROLLER] dismissViewControllerAnimated:YES completion:nil];
     
-    //Set Requests
+    //Set Facebook Request for user & friends
     FBRequest *requestForFriends = [FBRequest requestForMyFriends];
     FBRequest *request = [FBRequest requestForMe];
     
-    //Request Friends
+    //Request Friend Information
     [requestForFriends startWithCompletionHandler:^(FBRequestConnection *connection, id result, NSError *error){
         if (!error) {
             
@@ -191,22 +177,18 @@
                 }
                 
                 [user setObject:friendIdList forKey:spadeUserFriends];
-                
                 [user saveEventually];
-                
-                
             }
-            
-        } else if ([error.userInfo[FBErrorParsedJSONResponseKey][@"body"][@"error"][@"type"] isEqualToString:@"OAuthException"]) {//Request Failed , Checking Why
+         //Request Failed
+        } else if ([error.userInfo[FBErrorParsedJSONResponseKey][@"body"][@"error"][@"type"] isEqualToString:@"OAuthException"]) {
             NSLog(@"The facebook session was invalidated");
             [self logOutUser];
+            //Display Error
             
         } else {
             NSLog(@"Some other error: %@", error);
             [self logOutUser];
         }
-        
-        
     }];
     
     
@@ -214,7 +196,6 @@
     //Request User Information
     [request startWithCompletionHandler:^(FBRequestConnection *connection, id result, NSError *error){
         if (!error) {
-            
             //Store Facebook Results to local objects
             NSDictionary *userData = (NSDictionary *)result;
             
@@ -241,14 +222,13 @@
             
             //Create Referals if user is new
             if ([[NSUserDefaults standardUserDefaults] boolForKey:isFirstLogin]){
-                //Create X Referrals for User
                 
+                //Create X Referrals for User
                     PFObject *referralForUser = [PFObject objectWithClassName:spadeInviteCodeClass];
                     [referralForUser setObject:[PFUser currentUser] forKey:belongsTo];
                     [referralForUser setObject:[NSNumber numberWithInt:AMOUNT_OF_REFERALS] forKey:totalUses];
                     [referralForUser setObject:[NSNumber numberWithInt:0] forKey:amountUsed];
                     [referralForUser saveEventually];
-                
                 [[NSUserDefaults standardUserDefaults]setBool:NO forKey:isFirstLogin];
             }
            
@@ -264,7 +244,6 @@
             if (![[NSUserDefaults standardUserDefaults]boolForKey:spadeNameFlag] ) { //User Did not Change Name
                 [user setObject:fullName forKey:spadeUserDisplayName];
             }
-            
             
             [self setCacheForUser];
             
@@ -302,7 +281,8 @@
 
 
 // Sent to the delegate when the log in attempt fails.
-- (void)logInViewController:(PFLogInViewController *)logInController didFailToLogInWithError:(NSError *)error {
+- (void)logInViewController:(PFLogInViewController *)logInController
+    didFailToLogInWithError:(NSError *)error {
     NSLog(@"Failed to log in...");
 }
 
@@ -315,23 +295,25 @@
 
 
 #pragma mark NSConnectionDataDelegate
-
-- (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response {
+- (void)connection:(NSURLConnection *)connection
+didReceiveResponse:(NSURLResponse *)response {
     self.data = [[NSMutableData alloc] init];
 }
 
-- (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data {
+- (void)connection:(NSURLConnection *)connection
+    didReceiveData:(NSData *)data {
     [self.data appendData:data];
 }
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection
 {
     [SpadeUtility processProfilePictureData:self.data];
-
 }
 
 
-#pragma mark {   }
-
+#pragma mark Present View Controllers
+/**
+ *  Presents the Login Controller
+ */
 -(void)presentLoginView
 {
     SpadeLoginViewController *logInViewController = [[SpadeLoginViewController alloc] init];
@@ -339,52 +321,74 @@
     [logInViewController setFacebookPermissions:[NSArray arrayWithObjects:@"email",@"user_location",@"user_birthday", nil]];
     [logInViewController setFields:PFLogInFieldsFacebook];
     
-    
     // Present the log in view controller
     [[self.tabBarController.viewControllers objectAtIndex:LEFT_VIEWCONTROLLER ] presentViewController:logInViewController animated:YES completion:NULL];
 }
 
+/**
+ *  Present the Friend View Controller.
+ *  This is used to ask the user to follow a certain amount of friends when they first join Spade
+ */
 -(void)presentFriendsViewController
 {
 
-    // Present Friend List
-    UIStoryboard *mainStoryboard = [UIStoryboard storyboardWithName:@"Main"
-                                                             bundle: nil];
     //Create Detail View
-    SpadeFriendTableViewController *friendListViewController = [mainStoryboard   instantiateViewControllerWithIdentifier:@"findFriendView"];
+    SpadeFriendTableViewController *friendListViewController = [STORYBOARD  instantiateViewControllerWithIdentifier:@"findFriendView"];
     
     [[self.tabBarController.viewControllers objectAtIndex:LEFT_VIEWCONTROLLER] presentViewController:friendListViewController animated:YES completion:NULL];
 
 }
 
-
--(void)presentInviteCodeView
+#pragma mark Set Up View Controllers
+/**
+ *  Sets up the Invite Controller when a user is using the app for the first time.
+ *
+ */
+-(void)setInviteCodeController
 {
-    // Present Friend List
-    UIStoryboard *mainStoryboard = [UIStoryboard storyboardWithName:@"Main"
-                                                             bundle: nil];
-    //Create Detail View
-    SpadeInviteCodeViewController *inviteCodeController = [mainStoryboard   instantiateViewControllerWithIdentifier:@"InviteCode"];
-    
-    [[self.tabBarController.viewControllers objectAtIndex:LEFT_VIEWCONTROLLER] presentViewController:inviteCodeController animated:YES completion:NULL];
-
-
-
+    [self.tabBarController setViewControllers:@[[STORYBOARD instantiateViewControllerWithIdentifier:@"InviteCode"]]];
+    [self.tabBarController setSelectedIndex:MIDDLE_VC];
 }
 
+/**
+ *  Set up the main app controllers.
+ */
+-(void)setMainControllers
+{
+    self.feedController = [STORYBOARD instantiateViewControllerWithIdentifier:@"feedNav"];
+    
+    SpadeContainerViewController *containerView = [[SpadeContainerViewController alloc]initWithNibName:nil bundle:nil];
+    containerView.isPullFromRightEnabled = YES;
+    containerView.rightMenuTableViewController = [STORYBOARD instantiateViewControllerWithIdentifier:@"menuTable"];
+    containerView.mainNavigationController = self.feedController;
+    
+    
+    self.tabBarController.tabBar.hidden = NO;
+    [self.tabBarController setViewControllers:@[ [STORYBOARD instantiateViewControllerWithIdentifier:@"eventNav"],containerView, [STORYBOARD instantiateViewControllerWithIdentifier:@"venueNav"]]];
+    [self.tabBarController setSelectedIndex:MIDDLE_VC];
+}
+
+#pragma mark User Utility Methods
+/**
+ *  Logs out the current user, Presents Login Screen, and Kills the cache
+ */
 -(void)logOutUser{
-    
     [PFUser logOut];
-    
     [self presentLoginView];
-    
     [[[SpadeCache sharedCache] cache] removeAllObjects];
-    
 }
 
 
--(void)setCacheForUser{
-    
+-(void)setCacheForUser
+{
+    [self cacheForVenues];
+    [self cacheForFollowers];
+    [self cacheForAttendingEvents];
+}
+
+#pragma mark Helper Methods
+-(void)cacheForVenues
+{
     //Query for Followed Venues
     PFQuery *queryFollowedVenues = [PFQuery queryWithClassName:spadeClassActivity];
     queryFollowedVenues.cachePolicy = kPFCachePolicyNetworkOnly;
@@ -396,17 +400,15 @@
         if (!error) {
             for(PFObject *object in followedVenuesForUserFromParse){
                 [[SpadeCache sharedCache] addFollowedVenue:[object objectForKey:spadeActivityToVenue]];
-                
             }
-            
         }else{
             NSLog(@"App Delegate Set Query Error:%@",error);
-        
         }
-        
-       // NSLog(@"Venue Cache\n\n\n\n\n\n\n\n\n %@",[[[SpadeCache sharedCache].cache objectForKey:spadeCache]objectForKey:spadeCacheVenues]);
     }];
-    
+}
+
+-(void)cacheForFollowers
+{
     //Query for Followed Users
     PFQuery *queryFollowedUsers = [PFQuery queryWithClassName:spadeClassActivity];
     queryFollowedUsers.cachePolicy = kPFCachePolicyNetworkOnly;
@@ -418,17 +420,14 @@
             for(PFUser *object in followedUsersForUserFromParse){
                 [[SpadeCache sharedCache] addFollowedUser:[object objectForKey:spadeActivityToUser]];
             }
-            
         }else{
             NSLog(@"App Delegate Set Query Error:%@",error);
-            
         }
-       // NSLog(@"Followed User Cache\n\n\n\n\n\n\n\n\n %@",[[[SpadeCache sharedCache].cache objectForKey:spadeCache]objectForKey:spadeCacheUser]);
-        
     }];
+}
 
-    
-
+-(void)cacheForAttendingEvents
+{
     //Query for Attending Events
     PFQuery *queryFollowedEvents = [PFQuery queryWithClassName:spadeClassActivity];
     queryFollowedEvents.cachePolicy = kPFCachePolicyNetworkOnly;
@@ -443,41 +442,9 @@
             }
         }else{
             NSLog(@"App Delegate Set Query Error:%@",error);
-            
         }
-        
-        
-     // NSLog(@"Attending Events Cache\n\n\n\n\n\n\n\n\n %@",[[[SpadeCache sharedCache].cache objectForKey:spadeCache]objectForKey:spadeCacheEvents]);
-
     }];
-
-    
-    
-    
-    
-    
-    
-    
 }
 
 
--(void)setInviteCodeController
-{
-    UIStoryboard *mainStoryboard = [UIStoryboard storyboardWithName:@"Main"
-                                                             bundle: nil];
-    [self.tabBarController setViewControllers:@[[mainStoryboard instantiateViewControllerWithIdentifier:@"InviteCode"]]];
-    [self.tabBarController setSelectedIndex:MIDDLE_VC];
-
-}
-
--(void)setMainControllers
-{
-    UIStoryboard *mainStoryboard = [UIStoryboard storyboardWithName:@"Main"
-                                                             bundle: nil];
-    self.feedController = [mainStoryboard instantiateViewControllerWithIdentifier:@"feedNav"];
-    self.tabBarController.tabBar.hidden = NO;
-
-    [self.tabBarController setViewControllers:@[ [mainStoryboard instantiateViewControllerWithIdentifier:@"eventNav"],self.feedController , [mainStoryboard instantiateViewControllerWithIdentifier:@"venueNav"]]];
-    [self.tabBarController setSelectedIndex:MIDDLE_VC];
-}
 @end

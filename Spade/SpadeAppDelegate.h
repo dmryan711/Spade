@@ -13,15 +13,9 @@
 
 @interface SpadeAppDelegate : UIResponder <UIApplicationDelegate, UITabBarControllerDelegate, PFLogInViewControllerDelegate,NSURLConnectionDataDelegate>
 
-
-
-
 @property (strong, nonatomic) UIWindow *window;
 
-
-
 -(void)presentLoginView;
--(void)presentInviteCodeView;
 -(void)presentFriendsViewController;
 -(void)logOutUser;
 -(void)setInviteCodeController;

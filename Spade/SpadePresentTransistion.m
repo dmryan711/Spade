@@ -15,7 +15,7 @@
 // synchronize with the main animation.
 - (NSTimeInterval)transitionDuration:(id <UIViewControllerContextTransitioning>)transitionContext
 {
-    return 1.0f;
+    return .5f;
 }
 // This method can only  be a nop if the transition is interactive and not a percentDriven interactive transition.
 - (void)animateTransition:(id <UIViewControllerContextTransitioning>)transitionContext
@@ -41,15 +41,12 @@
                      animations:^{
                          //overlayViewController.view.frame = CGRectMake(containerView.frame.origin.x, containerView.frame.origin.y, containerView.frame.size.width, containerView.frame.size.height);
                         
-                         overlayViewController.view.alpha = 0.9f;
+                         overlayViewController.view.alpha = .95f;
                      } completion:^(BOOL finished){
                          BOOL transitionWasCancelled = [transitionContext transitionWasCancelled];
                          [transitionContext completeTransition:transitionWasCancelled == NO];
                      }];
     
-    NSArray *array = [NSArray arrayWithArray:nil];
-    
-    arr
 
 }
 
