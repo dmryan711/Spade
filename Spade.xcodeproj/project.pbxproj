@@ -30,6 +30,8 @@
 		912452A318E28D8B0071CE3B /* Test.png in Resources */ = {isa = PBXBuildFile; fileRef = 912452A218E28D8B0071CE3B /* Test.png */; };
 		912452A518E2912F0071CE3B /* LoginLogo2.png in Resources */ = {isa = PBXBuildFile; fileRef = 912452A418E2912F0071CE3B /* LoginLogo2.png */; };
 		912452AD18E2985D0071CE3B /* Spade-Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 912452AC18E2985D0071CE3B /* Spade-Icon.png */; };
+		912B3B1219033DCC000716D4 /* FBShimmeringLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 912B3B0F19033DCC000716D4 /* FBShimmeringLayer.m */; };
+		912B3B1319033DCC000716D4 /* FBShimmeringView.m in Sources */ = {isa = PBXBuildFile; fileRef = 912B3B1119033DCC000716D4 /* FBShimmeringView.m */; };
 		9133C14718A2E4E600730B9E /* FUIAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9133C12218A2E4E600730B9E /* FUIAlertView.m */; };
 		9133C14818A2E4E600730B9E /* FUIButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 9133C12418A2E4E600730B9E /* FUIButton.m */; };
 		9133C14918A2E4E600730B9E /* FUICellBackgroundView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9133C12618A2E4E600730B9E /* FUICellBackgroundView.m */; };
@@ -92,6 +94,8 @@
 		919622E118FF0E5C0098B955 /* grey_wash_wall_@2X.png in Resources */ = {isa = PBXBuildFile; fileRef = 919622DF18FF0E5C0098B955 /* grey_wash_wall_@2X.png */; };
 		919622E218FF0E5C0098B955 /* grey_wash_wall.png in Resources */ = {isa = PBXBuildFile; fileRef = 919622E018FF0E5C0098B955 /* grey_wash_wall.png */; };
 		919622E518FF0EB40098B955 /* UserMenuTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 919622E418FF0EB40098B955 /* UserMenuTableViewController.m */; };
+		919622EB18FF4D050098B955 /* MenuTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 919622EA18FF4D050098B955 /* MenuTableViewCell.m */; };
+		919622EE18FF54120098B955 /* FeedTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 919622ED18FF54120098B955 /* FeedTableViewCell.m */; };
 		9196A8CF1868D60700513082 /* default_venue_Image.jpeg in Resources */ = {isa = PBXBuildFile; fileRef = 9196A8CE1868D60700513082 /* default_venue_Image.jpeg */; };
 		9196A8D11868D61300513082 /* skyline_7@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9196A8D01868D61300513082 /* skyline_7@2x.png */; };
 		9196A8D31868D61B00513082 /* skyline@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9196A8D21868D61B00513082 /* skyline@2x.png */; };
@@ -125,6 +129,10 @@
 		91AB44C718E1C2B500B78719 /* spade_3.png in Resources */ = {isa = PBXBuildFile; fileRef = 91AB44C518E1C2B500B78719 /* spade_3.png */; };
 		91AB44CA18E1C3F800B78719 /* spade_4@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 91AB44C818E1C3F800B78719 /* spade_4@2x.png */; };
 		91AB44CB18E1C3F800B78719 /* spade_4.png in Resources */ = {isa = PBXBuildFile; fileRef = 91AB44C918E1C3F800B78719 /* spade_4.png */; };
+		91AFC1B41900DAA900CF9D7A /* MapAndCalendarViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 91AFC1B31900DAA900CF9D7A /* MapAndCalendarViewController.m */; };
+		91AFC1BB1900DD1200CF9D7A /* RDVCalendarDayCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 91AFC1B61900DD1200CF9D7A /* RDVCalendarDayCell.m */; };
+		91AFC1BC1900DD1200CF9D7A /* RDVCalendarView.m in Sources */ = {isa = PBXBuildFile; fileRef = 91AFC1B81900DD1200CF9D7A /* RDVCalendarView.m */; };
+		91AFC1BD1900DD1200CF9D7A /* RDVCalendarViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 91AFC1BA1900DD1200CF9D7A /* RDVCalendarViewController.m */; };
 		91B271E618E4C51F00B7C839 /* party_night-wide_3@2x.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 91B271E518E4C51F00B7C839 /* party_night-wide_3@2x.jpg */; };
 		91D2220C188DAA7100750688 /* SpadeMyEventsCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 91D2220B188DAA7100750688 /* SpadeMyEventsCell.m */; };
 		91D2220E188DB75F00750688 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 91D2220D188DB75F00750688 /* MapKit.framework */; };
@@ -194,6 +202,12 @@
 		912452A218E28D8B0071CE3B /* Test.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Test.png; sourceTree = "<group>"; };
 		912452A418E2912F0071CE3B /* LoginLogo2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = LoginLogo2.png; sourceTree = "<group>"; };
 		912452AC18E2985D0071CE3B /* Spade-Icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Spade-Icon.png"; sourceTree = SOURCE_ROOT; };
+		912B3B0C19033DCC000716D4 /* FBShimmering-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "FBShimmering-Prefix.pch"; sourceTree = "<group>"; };
+		912B3B0D19033DCC000716D4 /* FBShimmering.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FBShimmering.h; sourceTree = "<group>"; };
+		912B3B0E19033DCC000716D4 /* FBShimmeringLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FBShimmeringLayer.h; sourceTree = "<group>"; };
+		912B3B0F19033DCC000716D4 /* FBShimmeringLayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FBShimmeringLayer.m; sourceTree = "<group>"; };
+		912B3B1019033DCC000716D4 /* FBShimmeringView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FBShimmeringView.h; sourceTree = "<group>"; };
+		912B3B1119033DCC000716D4 /* FBShimmeringView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FBShimmeringView.m; sourceTree = "<group>"; };
 		9133C12018A2E4E600730B9E /* FlatUIKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FlatUIKit.h; path = Spade/FlatUIKit.h; sourceTree = "<group>"; };
 		9133C12118A2E4E600730B9E /* FUIAlertView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FUIAlertView.h; path = Spade/FUIAlertView.h; sourceTree = "<group>"; };
 		9133C12218A2E4E600730B9E /* FUIAlertView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FUIAlertView.m; path = Spade/FUIAlertView.m; sourceTree = "<group>"; };
@@ -294,6 +308,10 @@
 		919622E018FF0E5C0098B955 /* grey_wash_wall.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = grey_wash_wall.png; sourceTree = "<group>"; };
 		919622E318FF0EB40098B955 /* UserMenuTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserMenuTableViewController.h; sourceTree = "<group>"; };
 		919622E418FF0EB40098B955 /* UserMenuTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserMenuTableViewController.m; sourceTree = "<group>"; };
+		919622E918FF4D050098B955 /* MenuTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MenuTableViewCell.h; sourceTree = "<group>"; };
+		919622EA18FF4D050098B955 /* MenuTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenuTableViewCell.m; sourceTree = "<group>"; };
+		919622EC18FF54120098B955 /* FeedTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FeedTableViewCell.h; sourceTree = "<group>"; };
+		919622ED18FF54120098B955 /* FeedTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FeedTableViewCell.m; sourceTree = "<group>"; };
 		9196A8CE1868D60700513082 /* default_venue_Image.jpeg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = default_venue_Image.jpeg; path = ../../../../Dropbox/Spade/default_venue_Image.jpeg; sourceTree = "<group>"; };
 		9196A8D01868D61300513082 /* skyline_7@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "skyline_7@2x.png"; path = "../../../../Dropbox/Spade/skyline_7@2x.png"; sourceTree = "<group>"; };
 		9196A8D21868D61B00513082 /* skyline@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "skyline@2x.png"; path = "../../../../Dropbox/Spade/skyline@2x.png"; sourceTree = "<group>"; };
@@ -338,6 +356,14 @@
 		91AB44C518E1C2B500B78719 /* spade_3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = spade_3.png; sourceTree = "<group>"; };
 		91AB44C818E1C3F800B78719 /* spade_4@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "spade_4@2x.png"; sourceTree = "<group>"; };
 		91AB44C918E1C3F800B78719 /* spade_4.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = spade_4.png; sourceTree = "<group>"; };
+		91AFC1B21900DAA900CF9D7A /* MapAndCalendarViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MapAndCalendarViewController.h; sourceTree = "<group>"; };
+		91AFC1B31900DAA900CF9D7A /* MapAndCalendarViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MapAndCalendarViewController.m; sourceTree = "<group>"; };
+		91AFC1B51900DD1200CF9D7A /* RDVCalendarDayCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RDVCalendarDayCell.h; sourceTree = "<group>"; };
+		91AFC1B61900DD1200CF9D7A /* RDVCalendarDayCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RDVCalendarDayCell.m; sourceTree = "<group>"; };
+		91AFC1B71900DD1200CF9D7A /* RDVCalendarView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RDVCalendarView.h; sourceTree = "<group>"; };
+		91AFC1B81900DD1200CF9D7A /* RDVCalendarView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RDVCalendarView.m; sourceTree = "<group>"; };
+		91AFC1B91900DD1200CF9D7A /* RDVCalendarViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RDVCalendarViewController.h; sourceTree = "<group>"; };
+		91AFC1BA1900DD1200CF9D7A /* RDVCalendarViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RDVCalendarViewController.m; sourceTree = "<group>"; };
 		91B271E518E4C51F00B7C839 /* party_night-wide_3@2x.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "party_night-wide_3@2x.jpg"; sourceTree = "<group>"; };
 		91D2220A188DAA7100750688 /* SpadeMyEventsCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SpadeMyEventsCell.h; sourceTree = "<group>"; };
 		91D2220B188DAA7100750688 /* SpadeMyEventsCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SpadeMyEventsCell.m; sourceTree = "<group>"; };
@@ -461,12 +487,15 @@
 		9112353F18569D700092253B /* View */ = {
 			isa = PBXGroup;
 			children = (
+				912B3B0B19033DCC000716D4 /* FBShimmering */,
 				915E9CD218FDC91C001E3BB7 /* SCDragAffordanceView.h */,
 				915E9CD318FDC91C001E3BB7 /* SCDragAffordanceView.m */,
 				915E9CD518FDFDE8001E3BB7 /* SCSpringExpandView.h */,
 				915E9CD618FDFDE8001E3BB7 /* SCSpringExpandView.m */,
 				9133C15A18A2E53800730B9E /* FlatKit */,
 				9141E87618407A5000A5DE15 /* Main.storyboard */,
+				919622EC18FF54120098B955 /* FeedTableViewCell.h */,
+				919622ED18FF54120098B955 /* FeedTableViewCell.m */,
 				91D2220A188DAA7100750688 /* SpadeMyEventsCell.h */,
 				91D2220B188DAA7100750688 /* SpadeMyEventsCell.m */,
 				91E962B218862743007D1BDE /* SpadePhotoCell.h */,
@@ -485,8 +514,23 @@
 				9196A8E1186D29F500513082 /* SpadeFollowCell.m */,
 				9196A8E7186F8ACF00513082 /* SpadeVenueFollowCell.h */,
 				9196A8E8186F8ACF00513082 /* SpadeVenueFollowCell.m */,
+				919622E918FF4D050098B955 /* MenuTableViewCell.h */,
+				919622EA18FF4D050098B955 /* MenuTableViewCell.m */,
 			);
 			name = View;
+			sourceTree = "<group>";
+		};
+		912B3B0B19033DCC000716D4 /* FBShimmering */ = {
+			isa = PBXGroup;
+			children = (
+				912B3B0C19033DCC000716D4 /* FBShimmering-Prefix.pch */,
+				912B3B0D19033DCC000716D4 /* FBShimmering.h */,
+				912B3B0E19033DCC000716D4 /* FBShimmeringLayer.h */,
+				912B3B0F19033DCC000716D4 /* FBShimmeringLayer.m */,
+				912B3B1019033DCC000716D4 /* FBShimmeringView.h */,
+				912B3B1119033DCC000716D4 /* FBShimmeringView.m */,
+			);
+			path = FBShimmering;
 			sourceTree = "<group>";
 		};
 		9133C15A18A2E53800730B9E /* FlatKit */ = {
@@ -733,10 +777,18 @@
 		915E9CCE18FDC1EE001E3BB7 /* Beta Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				91AFC1B51900DD1200CF9D7A /* RDVCalendarDayCell.h */,
+				91AFC1B61900DD1200CF9D7A /* RDVCalendarDayCell.m */,
+				91AFC1B71900DD1200CF9D7A /* RDVCalendarView.h */,
+				91AFC1B81900DD1200CF9D7A /* RDVCalendarView.m */,
+				91AFC1B91900DD1200CF9D7A /* RDVCalendarViewController.h */,
+				91AFC1BA1900DD1200CF9D7A /* RDVCalendarViewController.m */,
 				91F74AA6187CF72600F322BC /* SpadeChatViewController.h */,
 				91F74AA7187CF72600F322BC /* SpadeChatViewController.m */,
 				9196A92B1871F94A00513082 /* SpadeEventInviteController.h */,
 				9196A92C1871F94A00513082 /* SpadeEventInviteController.m */,
+				91AFC1B21900DAA900CF9D7A /* MapAndCalendarViewController.h */,
+				91AFC1B31900DAA900CF9D7A /* MapAndCalendarViewController.m */,
 			);
 			name = "Beta Controllers";
 			sourceTree = "<group>";
@@ -996,9 +1048,11 @@
 				9133C15218A2E4E600730B9E /* UINavigationBar+FlatUI.m in Sources */,
 				9133C14F18A2E4E600730B9E /* UIColor+FlatUI.m in Sources */,
 				9133C15418A2E4E600730B9E /* UIProgressView+FlatUI.m in Sources */,
+				912B3B1319033DCC000716D4 /* FBShimmeringView.m in Sources */,
 				915E9CD118FDC30C001E3BB7 /* SpadeContainerViewController.m in Sources */,
 				9158421218E86932009F1BE8 /* iCarousel.m in Sources */,
 				9133C14718A2E4E600730B9E /* FUIAlertView.m in Sources */,
+				91AFC1B41900DAA900CF9D7A /* MapAndCalendarViewController.m in Sources */,
 				915BEDB01857DB5A00FCA17A /* UIImage+RoundedCornerAdditions.m in Sources */,
 				9112354218569F170092253B /* SpadeEventController.m in Sources */,
 				9133C15918A2E4E600730B9E /* UIToolbar+FlatUI.m in Sources */,
@@ -1030,12 +1084,15 @@
 				91D22211188DB95200750688 /* SpadeMapViewController.m in Sources */,
 				9196A9241870AB7600513082 /* SpadeFriendDetailViewController.m in Sources */,
 				91D8574F18AB0F6400615874 /* SpadeCacherTest.m in Sources */,
+				919622EE18FF54120098B955 /* FeedTableViewCell.m in Sources */,
 				9188E52F184EE7FD00C72151 /* SpadeFeedController.m in Sources */,
 				9196A8D61868D90900513082 /* SpadeCache.m in Sources */,
 				9196A8DC186B574700513082 /* SpadeFriendTableViewController.m in Sources */,
 				91F74AAB187D0A8900F322BC /* SpadeEventCreationViewController.m in Sources */,
+				91AFC1BD1900DD1200CF9D7A /* RDVCalendarViewController.m in Sources */,
 				915BEDAF1857DB5A00FCA17A /* UIImage+AlphaAdditions.m in Sources */,
 				91D9D64A1843021D005BD0BC /* SpadeLoginViewController.m in Sources */,
+				91AFC1BB1900DD1200CF9D7A /* RDVCalendarDayCell.m in Sources */,
 				91F74AA8187CF72600F322BC /* SpadeChatViewController.m in Sources */,
 				919DC3C91879F2CF007E8BC0 /* SpadeEventDetailViewController.m in Sources */,
 				9196A8E9186F8ACF00513082 /* SpadeVenueFollowCell.m in Sources */,
@@ -1045,9 +1102,11 @@
 				9141E87118407A5000A5DE15 /* main.m in Sources */,
 				9196A92D1871F94A00513082 /* SpadeEventInviteController.m in Sources */,
 				9133C15718A2E4E600730B9E /* UITabBar+FlatUI.m in Sources */,
+				919622EB18FF4D050098B955 /* MenuTableViewCell.m in Sources */,
 				91E962B418862743007D1BDE /* SpadePhotoCell.m in Sources */,
 				911B8F6718820BC900BCED88 /* SpadeNameCell.m in Sources */,
 				91221339185CCED500BA29E8 /* SpadeVenueDetailViewController.m in Sources */,
+				912B3B1219033DCC000716D4 /* FBShimmeringLayer.m in Sources */,
 				9133C15118A2E4E600730B9E /* UIImage+FlatUI.m in Sources */,
 				91221336185C407300BA29E8 /* SpadeVenueTableViewController.m in Sources */,
 				9133C14C18A2E4E600730B9E /* FUISwitch.m in Sources */,
@@ -1055,6 +1114,7 @@
 				919DC3CC1879FA73007E8BC0 /* SpadeChatCell.m in Sources */,
 				9173F22018FC98FC00AD52C9 /* NSString+URLEncoding.m in Sources */,
 				9133C14818A2E4E600730B9E /* FUIButton.m in Sources */,
+				91AFC1BC1900DD1200CF9D7A /* RDVCalendarView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

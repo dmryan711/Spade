@@ -21,6 +21,8 @@
 #import "UIColor+FlatUI.h"
 #import "SpadeContainerViewController.h"
 #import "UserMenuTableViewController.h"
+#import "MapAndCalendarViewController.h"
+#import "SpadeMapSlideViewController.h"
 
 #define LEFT_VIEWCONTROLLER 0
 #define MIDDLE_VC 1
@@ -32,7 +34,8 @@
 @interface SpadeAppDelegate ()
 
 @property (strong,nonatomic) UITabBarController *tabBarController;
-@property (strong,nonatomic) UINavigationController *feedController;
+@property (strong, nonatomic) SpadeContainerViewController *mainContainer;
+@property (strong,nonatomic) SpadeFeedController *feedController;
 @property (strong,nonatomic) NSMutableData *data;
 @property (strong, nonatomic) NSCache *cache;
 
@@ -66,12 +69,10 @@
     /***** INITIALIZE FACEBOOK *****/
     [PFFacebookUtils initializeFacebook];
     
+
     
-    //Set up the Tab Bar Controller
-    self.tabBarController = [STORYBOARD instantiateInitialViewController];
-    self.tabBarController.delegate = self;
-    self.tabBarController.tabBar.backgroundImage = [UIImage imageNamed:@"tabBarBackGround.png"];
-    self.tabBarController.tabBar.selectionIndicatorImage = [UIImage imageNamed:@"tabBarSelected.png"];
+    //Set Up the Container
+    self.mainContainer = [STORYBOARD instantiateInitialViewController];
     
     //Load Main Set of View Controllers or Load Invite Controller into Tab Bar
     if ([[NSUserDefaults standardUserDefaults] boolForKey:isFirstLogin]){
@@ -82,14 +83,14 @@
 
     //Set Up App
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-    self.window.rootViewController = self.tabBarController;
+    self.window.rootViewController = self.mainContainer;
     [self.window makeKeyAndVisible];
     
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
     
 
     //Log Fonts
-    /*for (NSString* family in [UIFont familyNames])
+    for (NSString* family in [UIFont familyNames])
     {
         NSLog(@"%@", family);
         
@@ -97,7 +98,7 @@
         {
             NSLog(@"  %@", name);
         }
-    }*/
+    }
     
     return YES;
 }
@@ -250,7 +251,8 @@ didSelectViewController:(UIViewController *)viewController
             //Save to Parse
             [user saveInBackgroundWithBlock:^(BOOL succeeded , NSError *error){
                 if (succeeded) {
-                    [[[self.feedController viewControllers]objectAtIndex:FEED_CONTROLLER]runQueryAndReloadData];
+                 //USED WITH NAV STYLED  // [[[self.feedController viewControllers]objectAtIndex:FEED_CONTROLLER]runQueryAndReloadData];
+                    [self.feedController runQueryAndReloadData];
                     
                    /* //Follow the Spade Team
                     PFQuery *querySpadeTeam = [PFQuery queryWithClassName:spadeClassUser];
@@ -333,9 +335,9 @@ didReceiveResponse:(NSURLResponse *)response {
 {
 
     //Create Detail View
-    SpadeFriendTableViewController *friendListViewController = [STORYBOARD  instantiateViewControllerWithIdentifier:@"findFriendView"];
+   // SpadeFriendTableViewController *friendListViewController = [STORYBOARD  instantiateViewControllerWithIdentifier:@"findFriendView"];
     
-    [[self.tabBarController.viewControllers objectAtIndex:LEFT_VIEWCONTROLLER] presentViewController:friendListViewController animated:YES completion:NULL];
+   // [[self.tabBarController.viewControllers objectAtIndex:LEFT_VIEWCONTROLLER] presentViewController:friendListViewController animated:YES completion:NULL];
 
 }
 
@@ -355,17 +357,18 @@ didReceiveResponse:(NSURLResponse *)response {
  */
 -(void)setMainControllers
 {
-    self.feedController = [STORYBOARD instantiateViewControllerWithIdentifier:@"feedNav"];
+    MapAndCalendarViewController *mapAndCalendar = [STORYBOARD instantiateViewControllerWithIdentifier:@"MapAndCalendar"];
+    //SpadeMapSlideViewController *mapSlideViewController = [STORYBOARD instantiateViewControllerWithIdentifier: @"mapSlide"];
+    //mapSlideViewController.centerViewController = [STORYBOARD instantiateViewControllerWithIdentifier:@"mapViewController"];
+
     
-    SpadeContainerViewController *containerView = [[SpadeContainerViewController alloc]initWithNibName:nil bundle:nil];
-    containerView.isPullFromRightEnabled = YES;
-    containerView.rightMenuTableViewController = [STORYBOARD instantiateViewControllerWithIdentifier:@"menuTable"];
-    containerView.mainNavigationController = self.feedController;
+    self.mainContainer.isPullFromRightEnabled = YES;
+    self.mainContainer.isPullFromLeftEnabled = YES;
+    self.mainContainer.rightMenuTableViewController = [STORYBOARD instantiateViewControllerWithIdentifier:@"menuTable"];
+    self.mainContainer.leftMenuTableViewController = [STORYBOARD instantiateViewControllerWithIdentifier:@"menuTable"];
+    self.mainContainer.mainViewController = mapAndCalendar;
     
     
-    self.tabBarController.tabBar.hidden = NO;
-    [self.tabBarController setViewControllers:@[ [STORYBOARD instantiateViewControllerWithIdentifier:@"eventNav"],containerView, [STORYBOARD instantiateViewControllerWithIdentifier:@"venueNav"]]];
-    [self.tabBarController setSelectedIndex:MIDDLE_VC];
 }
 
 #pragma mark User Utility Methods

@@ -55,7 +55,7 @@
     
     [self setUpView];
     
-    self.title = @"Map & Directions";
+    /*self.title = @"Map & Directions";
     
     NSDictionary *textAttributes = [NSDictionary dictionaryWithObjectsAndKeys:
                                     [UIColor whiteColor],NSForegroundColorAttributeName,
@@ -73,7 +73,7 @@
     // Kills Swipe Navigation
     if ([self.navigationController respondsToSelector:@selector(interactivePopGestureRecognizer)]) {
         self.navigationController.interactivePopGestureRecognizer.enabled = NO;
-    }
+    }*/
     
 }
 
@@ -88,7 +88,7 @@
 -(void)setUpView
 {
     if (self.centerViewController) {
-
+        NSLog(@"True");
         //Create Center View
         self.centerViewController.view.tag  = CENTER_TAG;
         self.centerViewController.delegate = self;
@@ -257,6 +257,7 @@
 
 - (void)setupGestures
 {
+    NSLog(@"Setting Up Gestures");
     UIPanGestureRecognizer *panRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(movePanel:)];
     [panRecognizer setMinimumNumberOfTouches:1];
     [panRecognizer setMaximumNumberOfTouches:1];
@@ -267,6 +268,7 @@
 
 -(void)movePanel:(id)sender
 {
+    NSLog(@"Move Panel Detected");
     [[[(UITapGestureRecognizer*)sender view] layer] removeAllAnimations];
     
     CGPoint translatedPoint = [(UIPanGestureRecognizer*)sender translationInView:self.view];

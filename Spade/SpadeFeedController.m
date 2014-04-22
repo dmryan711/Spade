@@ -20,6 +20,10 @@
 #import "UIColor+FlatUI.h"
 #import "UIFont+FlatUI.h"
 #import "SpadeMainSlideViewController.h"
+#import "SpadeContainerViewController.h"
+#import "SpadePresentTransistion.h"
+#import "SpadeDismissTransistion.h"
+#import "FeedTableViewCell.h"
 
 @interface SpadeFeedController ()
 @property (strong,nonatomic) NSMutableArray *objects;
@@ -64,6 +68,9 @@
 
     [super viewDidLoad];
     //[self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:@"Cell"];
+    //Bump down for status bar
+    //[self.tableView setContentOffset:CGPointMake(0, - [UIApplication sharedApplication].statusBarFrame.size.height -1) animated:YES];
+    self.tableView.contentInset = UIEdgeInsetsMake([UIApplication sharedApplication].statusBarFrame.size.height,0 , 0, 0);
     
     self.navigationController.navigationBar.translucent = NO;
     [self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"spade_6.png"] forBarMetrics:UIBarMetricsDefault];
@@ -203,7 +210,7 @@
         return cell;
         
     }else{
-        static NSString *FeedCellIdentifier = @"spadeFeedCell";
+        /*static NSString *FeedCellIdentifier = @"spadeFeedCell";
         
          SpadeFeedCell *feedCell = [tableView dequeueReusableCellWithIdentifier:FeedCellIdentifier];
         if (feedCell == nil) {
@@ -270,6 +277,12 @@
     
         feedCell.userNameLabel.text = [user objectForKey:spadeUserDisplayName];
         feedCell.venueNameLabel.text = [venue objectForKey:spadeVenueName];
+        
+        return feedCell;*/
+        
+        static NSString *FeedCellIdentifier = @"newFeedCell";
+         
+         FeedTableViewCell *feedCell = [tableView dequeueReusableCellWithIdentifier:FeedCellIdentifier];
         
         return feedCell;
 
@@ -432,14 +445,16 @@
 
 -(void)loadFriendsView
 {
-    UIStoryboard *mainStoryboard = [UIStoryboard storyboardWithName:@"Main"
+    
+    [APPLICATION_DELEGATE presentFriendsViewController];
+    /*UIStoryboard *mainStoryboard = [UIStoryboard storyboardWithName:@"Main"
                                                              bundle: nil];
     //Create Detail View
     SpadeFriendTableViewController *friendListViewController = [mainStoryboard   instantiateViewControllerWithIdentifier:@"findFriendView"];
     
     UINavigationController *tempNav = [[UINavigationController alloc]initWithRootViewController:friendListViewController];
 
-    [self presentViewController:tempNav animated:YES completion:nil];
+    [self presentViewController:tempNav animated:YES completion:nil];*/
     
 }
 
@@ -514,11 +529,23 @@
  
     
     main.object = eventActivity;
-    
-    [self.navigationController pushViewController:main animated:YES];
+    main.modalTransitionStyle = UIModalPresentationCustom;
+    main.transitioningDelegate = self;
+    [self presentViewController:main animated:YES completion:nil];
 
     
 
 
+}
+
+- (id <UIViewControllerAnimatedTransitioning>)animationControllerForPresentedController:(UIViewController *)presented presentingController:(UIViewController *)presenting sourceController:(UIViewController *)source
+{
+    return [[SpadePresentTransistion alloc]init];
+    
+}
+
+- (id<UIViewControllerAnimatedTransitioning>)animationControllerForDismissedController:(UIViewController *)dismissed
+{
+    return [[SpadeDismissTransistion alloc] init];
 }
 @end

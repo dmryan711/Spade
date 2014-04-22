@@ -10,7 +10,7 @@
 #import <Parse/Parse.h>
 
 
-@interface SpadeFeedController : UITableViewController <UIActionSheetDelegate>
+@interface SpadeFeedController : UITableViewController <UIActionSheetDelegate, UIViewControllerTransitioningDelegate>
 
 -(void)runQueryAndReloadData;
 

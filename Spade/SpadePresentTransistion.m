@@ -41,7 +41,7 @@
                      animations:^{
                          //overlayViewController.view.frame = CGRectMake(containerView.frame.origin.x, containerView.frame.origin.y, containerView.frame.size.width, containerView.frame.size.height);
                         
-                         overlayViewController.view.alpha = .95f;
+                         overlayViewController.view.alpha = .8f;
                      } completion:^(BOOL finished){
                          BOOL transitionWasCancelled = [transitionContext transitionWasCancelled];
                          [transitionContext completeTransition:transitionWasCancelled == NO];

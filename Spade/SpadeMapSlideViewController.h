@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "SpadeMapViewController.h"
 
+
 @interface SpadeMapSlideViewController : UIViewController <SpadeMapViewControllerDelegate>
 
 @property (strong, nonatomic) SpadeMapViewController *centerViewController;

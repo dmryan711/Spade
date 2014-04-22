@@ -28,8 +28,14 @@
 @property (strong, nonatomic) CLLocationManager *locationManager;
 @property (strong, nonatomic) UIButton *leftButton;
 @property (strong,nonatomic) UIButton *bottomButton;
+@property (strong, nonatomic) UIButton *directionsButton;
+
+@property (nonatomic) CGRect frame;
 
 @property (nonatomic, assign) id<SpadeMapViewControllerDelegate> delegate;
 
+
+-(void)addLocations:(NSArray *)venueObjects atIndex:(int)index;
+-(void)shiftDirectionsButton;
 
 @end

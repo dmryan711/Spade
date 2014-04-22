@@ -11,5 +11,7 @@
 @interface SCDragAffordanceView : UIView
 
 @property (nonatomic, assign) CGFloat progress;
+@property BOOL isLeft;
+@property BOOL isRight;
 
 @end

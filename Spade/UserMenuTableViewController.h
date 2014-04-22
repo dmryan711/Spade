@@ -7,7 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "SpadePresentTransistion.h"
+#import "SpadeDismissTransistion.h"
 
-@interface UserMenuTableViewController : UITableViewController
+@interface UserMenuTableViewController : UITableViewController <UIViewControllerTransitioningDelegate>
 
 @end

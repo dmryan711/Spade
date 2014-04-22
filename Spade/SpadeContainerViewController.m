@@ -17,6 +17,7 @@
 @property (nonatomic, strong) SCDragAffordanceView *rightPullView;
 @property (nonatomic, strong) SCDragAffordanceView *bottomPullView;
 
+
 @property (nonatomic, assign) CGFloat lastContentOffset;
 
 @end
@@ -37,7 +38,7 @@
 {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-
+    self.view.backgroundColor = [UIColor blackColor];
     
     self.enclosingScrollView = [[UIScrollView alloc]initWithFrame:self.view.bounds];
     self.enclosingScrollView.alwaysBounceHorizontal = YES;
@@ -65,6 +66,8 @@
             self.rightMenuTableViewController.modalPresentationStyle = UIModalPresentationCustom;
         }
         self.rightPullView = [[SCDragAffordanceView alloc] initWithFrame:CGRectMake(CGRectGetMaxX(self.enclosingScrollView.bounds) + 10.f, CGRectGetMidY(self.enclosingScrollView.bounds) - 25.f, 50.f, 50.f)];
+        self.rightPullView.isLeft = NO;
+        self.rightPullView.isRight = YES;
         [self.enclosingScrollView addSubview:self.rightPullView];
         
     }
@@ -72,7 +75,9 @@
 
     
     if (self.isPullFromLeftEnabled) {
-        self.leftPullView = [[SCDragAffordanceView alloc] initWithFrame:CGRectMake(CGRectGetMinX(self.enclosingScrollView.bounds) -10.f, CGRectGetMidY(self.enclosingScrollView.bounds) - 25.f, 50.f, 50.f)];
+        self.leftPullView = [[SCDragAffordanceView alloc] initWithFrame:CGRectMake(CGRectGetMinX(self.enclosingScrollView.bounds) - 40, CGRectGetMidY(self.enclosingScrollView.bounds) - 25.f, 50.f, 50.f)];
+        self.leftPullView.isLeft = YES;
+        self.leftPullView.isRight = NO;
         [self.enclosingScrollView addSubview:self.leftPullView];
     }
 }
@@ -88,10 +93,11 @@
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
+    NSLog(@"%f",scrollView.contentOffset.y);
     ScrollDirection scrollDirection;
     if (self.lastContentOffset > scrollView.contentOffset.x){
         scrollDirection = ScrollDirectionRight;
-        self.leftPullView.progress = scrollView.contentOffset.x / CGRectGetWidth(self.leftPullView.bounds);
+        self.leftPullView.progress = (scrollView.contentOffset.x *-1) / CGRectGetWidth(self.leftPullView.bounds);
         
     }else if (self.lastContentOffset < scrollView.contentOffset.x)
         scrollDirection = ScrollDirectionLeft;
@@ -100,7 +106,7 @@
     //reset lastContenOffset
     //self.lastContentOffset = scrollView.contentOffset.x;
 }
-
+   
 - (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
 {
     

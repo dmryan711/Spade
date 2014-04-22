@@ -21,6 +21,10 @@
 @property GMSMapView *mapView_;
 @property (strong, nonatomic) NSString *address;
 @property BOOL didUpdateScreen;
+@property BOOL isScreenSmall;
+@property (strong, nonatomic) UIWindow *dropdown;
+@property (strong, nonatomic) UILabel *label;
+
 
 
 
@@ -51,8 +55,46 @@
 {
     [super viewDidLoad];
     
+    self.locationManager.delegate  = self;
+    
+    // [self.mapview setShowsUserLocation:YES];
+    //[self.mapview setShowsBuildings:YES];
+    
+    self.locationManager = [[CLLocationManager alloc]init];
+    
+    
+    [self.locationManager setDistanceFilter:kCLDistanceFilterNone];
+    [self.locationManager setDesiredAccuracy:kCLLocationAccuracyBest];
+    
+    GMSCameraPosition *camera = [GMSCameraPosition cameraWithLatitude:self.locationManager.location.coordinate.latitude longitude:self.locationManager.location.coordinate.longitude zoom:15];
+    UITapGestureRecognizer  *mapTap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(reSizeMap)];
+    [self.mapView_ addGestureRecognizer:mapTap];
+    _mapView_ = [GMSMapView mapWithFrame:self.frame camera:camera];
+    self.mapView_.myLocationEnabled = YES;
+    self.mapView_.buildingsEnabled = YES;
+    self.mapView_.delegate  = self;
+    self.mapView_.accessibilityActivationPoint  = kGMSAccessibilityCompass
+    
+    self.view = self.mapView_;
+
+    
     self.address = [self.venue objectForKey:spadeVenueAddress];
     self.didUpdateScreen = NO;
+    
+    _directionsButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    self.directionsButton.frame = CGRectMake(-10, self.mapView_.bounds.size.height *.75 , 30, 50);
+    [self.directionsButton setTitle:@"☰" forState:UIControlStateNormal];
+    self.directionsButton.backgroundColor = [UIColor blackColor];
+    self.directionsButton.titleLabel.textColor = [UIColor amethystColor];
+    self.directionsButton.alpha = .6;
+    self.directionsButton.tag = 1;
+    [self.directionsButton.layer setCornerRadius:0.0f];
+    [self.directionsButton.layer setShadowOffset:CGSizeMake(2, 2)];
+    [self.directionsButton.layer setShadowColor:[UIColor whiteColor].CGColor];
+    [self.directionsButton.layer setShadowOpacity:0.8];
+    [self.directionsButton addTarget:self action:@selector(getDirections) forControlEvents:UIControlEventTouchUpInside];
+    [self.mapView_ addSubview:self.directionsButton];
+
     //self.tabBarController.tabBar.hidden = YES;
     //self.view = self.mapView
     
@@ -73,9 +115,10 @@
     
     self.locationManager = [[CLLocationManager alloc]init];
     
+    
     [self.locationManager setDistanceFilter:kCLDistanceFilterNone];
     [self.locationManager setDesiredAccuracy:kCLLocationAccuracyBest];
-    [self processDestination];
+    //[self processDestination];
     
     
     UIButton *leftBtn = [UIButton buttonWithType:UIButtonTypeRoundedRect];
@@ -92,6 +135,35 @@
     [leftBtn addTarget:self action:@selector(getDirections) forControlEvents:UIControlEventTouchUpInside];
     self.leftButton = leftBtn;
 }
+
+-(void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    /*self.dropdown = [[UIWindow alloc] initWithFrame:CGRectMake(0, -20, 320, 20)];
+    self.dropdown.backgroundColor = [UIColor redColor];
+    self.label = [[UILabel alloc] initWithFrame:self.dropdown.bounds];
+    self.label.textAlignment = NSTextAlignmentCenter;
+    self.label.font = [UIFont systemFontOfSize:12];
+    self.label.backgroundColor = [UIColor clearColor];
+    [self.dropdown addSubview:self.label];
+    self.dropdown.windowLevel = UIWindowLevelStatusBar;
+    [self.dropdown makeKeyAndVisible];
+    //[self.dropdown resignKeyWindow];*/
+
+}
+
+-(void)shiftDirectionsButton;
+{
+  self.directionsButton.frame = CGRectMake(-10, self.mapView_.bounds.size.height *.75 , 30, 50);
+
+}
+
+-(void)reSizeMap
+{
+    NSLog(@"Call it");
+}
+
+
 
 - (void)didReceiveMemoryWarning
 {
@@ -185,6 +257,9 @@
 -(void)locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray *)locations
 {
     NSLog(@"Called");
+    //CLLocation *newLocation = [locations objectAtIndex:0];
+   
+    //self.mapView_ animateToCameraPosition:[GMSCameraPosition cameraWithLatitude:[locations objectAtIndex:0].coordinate.latitude longitude:self.locationManager.location.coordinate.longitude zoom:15];
   /*  //if we pressed get directions call it again
     if (!self.navigationItem.rightBarButtonItem.isEnabled) {
         [self getDirectionsPressed];
@@ -193,6 +268,43 @@
 
 
 #pragma mark { }
+
+-(void)addLocations:(NSArray *)venueObjects atIndex:(int)index
+{
+    static int blockIndex = 0;
+    if (blockIndex < venueObjects.count) {
+        NSLog(@"%i",blockIndex);
+        PFObject *venue = [venueObjects objectAtIndex:blockIndex];
+        NSString *address = [venue objectForKey:spadeVenueAddress];
+        
+        NSLog(@"Adress: %@",address);
+        
+        CLGeocoder *geocoder = [[CLGeocoder alloc] init];
+        [geocoder geocodeAddressString:address
+                     completionHandler:^(NSArray* placemarks, NSError* error){
+                         if (placemarks && placemarks.count > 0){
+                             NSLog(@"Found Marker");
+                             MKPlacemark *placemark = [[MKPlacemark alloc]initWithPlacemark:[placemarks objectAtIndex:0]];
+                             
+                             GMSMarker *venueMarker = [[GMSMarker alloc]init];
+                             venueMarker.appearAnimation = YES;
+                             venueMarker.position =CLLocationCoordinate2DMake(placemark.coordinate.latitude, placemark.coordinate.longitude);
+                             venueMarker.title = [venue objectForKey:spadeVenueName];
+                             venueMarker.snippet = [NSString stringWithFormat:@"%@\nCategory:%@\nMusic Genre:%@",[venue objectForKey:spadeVenueAddress],[venue objectForKey:spadeVenueCategory],[venue objectForKey:spadeVenueGenre]];
+                             venueMarker.map = self.mapView_;
+                             self.view = self.mapView_;
+                             
+                            
+                          
+                             [self addLocations:venueObjects atIndex:blockIndex ++];
+                         }
+                     }];
+
+    }
+
+}
+     
+
 
 -(void)processDestination{
     NSLog(@"Adress in Mapis %@",self.address);
@@ -211,11 +323,13 @@
                          
                          NSLog(@"%f   %f",self.venueLocation.position.latitude,self.venueLocation.position.longitude);
                          
-                         GMSCameraPosition *camera = [GMSCameraPosition cameraWithLatitude:self.venueLocation.position.latitude longitude:self.venueLocation.position.longitude zoom:15];
-                        _mapView_ = [GMSMapView mapWithFrame:CGRectZero camera:camera];
+                         /*GMSCameraPosition *camera = [GMSCameraPosition cameraWithLatitude:self.venueLocation.position.latitude longitude:self.venueLocation.position.longitude zoom:15];
+                        _mapView_ = [GMSMapView mapWithFrame:self.frame camera:camera];
                          self.mapView_.myLocationEnabled = YES;
                          self.mapView_.buildingsEnabled = YES;
-                         self.view = self.mapView_;
+                         self.view = self.mapView_;*/
+                         
+                         
                          self.venueLocation.title = [self.venue objectForKey:spadeVenueName];
                          self.venueLocation.snippet = [NSString stringWithFormat:@"%@\nCategory:%@\nMusic Genre:%@",[self.venue objectForKey:spadeVenueAddress],[self.venue objectForKey:spadeVenueCategory],[self.venue objectForKey:spadeVenueGenre]];
                          self.venueLocation.map = self.mapView_;
@@ -233,14 +347,16 @@
 
 -(void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
     if([keyPath isEqualToString:@"myLocation"]) {
-        if (!self.didUpdateScreen) {
+        NSLog(@"Called");
+        //if (!self.didUpdateScreen) {
             self.didUpdateScreen = YES;
             CLLocation *myLoc = [object myLocation];
-            GMSCoordinateBounds *boundsWithUserLocation = [[GMSCoordinateBounds alloc]initWithCoordinate:self.venueLocation.position coordinate:myLoc.coordinate];
-             [self.mapView_ animateToCameraPosition:[self.mapView_ cameraForBounds:boundsWithUserLocation insets:UIEdgeInsetsMake(self.navigationController.navigationBar.frame.size.height + [UIApplication sharedApplication].statusBarFrame.size.height+20, 0, self.tabBarController.tabBar.frame.size.height+10,0 )]];
+            
+            [self.mapView_ animateToCameraPosition:[GMSCameraPosition cameraWithLatitude:myLoc.coordinate.latitude longitude:myLoc.coordinate.latitude zoom:15]];
+
             
             [self.mapView_ animateToViewingAngle:45];
-        }
+       // }
         
     }
 }
@@ -383,6 +499,7 @@
             break;
     }
 }
+
 
 
 

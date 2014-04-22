@@ -8,6 +8,7 @@
 
 #import "SCDragAffordanceView.h"
 #import "SCSpringExpandView.h"
+#import "UIColor+FlatUI.h"
 
 @interface SCDragAffordanceView ()
 
@@ -41,11 +42,21 @@
     
     CGFloat interItemSpace = CGRectGetWidth(self.bounds) / self.springExpandViews.count;
     
-    NSInteger index = 0;
-    for (SCSpringExpandView *springExpandView in self.springExpandViews)
-    {
-        springExpandView.frame = CGRectMake(interItemSpace * index, 0.f, 4.f, CGRectGetHeight(self.bounds));
-        index++;
+    if (self.isRight) {
+
+        NSInteger index = 0;
+        for (SCSpringExpandView *springExpandView in self.springExpandViews)
+        {
+            springExpandView.frame = CGRectMake(interItemSpace * index, 0.f, 4.f, CGRectGetHeight(self.bounds));
+            index++;
+        }
+    }else if(self.isLeft){
+        NSInteger index = 2;
+        for (SCSpringExpandView *springExpandView in self.springExpandViews)
+        {
+            springExpandView.frame = CGRectMake(interItemSpace * index, 0.f, 4.f, CGRectGetHeight(self.bounds));
+            index--;
+        }
     }
 }
 
@@ -64,11 +75,11 @@
     
         if (progress >= 1.f)
         {
-            [springExpandView setColor:[UIColor redColor]];
+            [springExpandView setColor:[UIColor wisteriaColor]];
         }
         else if (expanded)
         {
-            [springExpandView setColor:[UIColor purpleColor]];
+            [springExpandView setColor:[UIColor amethystColor]];
         }
         else
         {

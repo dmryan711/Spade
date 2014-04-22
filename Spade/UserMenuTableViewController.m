@@ -7,12 +7,23 @@
 //
 
 #import "UserMenuTableViewController.h"
+#import <Parse/Parse.h>
+#import "SpadeProfileController.h"
+#import "SpadeConstants.h"
+#import "MenuTableViewCell.h"
+#import "UIColor+FlatUI.h"
 
 #define BUFFER_CELL_INDEX 0
 #define BUFFER_PERCENTAGE .25
 #define LAST_MENU_ITEM 3
 #define AMOUNT_OF_MENU_ITEMS 4
 #define MENU_ITEM_HEIGHT 75
+#define PROFILE 1
+#define FIND_FRIENDS 2
+#define LOGOUT 3
+#define DISMISS 5
+#define STORYBOARD   [UIStoryboard storyboardWithName:@"Main" bundle: nil]
+
 
 @interface UserMenuTableViewController ()
 
@@ -76,16 +87,26 @@
 }
 
 
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+- (MenuTableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"UserMenuCell" forIndexPath:indexPath];
+    MenuTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"UserMenuCell" forIndexPath:indexPath];
     
     // Configure the cell...
+    
+    if (indexPath.row == BUFFER_CELL_INDEX) {
+        [cell setUserInteractionEnabled:NO];
+        cell.contentView.alpha = 0;
+    }
+    if (indexPath.row > LAST_MENU_ITEM && indexPath.row < self.menuItems.count - 1) [cell setUserInteractionEnabled:NO];
+    
     cell.backgroundColor = [UIColor clearColor];
+    cell.selectedColor = [UIColor wisteriaColor];
     cell.textLabel.textAlignment = NSTextAlignmentCenter;
     cell.textLabel.text = [self.menuItems objectAtIndex:indexPath.row];
     cell.textLabel.font = [UIFont fontWithName:@"Copperplate-Bold" size:20];
     cell.textLabel.textColor = [UIColor whiteColor];
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
+    cell.contentView.alpha = 1.0f;
     
     NSLog(@"Cell Label:%@",[self.menuItems objectAtIndex:indexPath.row]);
     return cell;
@@ -105,6 +126,44 @@
         return 75;
     }
 
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if (indexPath.row == PROFILE) {
+        //Display Profile
+        //Create Detail View
+        SpadeProfileController *profileDetail = [STORYBOARD   instantiateViewControllerWithIdentifier:@"profileDetailView"];
+        PFUser *user = [PFUser currentUser];
+        
+        [profileDetail setUserName:[user objectForKey:spadeUserDisplayName]];
+        
+        [self presentViewController:profileDetail animated:YES completion:nil];
+        
+    }else if (indexPath.row == FIND_FRIENDS){
+        
+        
+    }else if (indexPath.row == LOGOUT){
+       // [self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
+        
+        
+    
+    }else if (indexPath.row == DISMISS){
+        [self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
+    
+    }
+
+}
+
+- (id <UIViewControllerAnimatedTransitioning>)animationControllerForPresentedController:(UIViewController *)presented presentingController:(UIViewController *)presenting sourceController:(UIViewController *)source
+{
+    return [[SpadePresentTransistion alloc]init];
+    
+}
+
+- (id<UIViewControllerAnimatedTransitioning>)animationControllerForDismissedController:(UIViewController *)dismissed
+{
+    return [[SpadeDismissTransistion alloc] init];
 }
 
 
