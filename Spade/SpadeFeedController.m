@@ -358,13 +358,13 @@
             [self.tableView reloadData];
             [self.tableRefresh endRefreshing];
             
-           // NSLog(@"Objects Uncrunched Here     %@",objectsFound);
+            //NSLog(@"Objects Uncrunched Here     %@",objectsFound);
 
             
            // NSLog(@"Objects Here     %@",self.objects);
 
             
-        }
+        }else{}
         
     }];
 

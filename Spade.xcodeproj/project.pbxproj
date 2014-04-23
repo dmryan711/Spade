@@ -108,6 +108,11 @@
 		919DC3C418775E57007E8BC0 /* SpadeFeedCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 919DC3C318775E57007E8BC0 /* SpadeFeedCell.m */; };
 		919DC3C91879F2CF007E8BC0 /* SpadeEventDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 919DC3C81879F2CF007E8BC0 /* SpadeEventDetailViewController.m */; };
 		919DC3CC1879FA73007E8BC0 /* SpadeChatCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 919DC3CB1879FA73007E8BC0 /* SpadeChatCell.m */; };
+		91A382A11906E4C900EC9EE1 /* RPSlidingMenuCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 91A3829C1906E4C900EC9EE1 /* RPSlidingMenuCell.m */; };
+		91A382A21906E4C900EC9EE1 /* RPSlidingMenuLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 91A3829E1906E4C900EC9EE1 /* RPSlidingMenuLayout.m */; };
+		91A382A31906E4C900EC9EE1 /* RPSlidingMenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 91A382A01906E4C900EC9EE1 /* RPSlidingMenuViewController.m */; };
+		91A382A61906E5B500EC9EE1 /* SlideFeedViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 91A382A51906E5B500EC9EE1 /* SlideFeedViewController.m */; };
+		91A382A91907285E00EC9EE1 /* SpadeSlideCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 91A382A81907285E00EC9EE1 /* SpadeSlideCell.m */; };
 		91AB44B418E091EC00B78719 /* Lato-Bla.otf in Resources */ = {isa = PBXBuildFile; fileRef = 91AB44AA18E091BA00B78719 /* Lato-Bla.otf */; };
 		91AB44B518E091EC00B78719 /* Lato-BlaIta.otf in Resources */ = {isa = PBXBuildFile; fileRef = 91AB44AB18E091BA00B78719 /* Lato-BlaIta.otf */; };
 		91AB44B618E091EC00B78719 /* Lato-Bol.otf in Resources */ = {isa = PBXBuildFile; fileRef = 91AB44AC18E091BA00B78719 /* Lato-Bol.otf */; };
@@ -321,6 +326,17 @@
 		919DC3C81879F2CF007E8BC0 /* SpadeEventDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SpadeEventDetailViewController.m; sourceTree = "<group>"; };
 		919DC3CA1879FA73007E8BC0 /* SpadeChatCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SpadeChatCell.h; sourceTree = "<group>"; };
 		919DC3CB1879FA73007E8BC0 /* SpadeChatCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SpadeChatCell.m; sourceTree = "<group>"; };
+		91A3829A1906E4C900EC9EE1 /* RPSlidingMenu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RPSlidingMenu.h; sourceTree = "<group>"; };
+		91A3829B1906E4C900EC9EE1 /* RPSlidingMenuCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RPSlidingMenuCell.h; sourceTree = "<group>"; };
+		91A3829C1906E4C900EC9EE1 /* RPSlidingMenuCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RPSlidingMenuCell.m; sourceTree = "<group>"; };
+		91A3829D1906E4C900EC9EE1 /* RPSlidingMenuLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RPSlidingMenuLayout.h; sourceTree = "<group>"; };
+		91A3829E1906E4C900EC9EE1 /* RPSlidingMenuLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RPSlidingMenuLayout.m; sourceTree = "<group>"; };
+		91A3829F1906E4C900EC9EE1 /* RPSlidingMenuViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RPSlidingMenuViewController.h; sourceTree = "<group>"; };
+		91A382A01906E4C900EC9EE1 /* RPSlidingMenuViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RPSlidingMenuViewController.m; sourceTree = "<group>"; };
+		91A382A41906E5B500EC9EE1 /* SlideFeedViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SlideFeedViewController.h; sourceTree = "<group>"; };
+		91A382A51906E5B500EC9EE1 /* SlideFeedViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SlideFeedViewController.m; sourceTree = "<group>"; };
+		91A382A71907285E00EC9EE1 /* SpadeSlideCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SpadeSlideCell.h; sourceTree = "<group>"; };
+		91A382A81907285E00EC9EE1 /* SpadeSlideCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SpadeSlideCell.m; sourceTree = "<group>"; };
 		91AB44AA18E091BA00B78719 /* Lato-Bla.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Lato-Bla.otf"; sourceTree = "<group>"; };
 		91AB44AB18E091BA00B78719 /* Lato-BlaIta.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Lato-BlaIta.otf"; sourceTree = "<group>"; };
 		91AB44AC18E091BA00B78719 /* Lato-Bol.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Lato-Bol.otf"; sourceTree = "<group>"; };
@@ -594,6 +610,15 @@
 		9141E86A18407A5000A5DE15 /* Spade */ = {
 			isa = PBXGroup;
 			children = (
+				91A3829A1906E4C900EC9EE1 /* RPSlidingMenu.h */,
+				91A3829B1906E4C900EC9EE1 /* RPSlidingMenuCell.h */,
+				91A3829C1906E4C900EC9EE1 /* RPSlidingMenuCell.m */,
+				91A382A71907285E00EC9EE1 /* SpadeSlideCell.h */,
+				91A382A81907285E00EC9EE1 /* SpadeSlideCell.m */,
+				91A3829D1906E4C900EC9EE1 /* RPSlidingMenuLayout.h */,
+				91A3829E1906E4C900EC9EE1 /* RPSlidingMenuLayout.m */,
+				91A3829F1906E4C900EC9EE1 /* RPSlidingMenuViewController.h */,
+				91A382A01906E4C900EC9EE1 /* RPSlidingMenuViewController.m */,
 				9141E87318407A5000A5DE15 /* SpadeAppDelegate.h */,
 				9141E87418407A5000A5DE15 /* SpadeAppDelegate.m */,
 				9112353C18569C830092253B /* Model */,
@@ -737,6 +762,8 @@
 				91F74AA7187CF72600F322BC /* SpadeChatViewController.m */,
 				9196A92B1871F94A00513082 /* SpadeEventInviteController.h */,
 				9196A92C1871F94A00513082 /* SpadeEventInviteController.m */,
+				91A382A41906E5B500EC9EE1 /* SlideFeedViewController.h */,
+				91A382A51906E5B500EC9EE1 /* SlideFeedViewController.m */,
 			);
 			name = "Beta Controllers";
 			sourceTree = "<group>";
@@ -995,10 +1022,12 @@
 			files = (
 				9133C15218A2E4E600730B9E /* UINavigationBar+FlatUI.m in Sources */,
 				9133C14F18A2E4E600730B9E /* UIColor+FlatUI.m in Sources */,
+				91A382A11906E4C900EC9EE1 /* RPSlidingMenuCell.m in Sources */,
 				9133C15418A2E4E600730B9E /* UIProgressView+FlatUI.m in Sources */,
 				915E9CD118FDC30C001E3BB7 /* SpadeContainerViewController.m in Sources */,
 				9158421218E86932009F1BE8 /* iCarousel.m in Sources */,
 				9133C14718A2E4E600730B9E /* FUIAlertView.m in Sources */,
+				91A382A91907285E00EC9EE1 /* SpadeSlideCell.m in Sources */,
 				915BEDB01857DB5A00FCA17A /* UIImage+RoundedCornerAdditions.m in Sources */,
 				9112354218569F170092253B /* SpadeEventController.m in Sources */,
 				9133C15918A2E4E600730B9E /* UIToolbar+FlatUI.m in Sources */,
@@ -1020,6 +1049,7 @@
 				9196A8E2186D29F500513082 /* SpadeFollowCell.m in Sources */,
 				9133C14D18A2E4E600730B9E /* FUITextField.m in Sources */,
 				9196A8DF186C903200513082 /* SpadeConstants.m in Sources */,
+				91A382A61906E5B500EC9EE1 /* SlideFeedViewController.m in Sources */,
 				915E9CD418FDC91C001E3BB7 /* SCDragAffordanceView.m in Sources */,
 				917FA75418E3C7BA009EDEF2 /* SpadeMainSlideViewController.m in Sources */,
 				9133C15318A2E4E600730B9E /* UIPopoverController+FlatUI.m in Sources */,
@@ -1039,6 +1069,7 @@
 				91F74AA8187CF72600F322BC /* SpadeChatViewController.m in Sources */,
 				919DC3C91879F2CF007E8BC0 /* SpadeEventDetailViewController.m in Sources */,
 				9196A8E9186F8ACF00513082 /* SpadeVenueFollowCell.m in Sources */,
+				91A382A21906E4C900EC9EE1 /* RPSlidingMenuLayout.m in Sources */,
 				9133C15518A2E4E600730B9E /* UISlider+FlatUI.m in Sources */,
 				9133C15818A2E4E600730B9E /* UITableViewCell+FlatUI.m in Sources */,
 				91F74AB1187E2C5500F322BC /* SpadeEventCell.m in Sources */,
@@ -1054,6 +1085,7 @@
 				9133C14B18A2E4E600730B9E /* FUISegmentedControl.m in Sources */,
 				919DC3CC1879FA73007E8BC0 /* SpadeChatCell.m in Sources */,
 				9173F22018FC98FC00AD52C9 /* NSString+URLEncoding.m in Sources */,
+				91A382A31906E4C900EC9EE1 /* RPSlidingMenuViewController.m in Sources */,
 				9133C14818A2E4E600730B9E /* FUIButton.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

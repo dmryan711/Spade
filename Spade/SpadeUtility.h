@@ -27,6 +27,8 @@
 +(void)user:(PFUser *)user unfollowingUsers:(NSArray *)friendUsers;
 +(void)user:(PFUser *)user creatingEventWithName:(NSString *)eventName forVenue:(PFObject *)venue forDate:(NSString *)date forTime:(NSString *)time withImageFile:(PFFile *)file;
 +(long double)milesFromMeters:(long double)meters;
++(NSArray *)crunchUpdates:(NSMutableArray *)objectsFoundInQuery;
++(NSString *)dateStringFromString:(NSString *)dateString;
 
 
 @end

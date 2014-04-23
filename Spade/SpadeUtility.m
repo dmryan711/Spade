@@ -301,13 +301,68 @@
     
 }
 
-/*+(NSArray *)crunchAttendeeActivities:(NSMutableArray *)arrayOfAttendingActivities
-{
-    for (PFObject *attendingActivity in arrayOfAttendingActivities) {
-        if
++(NSArray *)crunchUpdates:(NSMutableArray *)objectsFoundInQuery{
+	NSMutableArray *crunchedActivities = [[NSMutableArray alloc]init];
+	NSMutableDictionary *crunchedObject = [[NSMutableDictionary alloc]init];
+	for(int i = 0; i< [objectsFoundInQuery count]; i++){
+        if ([[[objectsFoundInQuery objectAtIndex:i]objectForKey:spadeActivityAction] isEqualToString:spadeActivityActionAttendingEvent]) {
+            int crunches = 0;
+            for(int j = i +1; j < [objectsFoundInQuery count]; j++){
+                if ([[[objectsFoundInQuery objectAtIndex:j]objectForKey:spadeActivityAction] isEqualToString:spadeActivityActionAttendingEvent]){
+                    
+                    if([[[[objectsFoundInQuery objectAtIndex:i] objectForKey:spadeActivityToEvent]objectId] isEqualToString:[[[objectsFoundInQuery objectAtIndex:j] objectForKey:spadeActivityToEvent]objectId]]	){//Match Found. crunch
+                        if(crunches == 0){ //first Crunch
+                            [crunchedObject addEntriesFromDictionary: @{spadeActivityFromUser:[[objectsFoundInQuery objectAtIndex:i]objectForKey:spadeActivityFromUser],spadeActivityAction: spadeActivityActionAttendingEvent, spadeActivityToEvent:[[objectsFoundInQuery objectAtIndex:i] objectForKey:spadeActivityToEvent]}];
+                        }
+                        crunches ++;
+                        NSNumber *crunchesNumber = [NSNumber numberWithInt:crunches];
+                        [crunchedObject addEntriesFromDictionary:@{@"otherUserCount":crunchesNumber}]; //add key and incremented other count
+                        
+                        //Removing Compared Object
+                        [objectsFoundInQuery removeObjectAtIndex: j];
+                        j--;
+                        
+                    }
+                }
+            }
+            
+            if(crunches == 0){ //No Crunches Made
+                [crunchedActivities addObject:[objectsFoundInQuery objectAtIndex:i]];
+                
+            }else{ //crunches found
+                NSDictionary *tempDict = [NSDictionary dictionaryWithDictionary:crunchedObject];
+                [crunchedActivities addObject:tempDict];
+                [crunchedObject removeAllObjects]; //reset the object
+                
+                
+                //Removing Comparing Object
+                [objectsFoundInQuery removeObjectAtIndex:i];
+                i--;
+            }
+        }else{
+            [crunchedActivities addObject:[objectsFoundInQuery objectAtIndex:i]]; // if it is the "Created" Action
+        }
     }
+    return crunchedActivities;
+}
 
-    
-}*/
+
++(NSString *)dateStringFromString:(NSString *)dateString
+{
+    int k = 0; //Slash Counter
+    for(int i = 0; i< dateString.length ; i++) {
+        if ([dateString characterAtIndex:i] == '/' && k == 1) {
+            if ([dateString characterAtIndex:0 ]== '0') {
+                return [[dateString substringFromIndex:1] substringToIndex:i-1];
+            }else{
+                 return [dateString substringToIndex:i];
+            }
+           
+        }else if ([dateString characterAtIndex:i] == '/'){
+            k++; //increment slash counter
+        }
+    }
+    return dateString;
+}
 
 @end
