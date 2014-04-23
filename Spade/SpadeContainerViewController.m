@@ -11,6 +11,8 @@
 #import "SpadePresentTransistion.h"
 #import "SpadeDismissTransistion.h"
 
+#define CORNER_RADIUS 4
+
 @interface SpadeContainerViewController () <UIScrollViewDelegate, UIViewControllerTransitioningDelegate>
 
 @property (nonatomic, strong) SCDragAffordanceView *leftPullView;
@@ -72,8 +74,11 @@
         }else if (self.rightMenuTableViewController){
             self.rightMenuTableViewController.transitioningDelegate = self;
             self.rightMenuTableViewController.modalPresentationStyle = UIModalPresentationCustom;
+            
         }
         self.rightPullView = [[SCDragAffordanceView alloc] initWithFrame:CGRectMake(CGRectGetMaxX(self.enclosingScrollView.bounds) + 10.f, CGRectGetMidY(self.enclosingScrollView.bounds) - 25.f, 50.f, 50.f)];
+
+    
         [self.enclosingScrollView addSubview:self.rightPullView];
         
     }
@@ -84,6 +89,7 @@
         self.leftPullView = [[SCDragAffordanceView alloc] initWithFrame:CGRectMake(CGRectGetMinX(self.enclosingScrollView.bounds) -10.f, CGRectGetMidY(self.enclosingScrollView.bounds) - 25.f, 50.f, 50.f)];
         [self.enclosingScrollView addSubview:self.leftPullView];
     }
+ 
 }
 
 - (void)didReceiveMemoryWarning
@@ -106,8 +112,7 @@
         scrollDirection = ScrollDirectionLeft;
         self.rightPullView.progress = scrollView.contentOffset.x / CGRectGetWidth(self.rightPullView.bounds);
 
-    //reset lastContenOffset
-    //self.lastContentOffset = scrollView.contentOffset.x;
+    
 }
 
 - (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
@@ -115,6 +120,8 @@
     
     if (self.leftPullView.progress >= 1.f)
     {
+        NSLog(@"left");
+       
         if (self.leftMenuTableViewController) {
             [self presentViewController:self.leftMenuTableViewController
                                animated:YES
@@ -132,20 +139,36 @@
     //Right
     if (self.rightPullView.progress >= 1.f)
     {
+        
+        [UIView animateWithDuration:.5 animations:^(void){
+         
+            [self.enclosingScrollView setFrame:CGRectMake(self.enclosingScrollView.frame.size.width *-.35, 0, self.enclosingScrollView.frame.size.width, self.enclosingScrollView.frame.size.height)];
+        }];
+        //self.enclosingScrollView.alwaysBounceHorizontal = NO;
+        [self.enclosingScrollView setUserInteractionEnabled:NO];
+
+        NSLog(@"right");
+        
+        
         if (self.rightMenuTableViewController) {
-            [self presentViewController:self.rightMenuTableViewController
-                               animated:YES
-                             completion:NULL];
+        
+            NSLog(@"table");
+        
+            [self presentViewController:self.rightMenuTableViewController animated:YES completion:NULL];
+           
         }else if (self.rightMenuViewController){
             [self presentViewController:self.rightMenuViewController
                                animated:YES
                              completion:NULL];
+         
         }
     }else
     {
         self.rightPullView.progress = 0.f;
     }
 }
+
+
 
 #pragma mark - UIViewControllerTransitioningDelegate
 

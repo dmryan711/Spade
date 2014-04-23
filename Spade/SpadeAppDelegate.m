@@ -21,6 +21,7 @@
 #import "UIColor+FlatUI.h"
 #import "SpadeContainerViewController.h"
 #import "UserMenuTableViewController.h"
+#import "MenuTableViewController.h"
 
 #define LEFT_VIEWCONTROLLER 0
 #define MIDDLE_VC 1
@@ -83,7 +84,7 @@
     
 
     //Log Fonts
-    /*for (NSString* family in [UIFont familyNames])
+    for (NSString* family in [UIFont familyNames])
     {
         NSLog(@"%@", family);
         
@@ -91,7 +92,7 @@
         {
             NSLog(@"  %@", name);
         }
-    }*/
+    }
     
     return YES;
 }
@@ -352,9 +353,10 @@ didReceiveResponse:(NSURLResponse *)response {
 {
     self.containerView = [[SpadeContainerViewController alloc]initWithNibName:nil bundle:nil];
     self.containerView.isPullFromLeftEnabled = YES;
-    self.containerView.isPullFromRightEnabled = NO;
+    self.containerView.isPullFromRightEnabled = YES;
     self.containerView.shouldScroll = YES;
     self.containerView.leftMenuTableViewController = [STORYBOARD instantiateViewControllerWithIdentifier:@"menuTable"];
+    self.containerView.rightMenuTableViewController  = [[UserMenuTableViewController alloc]init];
     self.containerView.mainNavigationController = [STORYBOARD instantiateViewControllerWithIdentifier:@"feedNav"];
 
 }

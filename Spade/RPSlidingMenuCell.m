@@ -61,7 +61,7 @@ const CGFloat RPSlidingMenuFeaturedImageCoverAlpha = 0.2f;
     CGRect screenRect = [[UIScreen mainScreen] bounds];
     self.textLabel = [[UILabel alloc] initWithFrame:CGRectMake(0.0f, 0.0f, screenRect.size.width, self.contentView.frame.size.height)];
     self.textLabel.center = self.contentView.center;
-    self.textLabel.font = [UIFont boldSystemFontOfSize:32.0];
+    self.textLabel.font = [UIFont fontWithName:@"Avenir-Heavy" size:32];
     self.textLabel.textColor = [UIColor whiteColor];
     self.textLabel.textAlignment = NSTextAlignmentCenter;
     [self.contentView addSubview:self.textLabel];

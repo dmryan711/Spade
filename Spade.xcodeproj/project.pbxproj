@@ -113,6 +113,7 @@
 		91A382A31906E4C900EC9EE1 /* RPSlidingMenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 91A382A01906E4C900EC9EE1 /* RPSlidingMenuViewController.m */; };
 		91A382A61906E5B500EC9EE1 /* SlideFeedViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 91A382A51906E5B500EC9EE1 /* SlideFeedViewController.m */; };
 		91A382A91907285E00EC9EE1 /* SpadeSlideCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 91A382A81907285E00EC9EE1 /* SpadeSlideCell.m */; };
+		91A382AC1907693000EC9EE1 /* MenuTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 91A382AB1907693000EC9EE1 /* MenuTableViewController.m */; };
 		91AB44B418E091EC00B78719 /* Lato-Bla.otf in Resources */ = {isa = PBXBuildFile; fileRef = 91AB44AA18E091BA00B78719 /* Lato-Bla.otf */; };
 		91AB44B518E091EC00B78719 /* Lato-BlaIta.otf in Resources */ = {isa = PBXBuildFile; fileRef = 91AB44AB18E091BA00B78719 /* Lato-BlaIta.otf */; };
 		91AB44B618E091EC00B78719 /* Lato-Bol.otf in Resources */ = {isa = PBXBuildFile; fileRef = 91AB44AC18E091BA00B78719 /* Lato-Bol.otf */; };
@@ -337,6 +338,8 @@
 		91A382A51906E5B500EC9EE1 /* SlideFeedViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SlideFeedViewController.m; sourceTree = "<group>"; };
 		91A382A71907285E00EC9EE1 /* SpadeSlideCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SpadeSlideCell.h; sourceTree = "<group>"; };
 		91A382A81907285E00EC9EE1 /* SpadeSlideCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SpadeSlideCell.m; sourceTree = "<group>"; };
+		91A382AA1907693000EC9EE1 /* MenuTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MenuTableViewController.h; sourceTree = "<group>"; };
+		91A382AB1907693000EC9EE1 /* MenuTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenuTableViewController.m; sourceTree = "<group>"; };
 		91AB44AA18E091BA00B78719 /* Lato-Bla.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Lato-Bla.otf"; sourceTree = "<group>"; };
 		91AB44AB18E091BA00B78719 /* Lato-BlaIta.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Lato-BlaIta.otf"; sourceTree = "<group>"; };
 		91AB44AC18E091BA00B78719 /* Lato-Bol.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Lato-Bol.otf"; sourceTree = "<group>"; };
@@ -764,6 +767,8 @@
 				9196A92C1871F94A00513082 /* SpadeEventInviteController.m */,
 				91A382A41906E5B500EC9EE1 /* SlideFeedViewController.h */,
 				91A382A51906E5B500EC9EE1 /* SlideFeedViewController.m */,
+				91A382AA1907693000EC9EE1 /* MenuTableViewController.h */,
+				91A382AB1907693000EC9EE1 /* MenuTableViewController.m */,
 			);
 			name = "Beta Controllers";
 			sourceTree = "<group>";
@@ -1036,6 +1041,7 @@
 				91175E1F18E537E1002BA37A /* SpadeMapSlideViewController.m in Sources */,
 				915E9CC818FDA0D0001E3BB7 /* SpadeDismissTransistion.m in Sources */,
 				9196A8D9186A919F00513082 /* SpadeEditProfileViewController.m in Sources */,
+				91A382AC1907693000EC9EE1 /* MenuTableViewController.m in Sources */,
 				9133C14E18A2E4E600730B9E /* UIBarButtonItem+FlatUI.m in Sources */,
 				915BEDAE1857DB5A00FCA17A /* UIImage+ResizeAdditions.m in Sources */,
 				91632CF01857CFE000FB276E /* SpadeProfileController.m in Sources */,
