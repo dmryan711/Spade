@@ -26,6 +26,8 @@
 @property (nonatomic, strong) UIViewController *mainViewController;
 @property (nonatomic, strong) UINavigationController *mainNavigationController;
 
+@property (nonatomic) BOOL shouldScroll;
+
 typedef enum ScrollDirection {
     ScrollDirectionNone,
     ScrollDirectionRight,

@@ -39,11 +39,20 @@
     // Do any additional setup after loading the view.
 
     
+    
     self.enclosingScrollView = [[UIScrollView alloc]initWithFrame:self.view.bounds];
     self.enclosingScrollView.alwaysBounceHorizontal = YES;
     self.enclosingScrollView.decelerationRate = UIScrollViewDecelerationRateFast;
     self.enclosingScrollView.delegate = self;
+    
+    if (self.shouldScroll) {
+        self.enclosingScrollView.scrollEnabled = YES;
+    }else{
+        self.enclosingScrollView.scrollEnabled = NO;
+    }
+    
     [self.view addSubview:self.enclosingScrollView];
+    
     
     if (self.mainViewController) {
         [self.enclosingScrollView   addSubview:self.mainViewController.view];

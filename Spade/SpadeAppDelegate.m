@@ -31,8 +31,7 @@
 
 @interface SpadeAppDelegate ()
 
-@property (strong,nonatomic) UITabBarController *tabBarController;
-@property (strong,nonatomic) UINavigationController *feedController;
+@property (strong,nonatomic) SpadeContainerViewController *containerView;
 @property (strong,nonatomic) NSMutableData *data;
 @property (strong, nonatomic) NSCache *cache;
 
@@ -66,12 +65,7 @@
     /***** INITIALIZE FACEBOOK *****/
     [PFFacebookUtils initializeFacebook];
     
-    
-    //Set up the Tab Bar Controller
-    self.tabBarController = [STORYBOARD instantiateInitialViewController];
-    self.tabBarController.delegate = self;
-    self.tabBarController.tabBar.backgroundImage = [UIImage imageNamed:@"tabBarBackGround.png"];
-    self.tabBarController.tabBar.selectionIndicatorImage = [UIImage imageNamed:@"tabBarSelected.png"];
+
     
     //Load Main Set of View Controllers or Load Invite Controller into Tab Bar
     if ([[NSUserDefaults standardUserDefaults] boolForKey:isFirstLogin]){
@@ -82,7 +76,7 @@
 
     //Set Up App
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-    self.window.rootViewController = self.tabBarController;
+    self.window.rootViewController = self.containerView;
     [self.window makeKeyAndVisible];
     
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
@@ -157,7 +151,7 @@ didSelectViewController:(UIViewController *)viewController
                didLogInUser:(PFUser *)user {
 
     //Get Rid of the Login View
-    [[self.tabBarController.viewControllers objectAtIndex:LEFT_VIEWCONTROLLER] dismissViewControllerAnimated:YES completion:nil];
+    [[[self.containerView.mainNavigationController viewControllers] objectAtIndex:FEED_CONTROLLER]dismissViewControllerAnimated:YES completion:nil];
     
     //Set Facebook Request for user & friends
     FBRequest *requestForFriends = [FBRequest requestForMyFriends];
@@ -250,7 +244,6 @@ didSelectViewController:(UIViewController *)viewController
             //Save to Parse
             [user saveInBackgroundWithBlock:^(BOOL succeeded , NSError *error){
                 if (succeeded) {
-                    [[[self.feedController viewControllers]objectAtIndex:FEED_CONTROLLER]runQueryAndReloadData];
                     
                    /* //Follow the Spade Team
                     PFQuery *querySpadeTeam = [PFQuery queryWithClassName:spadeClassUser];
@@ -289,7 +282,6 @@ didSelectViewController:(UIViewController *)viewController
 // Sent to the delegate when the log in screen is dismissed.
 - (void)logInViewControllerDidCancelLogIn:(PFLogInViewController *)logInController {
     NSLog(@"User dimissed the loginviewcontroller");
-    [[self.tabBarController.viewControllers objectAtIndex:LEFT_VIEWCONTROLLER] dismissViewControllerAnimated:YES completion:nil];
     
 }
 
@@ -322,7 +314,7 @@ didReceiveResponse:(NSURLResponse *)response {
     [logInViewController setFields:PFLogInFieldsFacebook];
     
     // Present the log in view controller
-    [[self.tabBarController.viewControllers objectAtIndex:LEFT_VIEWCONTROLLER ] presentViewController:logInViewController animated:YES completion:NULL];
+    [[[self.containerView.mainNavigationController viewControllers] objectAtIndex:FEED_CONTROLLER]presentViewController:logInViewController animated:YES completion:nil];
 }
 
 /**
@@ -335,7 +327,7 @@ didReceiveResponse:(NSURLResponse *)response {
     //Create Detail View
     SpadeFriendTableViewController *friendListViewController = [STORYBOARD  instantiateViewControllerWithIdentifier:@"findFriendView"];
     
-    [[self.tabBarController.viewControllers objectAtIndex:LEFT_VIEWCONTROLLER] presentViewController:friendListViewController animated:YES completion:NULL];
+    [[[self.containerView.mainNavigationController viewControllers] objectAtIndex:FEED_CONTROLLER] presentViewController:friendListViewController animated:YES completion:nil];
 
 }
 
@@ -346,8 +338,11 @@ didReceiveResponse:(NSURLResponse *)response {
  */
 -(void)setInviteCodeController
 {
-    [self.tabBarController setViewControllers:@[[STORYBOARD instantiateViewControllerWithIdentifier:@"InviteCode"]]];
-    [self.tabBarController setSelectedIndex:MIDDLE_VC];
+    self.containerView = [[SpadeContainerViewController alloc]initWithNibName:nil bundle:nil];
+    self.containerView.shouldScroll = NO;
+    self.containerView.mainViewController = [STORYBOARD instantiateViewControllerWithIdentifier:@"InviteCode"];
+    
+
 }
 
 /**
@@ -355,17 +350,13 @@ didReceiveResponse:(NSURLResponse *)response {
  */
 -(void)setMainControllers
 {
-    self.feedController = [STORYBOARD instantiateViewControllerWithIdentifier:@"feedNav"];
-    
-    SpadeContainerViewController *containerView = [[SpadeContainerViewController alloc]initWithNibName:nil bundle:nil];
-    containerView.isPullFromRightEnabled = YES;
-    containerView.rightMenuTableViewController = [STORYBOARD instantiateViewControllerWithIdentifier:@"menuTable"];
-    containerView.mainNavigationController = self.feedController;
-    
-    
-    self.tabBarController.tabBar.hidden = NO;
-    [self.tabBarController setViewControllers:@[ [STORYBOARD instantiateViewControllerWithIdentifier:@"eventNav"],containerView, [STORYBOARD instantiateViewControllerWithIdentifier:@"venueNav"]]];
-    [self.tabBarController setSelectedIndex:MIDDLE_VC];
+    self.containerView = [[SpadeContainerViewController alloc]initWithNibName:nil bundle:nil];
+    self.containerView.isPullFromLeftEnabled = YES;
+    self.containerView.isPullFromRightEnabled = NO;
+    self.containerView.shouldScroll = YES;
+    self.containerView.leftMenuTableViewController = [STORYBOARD instantiateViewControllerWithIdentifier:@"menuTable"];
+    self.containerView.mainNavigationController = [STORYBOARD instantiateViewControllerWithIdentifier:@"feedNav"];
+
 }
 
 #pragma mark User Utility Methods
